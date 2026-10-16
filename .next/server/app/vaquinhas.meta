@@ -1,0 +1,34 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/vaquinhas/layout,_N_T_/vaquinhas/page,_N_T_/vaquinhas"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/vaquinhas/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 64,
+    "slots": {
+      "children": {
+        "hints": 96,
+        "slots": {
+          "children": {
+            "hints": 160,
+            "slots": null
+          }
+        }
+      }
+    }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/80cfc9d217e5a07c79e099aa6a00c9ba83980224acc61b147175284d0273b9d2/$/vaquinhas",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/vaquinhas/page"
+    },
+    "isFallback": false
+  }
+}

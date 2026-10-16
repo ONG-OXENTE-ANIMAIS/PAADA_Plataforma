@@ -1,0 +1,34 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/como-ajudar/layout,_N_T_/como-ajudar/page,_N_T_/como-ajudar"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/como-ajudar/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 64,
+    "slots": {
+      "children": {
+        "hints": 96,
+        "slots": {
+          "children": {
+            "hints": 160,
+            "slots": null
+          }
+        }
+      }
+    }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/b681a4028efaa7ae7d054579171a6d4bd0ac9d864b3f3cde77f4f000f1f872b8/$/como-ajudar",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/como-ajudar/page"
+    },
+    "isFallback": false
+  }
+}

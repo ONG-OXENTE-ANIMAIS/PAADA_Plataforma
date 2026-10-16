@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "@phosphor-icons/web/regular";
 import "@phosphor-icons/web/fill";
 import "./globals.css";
@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   title: "Oxente — vaquinhas que viram história",
   description:
     "Escolha uma causa, pague por Pix, cartão ou boleto em menos de um minuto — e acompanhe cada real virando história.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

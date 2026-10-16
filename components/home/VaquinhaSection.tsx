@@ -229,16 +229,7 @@ export default function VaquinhaSection() {
         alvo.current = { x: e.clientX, y: e.clientY };
       }}
     >
-      <section
-        className="sec"
-        id="vaquinhas"
-        style={{
-          paddingLeft: 0,
-          paddingRight: 0,
-          maxWidth: "1240px",
-          margin: "0 auto",
-        }}
-      >
+      <section className="sec sec-wide" id="vaquinhas">
         <div className="sec-head">
           <h2>
             Vaquinhas no ar{" "}

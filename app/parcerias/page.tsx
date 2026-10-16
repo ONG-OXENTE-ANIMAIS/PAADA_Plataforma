@@ -176,13 +176,7 @@ export default function ParceriasPage() {
       <div className="fita" aria-hidden="true"></div>
 
       <section
-        className="sec"
-        style={{
-          paddingLeft: 0,
-          paddingRight: 0,
-          maxWidth: "1240px",
-          margin: "0 auto",
-        }}
+        className="sec sec-wide"
       >
         <div className="sec-head">
           <h2>
@@ -194,15 +188,7 @@ export default function ParceriasPage() {
       </section>
 
       <section className="sec-alt">
-        <div
-          className="sec"
-          style={{
-            paddingLeft: 0,
-            paddingRight: 0,
-            maxWidth: "1240px",
-            margin: "0 auto",
-          }}
-        >
+        <div className="sec sec-wide">
           <div className="sec-head">
             <h2>
               Cadastro de <em>novos parceiros</em>

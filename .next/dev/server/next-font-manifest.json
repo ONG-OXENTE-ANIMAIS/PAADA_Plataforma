@@ -1,0 +1,12 @@
+{
+  "app": {
+    "[project]/app/como-ajudar/page": [],
+    "[project]/app/page": [],
+    "[project]/app/parcerias/page": [],
+    "[project]/app/sobre/page": [],
+    "[project]/app/vaquinha/[slug]/page": []
+  },
+  "appUsingSizeAdjust": false,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}

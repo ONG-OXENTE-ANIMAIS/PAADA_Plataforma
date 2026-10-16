@@ -127,13 +127,7 @@ export default function VaquinhasPage() {
       <div className="fita" aria-hidden="true"></div>
 
       <section
-        className="sec"
-        style={{
-          paddingLeft: 0,
-          paddingRight: 0,
-          maxWidth: "1240px",
-          margin: "0 auto",
-        }}
+        className="sec sec-wide"
       >
         <div className="vt-filtros">
           <div className="chips" aria-label="Filtrar vaquinhas por categoria">

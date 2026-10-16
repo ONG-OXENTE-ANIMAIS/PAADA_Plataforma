@@ -90,13 +90,7 @@ export default function SugestoesPage() {
       <div className="fita" aria-hidden="true"></div>
 
       <section
-        className="sec"
-        style={{
-          paddingLeft: 0,
-          paddingRight: 0,
-          maxWidth: "1240px",
-          margin: "0 auto",
-        }}
+        className="sec sec-wide"
       >
         <div className="form-grid">
           <div className="form-card">

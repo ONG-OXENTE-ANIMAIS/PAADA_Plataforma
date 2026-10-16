@@ -3,15 +3,7 @@ import Link from "next/link";
 export default function ComoFunciona() {
   return (
     <section className="sec-alt" id="como">
-      <div
-        className="sec"
-        style={{
-          paddingLeft: 0,
-          paddingRight: 0,
-          maxWidth: "1240px",
-          margin: "0 auto",
-        }}
-      >
+      <div className="sec sec-wide">
         <div className="sec-head">
           <h2>Como ajudar: três passos.</h2>
           <Link href="/como-ajudar" className="link-mais">

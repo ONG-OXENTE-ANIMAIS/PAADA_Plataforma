@@ -74,15 +74,7 @@ export default function SobrePage() {
         </div>
       </div>
 
-      <section
-        className="manifesto"
-        style={{
-          paddingLeft: 0,
-          paddingRight: 0,
-          maxWidth: "1240px",
-          margin: "0 auto",
-        }}
-      >
+      <section className="manifesto sec-wide">
         <p className="eyebrow">
           <svg className="sol">
             <use href="#sol" />
@@ -103,13 +95,7 @@ export default function SobrePage() {
       <div className="fita" aria-hidden="true"></div>
 
       <section
-        className="sec"
-        style={{
-          paddingLeft: 0,
-          paddingRight: 0,
-          maxWidth: "1240px",
-          margin: "0 auto",
-        }}
+        className="sec sec-wide"
       >
         <div className="sec-head">
           <h2>De onde viemos</h2>
@@ -163,15 +149,7 @@ export default function SobrePage() {
       </section>
 
       <section className="sec-alt">
-        <div
-          className="sec"
-          style={{
-            paddingLeft: 0,
-            paddingRight: 0,
-            maxWidth: "1240px",
-            margin: "0 auto",
-          }}
-        >
+        <div className="sec sec-wide">
           <div className="sec-head">
             <h2>Como a gente trabalha</h2>
           </div>
@@ -222,13 +200,7 @@ export default function SobrePage() {
       </section>
 
       <section
-        className="sec"
-        style={{
-          paddingLeft: 0,
-          paddingRight: 0,
-          maxWidth: "1240px",
-          margin: "0 auto",
-        }}
+        className="sec sec-wide"
       >
         <div className="sec-head">
           <h2>Quem faz acontecer</h2>
