@@ -1,3 +1,0 @@
-module.exports=[64552,a=>{"use strict";var b=a.i(87924),c=a.i(38246),d=a.i(50944);a.s(["default",0,function({href:a,children:e,...f}){let g=(0,d.usePathname)();return(0,b.jsx)(c.default,{href:a,onClick:function(b){document.body.classList.remove("nav-open");let[c,d]=a.split("#");g===(c||"/")&&d&&(b.preventDefault(),document.getElementById(d)?.scrollIntoView({behavior:"smooth"}),history.pushState(null,"",a))},...f,children:e})}])}];
-
-//# sourceMappingURL=components_shared_HashLink_tsx_068baz0delfy7._.js.map
