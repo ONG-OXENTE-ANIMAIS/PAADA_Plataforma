@@ -31,7 +31,7 @@ export default function NumStrip() {
           <b data-count="8.3" data-dec="1" data-suf=" mil">
             0
           </b>
-          <span>famílias alcançadas</span>
+          <span>animais alcançados</span>
         </div>
       </div>
     </section>

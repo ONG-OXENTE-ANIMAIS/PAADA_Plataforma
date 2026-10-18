@@ -3,5 +3,5 @@
   "/page": "app/page.js",
   "/parcerias/page": "app/parcerias/page.js",
   "/sobre/page": "app/sobre/page.js",
-  "/vaquinha/[slug]/page": "app/vaquinha/[slug]/page.js"
+  "/vaquinhas/page": "app/vaquinhas/page.js"
 }

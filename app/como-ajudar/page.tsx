@@ -20,7 +20,7 @@ const FORMAS: Forma[] = [
   {
     icon: "arrows-clockwise",
     title: "Apoie todo mês",
-    desc: "Campanhas com apoio mensal garantem a continuidade de hortas, oficinas e mutirões. Uma assinatura pequena vira feito o ano inteiro.",
+    desc: "Campanhas com apoio mensal garantem a continuidade de abrigos, mutirões de castração e resgates. Uma assinatura pequena vira feito o ano inteiro.",
     cta: "Encontrar apoio mensal",
     href: "/vaquinhas",
   },
@@ -166,9 +166,9 @@ export default function ComoAjudarPage() {
                 </p>
                 <h3>A causa vira história com nome</h3>
                 <p>
-                  Cisterna cheia, marmita quente, biblioteca aberta: cada
-                  vaquinha encerrada ganha o relatório final com o resultado
-                  para quem ajudou.
+                  Gato castrado, telhado novo, cão no sofá do lar adotante:
+                  cada vaquinha encerrada ganha o relatório final com o
+                  resultado para quem ajudou.
                 </p>
               </div>
             </div>
@@ -195,8 +195,8 @@ export default function ComoAjudarPage() {
             <summary>Posso doar pouco? De R$ 5?</summary>
             <p className="faq-a">
               Pode e vale. Boa parte das doações da Oxente é de valores
-              pequenos — é o R$ 10 recorrente de dona Tereza que segura a
-              horta inteira no fim do mês.
+              pequenos — é o R$ 10 recorrente de dona Tereza que segura o
+              abrigo inteiro no fim do mês.
             </p>
           </details>
           <details>

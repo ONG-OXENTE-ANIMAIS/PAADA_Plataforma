@@ -21,7 +21,7 @@ const PALAVRAS = [
     "vaquinha",
     "corrente",
     "ideia",
-    "semente",
+    "patinha",
     "coragem"
 ];
 function Hero() {
@@ -332,8 +332,8 @@ function Hero() {
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
                         className: "hv-main",
-                        src: "https://picsum.photos/seed/oxente-horta/900/740.jpg",
-                        alt: "Voluntários na horta comunitária"
+                        src: "https://picsum.photos/seed/oxente-patas/900/740.jpg",
+                        alt: "Cão resgatado em mutirão da Oxente"
                     }, void 0, false, {
                         fileName: "[project]/components/home/Hero.tsx",
                         lineNumber: 102,
@@ -341,8 +341,8 @@ function Hero() {
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
                         className: "hv-side",
-                        src: "https://picsum.photos/seed/oxente-maracatu/520/440.jpg",
-                        alt: "Oficina de maracatu"
+                        src: "https://picsum.photos/seed/oxente-abrigo/520/440.jpg",
+                        alt: "Gatos do abrigo do Arraial"
                     }, void 0, false, {
                         fileName: "[project]/components/home/Hero.tsx",
                         lineNumber: 107,
@@ -636,8 +636,8 @@ function DestaqueCard({ c, onEnter, onLeave }) {
                 className: "destaque-img",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
-                        src: "https://picsum.photos/seed/oxente-horta/980/680.jpg",
-                        alt: "Horta comunitária"
+                        src: c.customImg || c.full,
+                        alt: c.title
                     }, void 0, false, {
                         fileName: "[project]/components/home/VaquinhaSection.tsx",
                         lineNumber: 120,
@@ -737,7 +737,7 @@ function DestaqueCard({ c, onEnter, onLeave }) {
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        children: "Uma quadra abandonada há vinte anos virando duas toneladas de alimento por ano para 80 famílias do bairro. Faltam água de reúso, viveira e galpão — é para isso que esta vaquinha corre."
+                        children: c.sub
                     }, void 0, false, {
                         fileName: "[project]/components/home/VaquinhaSection.tsx",
                         lineNumber: 146,
@@ -760,13 +760,13 @@ function DestaqueCard({ c, onEnter, onLeave }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                                lineNumber: 154,
+                                                lineNumber: 150,
                                                 columnNumber: 31
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                        lineNumber: 153,
+                                        lineNumber: 149,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -776,13 +776,13 @@ function DestaqueCard({ c, onEnter, onLeave }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                        lineNumber: 156,
+                                        lineNumber: 152,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                lineNumber: 152,
+                                lineNumber: 148,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Barra, {
@@ -790,7 +790,7 @@ function DestaqueCard({ c, onEnter, onLeave }) {
                                 className: "destaque-barra"
                             }, void 0, false, {
                                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                lineNumber: 158,
+                                lineNumber: 154,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -802,7 +802,7 @@ function DestaqueCard({ c, onEnter, onLeave }) {
                                                 className: "ph ph-users"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                                lineNumber: 161,
+                                                lineNumber: 157,
                                                 columnNumber: 15
                                             }, this),
                                             " ",
@@ -814,7 +814,7 @@ function DestaqueCard({ c, onEnter, onLeave }) {
                                                 children: c.backers
                                             }, void 0, false, {
                                                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                                lineNumber: 162,
+                                                lineNumber: 158,
                                                 columnNumber: 15
                                             }, this),
                                             " ",
@@ -822,7 +822,7 @@ function DestaqueCard({ c, onEnter, onLeave }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                        lineNumber: 160,
+                                        lineNumber: 156,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -831,26 +831,26 @@ function DestaqueCard({ c, onEnter, onLeave }) {
                                                 className: "ph ph-seal-check"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                                lineNumber: 168,
+                                                lineNumber: 164,
                                                 columnNumber: 15
                                             }, this),
                                             " prestação publicada"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                        lineNumber: 167,
+                                        lineNumber: 163,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                lineNumber: 159,
+                                lineNumber: 155,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/home/VaquinhaSection.tsx",
-                        lineNumber: 151,
+                        lineNumber: 147,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -863,18 +863,18 @@ function DestaqueCard({ c, onEnter, onLeave }) {
                                     className: "ph ph-arrow-up-right"
                                 }, void 0, false, {
                                     fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                    lineNumber: 175,
+                                    lineNumber: 171,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                lineNumber: 174,
+                                lineNumber: 170,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/home/VaquinhaSection.tsx",
-                        lineNumber: 172,
+                        lineNumber: 168,
                         columnNumber: 9
                     }, this)
                 ]
@@ -959,20 +959,20 @@ function VaquinhaSection() {
                                                 children: pad2(total)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                                lineNumber: 237,
+                                                lineNumber: 233,
                                                 columnNumber: 16
                                             }, this),
                                             ")"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                        lineNumber: 236,
+                                        lineNumber: 232,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                lineNumber: 234,
+                                lineNumber: 230,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -984,19 +984,19 @@ function VaquinhaSection() {
                                         className: "ph ph-arrow-right"
                                     }, void 0, false, {
                                         fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                        lineNumber: 241,
+                                        lineNumber: 237,
                                         columnNumber: 36
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                lineNumber: 240,
+                                lineNumber: 236,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/home/VaquinhaSection.tsx",
-                        lineNumber: 233,
+                        lineNumber: 229,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1010,7 +1010,7 @@ function VaquinhaSection() {
                                 children: "Todas"
                             }, void 0, false, {
                                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                lineNumber: 249,
+                                lineNumber: 245,
                                 columnNumber: 11
                             }, this),
                             __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$campaigns$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CATEGORIAS"].map((cat)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1019,13 +1019,13 @@ function VaquinhaSection() {
                                     children: cat
                                 }, cat, false, {
                                     fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                    lineNumber: 256,
+                                    lineNumber: 252,
                                     columnNumber: 13
                                 }, this))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/home/VaquinhaSection.tsx",
-                        lineNumber: 244,
+                        lineNumber: 240,
                         columnNumber: 9
                     }, this),
                     destaqueVisivel && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(DestaqueCard, {
@@ -1034,7 +1034,7 @@ function VaquinhaSection() {
                         onLeave: esconderImg
                     }, void 0, false, {
                         fileName: "[project]/components/home/VaquinhaSection.tsx",
-                        lineNumber: 267,
+                        lineNumber: 263,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -1047,18 +1047,18 @@ function VaquinhaSection() {
                                 onLeave: esconderImg
                             }, c.slug, false, {
                                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                                lineNumber: 276,
+                                lineNumber: 272,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/components/home/VaquinhaSection.tsx",
-                        lineNumber: 274,
+                        lineNumber: 270,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                lineNumber: 232,
+                lineNumber: 228,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1068,13 +1068,13 @@ function VaquinhaSection() {
                 "aria-hidden": "true"
             }, void 0, false, {
                 fileName: "[project]/components/home/VaquinhaSection.tsx",
-                lineNumber: 286,
+                lineNumber: 282,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/home/VaquinhaSection.tsx",
-        lineNumber: 227,
+        lineNumber: 223,
         columnNumber: 5
     }, this);
 }

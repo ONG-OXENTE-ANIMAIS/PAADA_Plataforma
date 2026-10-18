@@ -225,7 +225,7 @@ export default function ParceriasPage() {
                       <input
                         id="par-org"
                         type="text"
-                        placeholder="Instituto Sossego da Boa Vista"
+                        placeholder="Abrigo Patinhas do Arraial"
                         value={org}
                         onChange={(e) => setOrg(e.target.value)}
                       />

@@ -3,11 +3,11 @@
 :HL["/_next/static/chunks/02_e8x2mo30aa.css","style"]
 :HC["/",""]
 :HL["https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Fraunces:ital,opsz,wght@1,9..144,300..700&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap","style"]
-:HL["https://picsum.photos/seed/oxente-carnaval/900/760.jpg","image"]
+:HL["https://picsum.photos/seed/oxente-adocao/900/760.jpg","image"]
 :HL["https://picsum.photos/seed/oxente-time/520/440.jpg","image"]
-:HL["https://picsum.photos/seed/oxente-horta/900/720.jpg","image"]
-:HL["https://picsum.photos/seed/oxente-maracatu/700/640.jpg","image"]
-:HL["https://picsum.photos/seed/oxente-biblioteca/700/640.jpg","image"]
+:HL["https://picsum.photos/seed/oxente-patas/900/720.jpg","image"]
+:HL["https://picsum.photos/seed/oxente-resgate/700/640.jpg","image"]
+:HL["https://picsum.photos/seed/oxente-abrigo/700/640.jpg","image"]
 2:[["children",{"s":"__PAGE__","h":160}]]
 1:[["children",{"s":"sobre","h":96,"c":"$Q2"}]]
-0:{"b":"ixLssWDMjVW7Ew2_rk4Jb","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"Bm10FnEdMiyhcnIIMyi8E","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

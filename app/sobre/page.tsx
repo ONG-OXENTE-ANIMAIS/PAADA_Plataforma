@@ -19,8 +19,8 @@ export default function SobrePage() {
           </h1>
           <p className="lead">
             A gente transformou essa exclamação em solidariedade organizada:
-            vaquinhas transparentes, feitas pelo povo do lugar, para o povo do
-            lugar — com a moeda certa, no prazo certo, pro lugar certo.
+            vaquinhas transparentes que viram cirurgia, ração e telhado novo
+            para quem late, mia e não pode pedir socorro com palavras.
           </p>
           <div className="compromissos">
             <li>
@@ -63,8 +63,8 @@ export default function SobrePage() {
           </svg>
           <img
             className="c-main"
-            src="https://picsum.photos/seed/oxente-carnaval/900/760.jpg"
-            alt="Comunidade reunida em evento da Oxente"
+            src="https://picsum.photos/seed/oxente-adocao/900/760.jpg"
+            alt="Feira de adoção da Oxente"
           />
           <img
             className="c-side"
@@ -106,9 +106,10 @@ export default function SobrePage() {
             <div>
               <h4>Um grupo de WhatsApp da Boa Vista</h4>
               <p>
-                Onze vizinhos se juntaram pra pagar a reforma da creche do
-                bairro. A vaquinha bateu a meta em seis dias — e a pergunta que
-                ficou foi: "por que a gente não faz isso sempre?"
+                Onze vizinhos se juntaram pra pagar a cirurgia de uma cachorra
+                atropelada em frente ao mercado do bairro. A vaquinha bateu a
+                meta em seis dias — e a pergunta que ficou foi: "por que a
+                gente não faz isso sempre?"
               </p>
             </div>
           </div>
@@ -118,8 +119,8 @@ export default function SobrePage() {
               <h4>Nasce o Instituto Oxente</h4>
               <p>
                 Estatuto registrado, diretoria eleita e a primeira campanha
-                formal: 40 cisternas de placas para Cabrobá, entregues antes do
-                período de seca.
+                formal: cem castrações em um mutirão na Boa Vista, feitas num
+                único fim de semana.
               </p>
             </div>
           </div>
@@ -260,16 +261,16 @@ export default function SobrePage() {
       <section className="sec" style={{ paddingTop: 0 }}>
         <div className="mosaico">
           <img
-            src="https://picsum.photos/seed/oxente-horta/900/720.jpg"
-            alt="Mutirão na horta comunitária"
+            src="https://picsum.photos/seed/oxente-patas/900/720.jpg"
+            alt="Mutirão de castração no Mercadão da Madalena"
           />
           <img
-            src="https://picsum.photos/seed/oxente-maracatu/700/640.jpg"
-            alt="Oficina de percussão"
+            src="https://picsum.photos/seed/oxente-resgate/700/640.jpg"
+            alt="Cão resgatado do aterro de Jaboatão"
           />
           <img
-            src="https://picsum.photos/seed/oxente-biblioteca/700/640.jpg"
-            alt="Biblioteca comunitária"
+            src="https://picsum.photos/seed/oxente-abrigo/700/640.jpg"
+            alt="Gatos do abrigo do Arraial"
           />
         </div>
       </section>

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import HashLink from "@/components/shared/HashLink";
 import { BRL, DESTAQUE, pctOf } from "@/lib/campaigns";
 
-const PALAVRAS = ["vaquinha", "corrente", "ideia", "semente", "coragem"];
+const PALAVRAS = ["vaquinha", "corrente", "ideia", "patinha", "coragem"];
 
 export default function Hero() {
   const [idx, setIdx] = useState(0);
@@ -101,13 +101,13 @@ export default function Hero() {
         </svg>
         <img
           className="hv-main"
-          src="https://picsum.photos/seed/oxente-horta/900/740.jpg"
-          alt="Voluntários na horta comunitária"
+          src="https://picsum.photos/seed/oxente-patas/900/740.jpg"
+          alt="Cão resgatado em mutirão da Oxente"
         />
         <img
           className="hv-side"
-          src="https://picsum.photos/seed/oxente-maracatu/520/440.jpg"
-          alt="Oficina de maracatu"
+          src="https://picsum.photos/seed/oxente-abrigo/520/440.jpg"
+          alt="Gatos do abrigo do Arraial"
         />
         <Link className="mini-card" id="miniCard" href={`/vaquinha/${DESTAQUE.slug}`}>
           <small>Em destaque</small>

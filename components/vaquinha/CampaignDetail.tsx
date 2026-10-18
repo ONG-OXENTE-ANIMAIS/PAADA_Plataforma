@@ -173,74 +173,37 @@ export default function CampaignDetail({ slug }: { slug: string }) {
         <div className="v-conteudo">
           <h2>Sobre esta vaquinha</h2>
           <div className="texto">
-            <p>
-              A Rua do Sossego tinha uma quadra cercada havia vinte anos — mato
-              alto, entulho, ninguém por perto. Em agosto de 2024, dez famílias
-              da Boa Vista conseguiram o aval da prefeitura, limparam o terreno
-              e plantaram as primeiras mudas: maxixe, couve, coentro e um pé de
-              acerola que hoje alimenta a merenda da creche ao lado.
-            </p>
-            <p>
-              Um ano depois, a horta entrega caixas de verdura para 80 famílias
-              toda semana e rende o sustento de seis mulheres que trabalham no
-              cultivo. Faltam o reservatório de água de reúso, a sombra da
-              viveira e o galpãozinho para guardar as ferramentas — é para isso
-              que esta vaquinha corre.
-            </p>
-            <p>
-              Toda terça tem mutirão aberto: chega às 7h que ganha café da
-              manhã na hora.
-            </p>
+            {(campaign.story ?? [campaign.sub]).map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
           </div>
-          <ul className="lista-usos">
-            <li>
-              <i className="ph-fill ph-check-circle"></i>
-              <span>Reservatório de reúso de água com 10 mil litros</span>
-              <b>R$ 21.000</b>
-            </li>
-            <li>
-              <i className="ph-fill ph-check-circle"></i>
-              <span>Viveira com sombrite e bancadas de mudas</span>
-              <b>R$ 9.500</b>
-            </li>
-            <li>
-              <i className="ph-fill ph-check-circle"></i>
-              <span>Galpão de ferramentas e composteiras</span>
-              <b>R$ 17.800</b>
-            </li>
-            <li>
-              <i className="ph-fill ph-check-circle"></i>
-              <span>Sementes, mudas e insumos por 12 meses</span>
-              <b>R$ 11.700</b>
-            </li>
-          </ul>
+          {campaign.usos?.length ? (
+            <ul className="lista-usos">
+              {campaign.usos.map((u, i) => (
+                <li key={i}>
+                  <i className="ph-fill ph-check-circle"></i>
+                  <span>{u.label}</span>
+                  <b>{BRL(u.valor)}</b>
+                </li>
+              ))}
+            </ul>
+          ) : null}
 
-          <div className="atualizacoes">
-            <h2>Atualizações</h2>
-            <article className="upd">
-              <header>
-                <span className="data-tag">Marco</span>
-                <time dateTime="2025-06-12">12 de junho de 2025</time>
-              </header>
-              <h4>A viveira está de pé!</h4>
-              <p>
-                O sombrite subiu no sábado com 14 voluntários e muito café. As
-                primeiras 300 mudas de couve já estão a caminho da sombra nova.
-              </p>
-            </article>
-            <article className="upd">
-              <header>
-                <span className="data-tag">Repasse</span>
-                <time dateTime="2025-05-28">28 de maio de 2025</time>
-              </header>
-              <h4>R$ 18.940 viraram terra boa</h4>
-              <p>
-                Compramos 12 m³ de esterco curtido e terra vegetal com o
-                primeiro repasse do Mercado Pago. As notas fiscais do repasse
-                já foram publicadas para os apoiadores da campanha.
-              </p>
-            </article>
-          </div>
+          {campaign.updates?.length ? (
+            <div className="atualizacoes">
+              <h2>Atualizações</h2>
+              {campaign.updates.map((u, i) => (
+                <article className="upd" key={i}>
+                  <header>
+                    <span className="data-tag">{u.tag}</span>
+                    <time dateTime={u.iso}>{u.data}</time>
+                  </header>
+                  <h4>{u.titulo}</h4>
+                  <p>{u.texto}</p>
+                </article>
+              ))}
+            </div>
+          ) : null}
 
           <div className="apoiadores">
             <h2>Apoiadores recentes</h2>

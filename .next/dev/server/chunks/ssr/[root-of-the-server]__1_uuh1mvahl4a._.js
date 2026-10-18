@@ -24,7 +24,7 @@ const FORMAS = [
     {
         icon: "arrows-clockwise",
         title: "Apoie todo mês",
-        desc: "Campanhas com apoio mensal garantem a continuidade de hortas, oficinas e mutirões. Uma assinatura pequena vira feito o ano inteiro.",
+        desc: "Campanhas com apoio mensal garantem a continuidade de abrigos, mutirões de castração e resgates. Uma assinatura pequena vira feito o ano inteiro.",
         cta: "Encontrar apoio mensal",
         href: "/vaquinhas"
     },
@@ -511,7 +511,7 @@ function ComoAjudarPage() {
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    children: "Cisterna cheia, marmita quente, biblioteca aberta: cada vaquinha encerrada ganha o relatório final com o resultado para quem ajudou."
+                                                    children: "Gato castrado, telhado novo, cão no sofá do lar adotante: cada vaquinha encerrada ganha o relatório final com o resultado para quem ajudou."
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/como-ajudar/page.tsx",
                                                     lineNumber: 168,
@@ -600,7 +600,7 @@ function ComoAjudarPage() {
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                         className: "faq-a",
-                                        children: "Pode e vale. Boa parte das doações da Oxente é de valores pequenos — é o R$ 10 recorrente de dona Tereza que segura a horta inteira no fim do mês."
+                                        children: "Pode e vale. Boa parte das doações da Oxente é de valores pequenos — é o R$ 10 recorrente de dona Tereza que segura o abrigo inteiro no fim do mês."
                                     }, void 0, false, {
                                         fileName: "[project]/app/como-ajudar/page.tsx",
                                         lineNumber: 196,

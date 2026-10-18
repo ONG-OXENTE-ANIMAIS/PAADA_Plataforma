@@ -23,17 +23,16 @@ import {
 const DRAFT_INICIAL = (tipo: TipoCampanha): Draft => ({
   type: tipo,
   model: "split",
-  title: "Horta Comunitária da Boa Vista",
-  subtitle:
-    "Uma quadra abandonada virando duas toneladas de alimento por ano.",
+  title: "Mutirão de castração da Casa Amarela",
+  subtitle: "Trezentas cirurgias gratuitas para cães e gatos do bairro.",
   story:
-    "A Rua do Sossego tinha uma quadra cercada havia vinte anos. Dez famílias limparam o terreno e plantaram as primeiras mudas. Hoje a horta entrega verdura para 80 famílias toda semana — esta vaquinha vai garantir água, sombra e galpão para o próximo ano.",
+    "Na Casa Amarela, uma gata sem castração vira doze filhotes por ano. Com a clínica parceira e o centro comunitário do bairro, vamos castrar trezentos animais de famílias cadastradas — com microchip e alta monitorada. O dinheiro desta vaquinha paga o material cirúrgico, as gaiolas de transporte e o pós-operatório.",
   imgData: null,
   color: "#FC681A",
-  goal: 60000,
+  goal: 15000,
   goalM: 3000,
   date: "2025-08-30",
-  category: "Comunidade",
+  category: "Castração",
 });
 
 const MODELOS: { id: Modelo; nome: string; desc: string; wire: string; extra?: "e" | "aa" }[] = [

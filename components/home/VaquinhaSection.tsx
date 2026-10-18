@@ -118,8 +118,8 @@ function DestaqueCard({ c, onEnter, onLeave }: HoverProps & { c: Campaign }) {
     >
       <div className="destaque-img">
         <img
-          src="https://picsum.photos/seed/oxente-horta/980/680.jpg"
-          alt="Horta comunitária"
+          src={c.customImg || c.full}
+          alt={c.title}
         />
         <span className="chip-destaque">
           <svg className="sol" style={{ width: "12px", height: "12px" }}>
@@ -143,11 +143,7 @@ function DestaqueCard({ c, onEnter, onLeave }: HoverProps & { c: Campaign }) {
           {c.cat} · {c.place}
         </span>
         <h3>{c.title}</h3>
-        <p>
-          Uma quadra abandonada há vinte anos virando duas toneladas de alimento
-          por ano para 80 famílias do bairro. Faltam água de reúso, viveira e
-          galpão — é para isso que esta vaquinha corre.
-        </p>
+        <p>{c.sub}</p>
         <div className="destaque-prog">
           <div className="numeros">
             <b>

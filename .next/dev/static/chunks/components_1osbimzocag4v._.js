@@ -424,269 +424,119 @@ function CampaignDetail({ slug }) {
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "texto",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        children: "A Rua do Sossego tinha uma quadra cercada havia vinte anos — mato alto, entulho, ninguém por perto. Em agosto de 2024, dez famílias da Boa Vista conseguiram o aval da prefeitura, limparam o terreno e plantaram as primeiras mudas: maxixe, couve, coentro e um pé de acerola que hoje alimenta a merenda da creche ao lado."
-                                    }, void 0, false, {
+                                children: (campaign.story ?? [
+                                    campaign.sub
+                                ]).map((p, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        children: p
+                                    }, i, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 176,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        children: "Um ano depois, a horta entrega caixas de verdura para 80 famílias toda semana e rende o sustento de seis mulheres que trabalham no cultivo. Faltam o reservatório de água de reúso, a sombra da viveira e o galpãozinho para guardar as ferramentas — é para isso que esta vaquinha corre."
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 183,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        children: "Toda terça tem mutirão aberto: chega às 7h que ganha café da manhã na hora."
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 190,
-                                        columnNumber: 13
-                                    }, this)
-                                ]
-                            }, void 0, true, {
+                                        lineNumber: 177,
+                                        columnNumber: 15
+                                    }, this))
+                            }, void 0, false, {
                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
                                 lineNumber: 175,
                                 columnNumber: 11
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
+                            campaign.usos?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
                                 className: "lista-usos",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                children: campaign.usos.map((u, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("i", {
                                                 className: "ph-fill ph-check-circle"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 197,
-                                                columnNumber: 15
+                                                lineNumber: 184,
+                                                columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                children: "Reservatório de reúso de água com 10 mil litros"
+                                                children: u.label
                                             }, void 0, false, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 198,
-                                                columnNumber: 15
+                                                lineNumber: 185,
+                                                columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("b", {
-                                                children: "R$ 21.000"
+                                                children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$campaigns$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["BRL"])(u.valor)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 199,
-                                                columnNumber: 15
+                                                lineNumber: 186,
+                                                columnNumber: 19
                                             }, this)
                                         ]
-                                    }, void 0, true, {
+                                    }, i, true, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 196,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("i", {
-                                                className: "ph-fill ph-check-circle"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 202,
-                                                columnNumber: 15
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                children: "Viveira com sombrite e bancadas de mudas"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 203,
-                                                columnNumber: 15
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("b", {
-                                                children: "R$ 9.500"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 204,
-                                                columnNumber: 15
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 201,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("i", {
-                                                className: "ph-fill ph-check-circle"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 207,
-                                                columnNumber: 15
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                children: "Galpão de ferramentas e composteiras"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 208,
-                                                columnNumber: 15
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("b", {
-                                                children: "R$ 17.800"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 209,
-                                                columnNumber: 15
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 206,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("i", {
-                                                className: "ph-fill ph-check-circle"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 212,
-                                                columnNumber: 15
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                children: "Sementes, mudas e insumos por 12 meses"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 213,
-                                                columnNumber: 15
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("b", {
-                                                children: "R$ 11.700"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 214,
-                                                columnNumber: 15
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 211,
-                                        columnNumber: 13
-                                    }, this)
-                                ]
-                            }, void 0, true, {
+                                        lineNumber: 183,
+                                        columnNumber: 17
+                                    }, this))
+                            }, void 0, false, {
                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                lineNumber: 195,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                lineNumber: 181,
+                                columnNumber: 13
+                            }, this) : null,
+                            campaign.updates?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "atualizacoes",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                         children: "Atualizações"
                                     }, void 0, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 219,
-                                        columnNumber: 13
+                                        lineNumber: 194,
+                                        columnNumber: 15
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("article", {
-                                        className: "upd",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                        className: "data-tag",
-                                                        children: "Marco"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                        lineNumber: 222,
-                                                        columnNumber: 17
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("time", {
-                                                        dateTime: "2025-06-12",
-                                                        children: "12 de junho de 2025"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                        lineNumber: 223,
-                                                        columnNumber: 17
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 221,
-                                                columnNumber: 15
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                                children: "A viveira está de pé!"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 225,
-                                                columnNumber: 15
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                children: "O sombrite subiu no sábado com 14 voluntários e muito café. As primeiras 300 mudas de couve já estão a caminho da sombra nova."
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 226,
-                                                columnNumber: 15
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 220,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("article", {
-                                        className: "upd",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                        className: "data-tag",
-                                                        children: "Repasse"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                        lineNumber: 233,
-                                                        columnNumber: 17
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("time", {
-                                                        dateTime: "2025-05-28",
-                                                        children: "28 de maio de 2025"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                        lineNumber: 234,
-                                                        columnNumber: 17
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 232,
-                                                columnNumber: 15
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                                children: "R$ 18.940 viraram terra boa"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 236,
-                                                columnNumber: 15
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                children: "Compramos 12 m³ de esterco curtido e terra vegetal com o primeiro repasse do Mercado Pago. As notas fiscais do repasse já foram publicadas para os apoiadores da campanha."
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 237,
-                                                columnNumber: 15
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 231,
-                                        columnNumber: 13
-                                    }, this)
+                                    campaign.updates.map((u, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("article", {
+                                            className: "upd",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "data-tag",
+                                                            children: u.tag
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
+                                                            lineNumber: 198,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("time", {
+                                                            dateTime: u.iso,
+                                                            children: u.data
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
+                                                            lineNumber: 199,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
+                                                    lineNumber: 197,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
+                                                    children: u.titulo
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
+                                                    lineNumber: 201,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    children: u.texto
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
+                                                    lineNumber: 202,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, i, true, {
+                                            fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
+                                            lineNumber: 196,
+                                            columnNumber: 17
+                                        }, this))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                lineNumber: 218,
-                                columnNumber: 11
-                            }, this),
+                                lineNumber: 193,
+                                columnNumber: 13
+                            }, this) : null,
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "apoiadores",
                                 children: [
@@ -694,7 +544,7 @@ function CampaignDetail({ slug }) {
                                         children: "Apoiadores recentes"
                                     }, void 0, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 246,
+                                        lineNumber: 209,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -710,7 +560,7 @@ function CampaignDetail({ slug }) {
                                                         children: b.ini
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                        lineNumber: 250,
+                                                        lineNumber: 213,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -720,7 +570,7 @@ function CampaignDetail({ slug }) {
                                                                 children: b.nome
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                                lineNumber: 257,
+                                                                lineNumber: 220,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -728,13 +578,13 @@ function CampaignDetail({ slug }) {
                                                                 children: b.quando
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                                lineNumber: 258,
+                                                                lineNumber: 221,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                        lineNumber: 256,
+                                                        lineNumber: 219,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -742,24 +592,24 @@ function CampaignDetail({ slug }) {
                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$campaigns$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["BRL"])(b.valor)
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                        lineNumber: 260,
+                                                        lineNumber: 223,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, i, true, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 249,
+                                                lineNumber: 212,
                                                 columnNumber: 17
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 247,
+                                        lineNumber: 210,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                lineNumber: 245,
+                                lineNumber: 208,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -774,27 +624,27 @@ function CampaignDetail({ slug }) {
                                                         children: "você"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                        lineNumber: 269,
+                                                        lineNumber: 232,
                                                         columnNumber: 33
                                                     }, this),
                                                     "?"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 268,
+                                                lineNumber: 231,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                 children: "Compartilhar custa zero e rende muito. Chama a família, o grupo do trabalho, a turma do futebol."
                                             }, void 0, false, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 271,
+                                                lineNumber: 234,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 267,
+                                        lineNumber: 230,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -806,20 +656,20 @@ function CampaignDetail({ slug }) {
                                                 className: "ph ph-link"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 277,
+                                                lineNumber: 240,
                                                 columnNumber: 15
                                             }, this),
                                             " Copiar link da vaquinha"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 276,
+                                        lineNumber: 239,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                lineNumber: 266,
+                                lineNumber: 229,
                                 columnNumber: 11
                             }, this)
                         ]
@@ -840,7 +690,7 @@ function CampaignDetail({ slug }) {
                                         children: pct
                                     }, void 0, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 284,
+                                        lineNumber: 247,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -848,13 +698,13 @@ function CampaignDetail({ slug }) {
                                         children: rec ? "% da meta mensal" : "% da meta"
                                     }, void 0, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 285,
+                                        lineNumber: 248,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                lineNumber: 283,
+                                lineNumber: 246,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -866,12 +716,12 @@ function CampaignDetail({ slug }) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                    lineNumber: 288,
+                                    lineNumber: 251,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                lineNumber: 287,
+                                lineNumber: 250,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -892,17 +742,17 @@ function CampaignDetail({ slug }) {
                                             children: "R$ 0"
                                         }, void 0, false, {
                                             fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                            lineNumber: 299,
+                                            lineNumber: 262,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 291,
+                                        lineNumber: 254,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 301,
+                                        lineNumber: 264,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -910,13 +760,13 @@ function CampaignDetail({ slug }) {
                                         children: rec ? "meta mensal de " + (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$campaigns$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["BRL"])(campaign.goal) : "de " + (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$campaigns$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["BRL"])(campaign.goal)
                                     }, void 0, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 302,
+                                        lineNumber: 265,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                lineNumber: 290,
+                                lineNumber: 253,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -928,7 +778,7 @@ function CampaignDetail({ slug }) {
                                                 className: "ph ph-users"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 308,
+                                                lineNumber: 271,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -938,20 +788,20 @@ function CampaignDetail({ slug }) {
                                                         children: campaign.backers
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                        lineNumber: 310,
+                                                        lineNumber: 273,
                                                         columnNumber: 17
                                                     }, this),
                                                     " apoiadores"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 309,
+                                                lineNumber: 272,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 307,
+                                        lineNumber: 270,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -960,7 +810,7 @@ function CampaignDetail({ slug }) {
                                                 className: "ph ph-clock"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 314,
+                                                lineNumber: 277,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -970,7 +820,7 @@ function CampaignDetail({ slug }) {
                                                         children: rec ? "∞" : campaign.days
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                        lineNumber: 316,
+                                                        lineNumber: 279,
                                                         columnNumber: 17
                                                     }, this),
                                                     " ",
@@ -979,25 +829,25 @@ function CampaignDetail({ slug }) {
                                                         children: rec ? "campanha contínua" : "dias restantes"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                        lineNumber: 317,
+                                                        lineNumber: 280,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 315,
+                                                lineNumber: 278,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 313,
+                                        lineNumber: 276,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                lineNumber: 306,
+                                lineNumber: 269,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1012,7 +862,7 @@ function CampaignDetail({ slug }) {
                                         children: "Doação única"
                                     }, void 0, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 324,
+                                        lineNumber: 287,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1022,13 +872,13 @@ function CampaignDetail({ slug }) {
                                         children: "Todo mês"
                                     }, void 0, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 331,
+                                        lineNumber: 294,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                lineNumber: 323,
+                                lineNumber: 286,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1046,12 +896,12 @@ function CampaignDetail({ slug }) {
                                         ]
                                     }, i, true, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 341,
+                                        lineNumber: 304,
                                         columnNumber: 15
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                lineNumber: 339,
+                                lineNumber: 302,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1061,7 +911,7 @@ function CampaignDetail({ slug }) {
                                         children: "R$"
                                     }, void 0, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 354,
+                                        lineNumber: 317,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1077,13 +927,13 @@ function CampaignDetail({ slug }) {
                                         }
                                     }, void 0, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 355,
+                                        lineNumber: 318,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                lineNumber: 353,
+                                lineNumber: 316,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1099,7 +949,7 @@ function CampaignDetail({ slug }) {
                                         className: "ph-fill ph-hand-heart"
                                     }, void 0, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 374,
+                                        lineNumber: 337,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1107,13 +957,13 @@ function CampaignDetail({ slug }) {
                                         children: freq === "unica" ? `Doar ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$campaigns$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["BRL"])(valor)}` : `Doar ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$campaigns$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["BRL"])(valor)} todo mês`
                                     }, void 0, false, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 375,
+                                        lineNumber: 338,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                lineNumber: 368,
+                                lineNumber: 331,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1126,14 +976,14 @@ function CampaignDetail({ slug }) {
                                                 className: "ph-fill ph-lock-key"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 381,
+                                                lineNumber: 344,
                                                 columnNumber: 15
                                             }, this),
                                             " Pagamento seguro processado pelo Mercado Pago"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 380,
+                                        lineNumber: 343,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1144,7 +994,7 @@ function CampaignDetail({ slug }) {
                                                 title: "Pix"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 385,
+                                                lineNumber: 348,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("i", {
@@ -1152,7 +1002,7 @@ function CampaignDetail({ slug }) {
                                                 title: "Cartão"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 386,
+                                                lineNumber: 349,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("i", {
@@ -1160,25 +1010,25 @@ function CampaignDetail({ slug }) {
                                                 title: "Boleto"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                                lineNumber: 387,
+                                                lineNumber: 350,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                        lineNumber: 384,
+                                        lineNumber: 347,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                                lineNumber: 379,
+                                lineNumber: 342,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                        lineNumber: 282,
+                        lineNumber: 245,
                         columnNumber: 9
                     }, this)
                 ]
@@ -1196,7 +1046,7 @@ function CampaignDetail({ slug }) {
                 onConfirm: aplicarDoacao
             }, void 0, false, {
                 fileName: "[project]/components/vaquinha/CampaignDetail.tsx",
-                lineNumber: 393,
+                lineNumber: 356,
                 columnNumber: 7
             }, this)
         ]

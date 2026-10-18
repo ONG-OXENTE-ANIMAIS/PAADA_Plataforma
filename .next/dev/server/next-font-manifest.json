@@ -4,7 +4,7 @@
     "[project]/app/page": [],
     "[project]/app/parcerias/page": [],
     "[project]/app/sobre/page": [],
-    "[project]/app/vaquinha/[slug]/page": []
+    "[project]/app/vaquinhas/page": []
   },
   "appUsingSizeAdjust": false,
   "pages": {},
