@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Oxente — Plataforma de Vaquinhas do PAADA
 
-## Getting Started
+Plataforma de vaquinhas onde cada causa tem sua página: o doador escolhe o valor, paga por Pix, cartão ou boleto e acompanha cada real virando história, com atualizações publicadas pelos organizadores.
 
-First, run the development server:
+> Protótipo funcional: os dados das campanhas são **seed em memória** (sem backend/banco ainda) e as doações são simuladas no cliente.
+
+## Stack
+
+- [Next.js](https://nextjs.org) 16 (App Router) + React 19 + TypeScript
+- CSS próprio (`app/globals.css`) — sem Tailwind
+- [Phosphor Icons](https://phosphoricons.com) (`@phosphor-icons/web`)
+- Fontes: Bricolage Grotesque, Fraunces e Instrument Sans (Google Fonts)
+
+## Rodando localmente
+
+Requisitos: Node.js 20.9+ e npm.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # servidor de desenvolvimento em http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Outros scripts:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build    # build de produção
+npm run start    # serve o build de produção
+npm run lint     # ESLint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Páginas
 
-## Learn More
+| Rota | Descrição |
+| --- | --- |
+| `/` | Home: hero, ticker de doações, lista de vaquinhas, como funciona e parceiros |
+| `/vaquinha/[slug]` | Página da campanha: história, para onde vai o dinheiro, atualizações e modal de doação |
+| `/como-ajudar` | Formas de apoiar além da doação |
+| `/parcerias` | Empresas e parceiros |
+| `/sugestoes` | Canal de sugestões |
+| `/sobre` | Sobre o PAADA e o projeto |
+| `/admin` | Construtor de campanhas (modelos Imersiva, Lado a lado, Centralizada e Sólida) com preview |
 
-To learn more about Next.js, take a look at the following resources:
+## Estrutura
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/                  # rotas (App Router) e layout raiz
+components/
+  home/               # seções da home (Hero, Ticker, VaquinhaSection…)
+  vaquinha/           # CampaignDetail e DonateModal
+  admin/              # Builder e BuilderPreview de campanhas
+  layout/             # Navbar, Footer, AdminBar e efeitos de scroll
+  fx/                 # ToastProvider
+  shared/ ui/         # componentes reutilizáveis
+lib/
+  campaigns.ts        # tipos, utilidades (BRL, slug, pct) e seed de campanhas
+  CampaignsProvider.tsx  # contexto global: lista campanhas, doação e criação
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Estado atual
 
-## Deploy on Vercel
+- Campanhas vêm de `SEED_CAMPAIGNS` (`lib/campaigns.ts`) e vivem em memória via `CampaignsProvider` — nada persiste entre reloads.
+- Doação incrementa `raised`/`backers` no cliente (sem pagamento real).
+- Campanhas criadas no `/admin` entram na lista em tempo de execução.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Próximos passos sugeridos
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Backend + banco para campanhas, doações e atualizações
+- Integração de pagamento (Pix, cartão, boleto)
+- Autenticação para o painel `/admin`
