@@ -127,7 +127,7 @@ function DestaqueCard({ c, onEnter, onLeave }: HoverProps & { c: Campaign }) {
           </svg>
           Em destaque
         </span>
-        <span className="carimbo-dias">
+        {c.days && <span className="carimbo-dias">
           <span>
             <b>{c.days}</b>
             <small>
@@ -136,7 +136,7 @@ function DestaqueCard({ c, onEnter, onLeave }: HoverProps & { c: Campaign }) {
               restantes
             </small>
           </span>
-        </span>
+        </span>}
       </div>
       <div className="destaque-info">
         <span className="cat">
@@ -233,11 +233,11 @@ export default function VaquinhaSection() {
               (<span id="vaqCount">{pad2(total)}</span>)
             </span>
           </h2>
-          <Link href="/vaquinhas" className="link-mais">
+          {/* <Link href="/vaquinhas" className="link-mais">
             Ver todas as vaquinhas <i className="ph ph-arrow-right"></i>
-          </Link>
+          </Link> */}
         </div>
-        <div
+        {/* <div
           className="filtros"
           id="filtros"
           aria-label="Filtrar vaquinhas por categoria"
@@ -257,7 +257,7 @@ export default function VaquinhaSection() {
               {cat}
             </button>
           ))}
-        </div>
+        </div> */}
 
         {destaqueVisivel && (
           <DestaqueCard
@@ -267,7 +267,7 @@ export default function VaquinhaSection() {
           />
         )}
 
-        <ul className="lista-vaquinhas" id="vaquinhaList">
+        {/* <ul className="lista-vaquinhas" id="vaquinhaList">
           {visiveis.map((c, i) => (
             <Row
               key={c.slug}
@@ -277,7 +277,7 @@ export default function VaquinhaSection() {
               onLeave={esconderImg}
             />
           ))}
-        </ul>
+        </ul> */}
       </section>
       <div className="float-img" id="floatImg" ref={fiRef} aria-hidden="true"></div>
     </div>

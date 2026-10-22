@@ -6,7 +6,7 @@ export default function Quote() {
         <em>todo dia</em>, uma vaquinha por vez.”
       </blockquote>
       <cite data-reveal style={{ "--d": "0.1s" } as React.CSSProperties}>
-        — Maria do Carmo, fundadora do Instituto Oxente
+        — Marcia Borges, fundadora da Associação Oxente Animais
       </cite>
     </section>
   );

@@ -373,7 +373,7 @@ body.is-admin .adminbar {
   color: var(--laranja);
   font-size: 1.06em;
   display: inline-block;
-  min-width: 5.6ch;
+  
   transition:
     opacity 0.26s,
     transform 0.26s;
@@ -381,6 +381,7 @@ body.is-admin .adminbar {
 .hero h1 .rot.troca {
   opacity: 0;
   transform: translateY(0.3em);
+  
 }
 .hero .sub {
   margin: 24px 0 30px;
@@ -470,7 +471,7 @@ body.is-admin .adminbar {
 .selo text {
   font-family: "Bricolage Grotesque";
   font-weight: 700;
-  font-size: 11.5px;
+  font-size: 12.5px;
   letter-spacing: 0.24em;
   fill: var(--marrom);
 }

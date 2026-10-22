@@ -29,27 +29,27 @@ export default function Hero() {
           <svg className="sol">
             <use href="#sol" />
           </svg>{" "}
-          Instituto Oxente · Recife, Pernambuco
+          Projeto Oxente · Petrolina, Pernambuco
         </p>
         <h1>
-          Ajeitar o mundo começa com uma{" "}
+          Mudar o mundo começa com uma{" "}
           <span className={"rot" + (troca ? " troca" : "")} id="rotWord">
             {PALAVRAS[idx]}
           </span>
           .
         </h1>
         <p className="sub">
-          Escolha uma causa, pague por Pix, cartão ou boleto em menos de um
+          Escolha uma causa, pague por Pix ou cartão em menos de um
           minuto — e acompanhe cada real virando história. Sem cadastro, sem
-          burocracia, com transparência total.
+          burocracia, com total compromisso com a causa animal.
         </p>
         <div className="hero-ctas">
           <HashLink href="/#vaquinhas" className="btn btn-marrom">
-            Ver vaquinhas <i className="ph ph-arrow-down"></i>
+            Ir para Vaquinha <i className="ph ph-arrow-down"></i>
           </HashLink>
-          <Link href="/admin" className="btn btn-fantasma">
+          {/* <Link href="/admin" className="btn btn-fantasma">
             Sou da ONG — montar vaquinha <i className="ph ph-arrow-right"></i>
-          </Link>
+          </Link> */}
         </div>
         <div className="hero-confia">
           <div>
@@ -60,15 +60,9 @@ export default function Hero() {
           </div>
           <div>
             <b>
-              <i className="ph-fill ph-incognito"></i>0 cadastro
+              <i className="ph-fill ph-incognito"></i>Zero cadastro
             </b>
             <span>pra doar como anônimo</span>
-          </div>
-          <div>
-            <b>
-              <i className="ph-fill ph-seal-check"></i>100%
-            </b>
-            <span>das contas publicadas</span>
           </div>
         </div>
       </div>
@@ -84,7 +78,7 @@ export default function Hero() {
             </defs>
             <text>
               <textPath href="#circ">
-                DOE • AJUDE • TRANSFORME • OXENTE •&#160;
+                DOE • AJUDE • TRANSFORME • &#160;
               </textPath>
             </text>
           </g>

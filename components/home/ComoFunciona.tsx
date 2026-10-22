@@ -20,8 +20,7 @@ export default function ComoFunciona() {
               <h3>Ache a vaquinha que move você</h3>
               <p>
                 Navegue pelas campanhas abertas, leia a história com calma e
-                veja exatamente para onde cada real vai — a Oxente publica a
-                prestação de contas de cada campanha.
+                veja para qual causa está doando.
               </p>
             </div>
           </div>
@@ -31,9 +30,9 @@ export default function ComoFunciona() {
               <p className="tag">
                 <i className="ph ph-credit-card"></i> Doação
               </p>
-              <h3>Pague em menos de um minuto</h3>
+              <h3>Doe em menos de um minuto</h3>
               <p>
-                Pix, cartão ou boleto, processados com segurança pelo Mercado
+                Pix ou cartão, processados com segurança pelo Mercado
                 Pago. Sem cadastro, sem burocracia: você pode doar até como
                 anônimo.
               </p>
@@ -47,9 +46,7 @@ export default function ComoFunciona() {
               </p>
               <h3>Acompanhe o dinheiro virando feito</h3>
               <p>
-                Quem criou a vaquinha publica atualizações com fotos, notas
-                fiscais e repasses. Você recebe cada novidade direto no seu
-                e-mail.
+                Publicamos atualizações, você acompanha cada novidade.
               </p>
             </div>
           </div>

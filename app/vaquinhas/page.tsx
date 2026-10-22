@@ -130,7 +130,7 @@ export default function VaquinhasPage() {
         className="sec sec-wide"
       >
         <div className="vt-filtros">
-          <div className="chips" aria-label="Filtrar vaquinhas por categoria">
+          {/* <div className="chips" aria-label="Filtrar vaquinhas por categoria">
             <button
               className={filtro === "todas" ? "on" : ""}
               onClick={() => setFiltro("todas")}
@@ -146,8 +146,8 @@ export default function VaquinhasPage() {
                 {cat}
               </button>
             ))}
-          </div>
-          <div className="vt-busca">
+          </div> */}
+          {/* <div className="vt-busca">
             <i className="ph ph-magnifying-glass"></i>
             <input
               type="text"
@@ -156,7 +156,7 @@ export default function VaquinhasPage() {
               onChange={(e) => setBusca(e.target.value)}
               aria-label="Buscar vaquinhas"
             />
-          </div>
+          </div> */}
         </div>
 
         {visiveis.length ? (

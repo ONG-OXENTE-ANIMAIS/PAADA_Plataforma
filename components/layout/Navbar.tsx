@@ -68,7 +68,7 @@ export default function Navbar() {
             Sobre a Oxente
           </Link>
         </nav>
-        <div className="nav-acoes">
+        {/* <div className="nav-acoes">
           <button
             className="btn btn-fantasma"
             onClick={() => {
@@ -86,7 +86,7 @@ export default function Navbar() {
           >
             <i className="ph ph-plus"></i> Criar vaquinha
           </Link>
-        </div>
+        </div> */}
         <button
           className="burger"
           id="burger"

@@ -140,9 +140,6 @@ export default function CampaignDetail({ slug }: { slug: string }) {
           <HashLink href="/#vaquinhas" className="v-voltar">
             <i className="ph ph-arrow-left"></i> Voltar para as vaquinhas
           </HashLink>
-          <span className="v-chip" id="vCat">
-            {(rec ? "Apoio mensal · " : "") + `${campaign.cat} · ${campaign.place}`}
-          </span>
           <h1 id="vTitle">{campaign.title}</h1>
           <p className="v-sub" id="vSub">
             {campaign.sub}

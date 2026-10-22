@@ -10,25 +10,6 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="fita" aria-hidden="true"></div>
-      <div className="footer-cta">
-        <div>
-          <h3>
-            Sua causa também pode <em>morar aqui</em>.
-          </h3>
-          <p>
-            ONG parceira monta a vaquinha em minutos, com identidade própria, e
-            recebe os repasses direto na conta. A gente cuida do resto.
-          </p>
-        </div>
-        <div className="grupo-bts">
-          <Link href="/admin" className="btn btn-laranja">
-            <i className="ph ph-target"></i> Vaquinha única
-          </Link>
-          <Link href="/admin?tipo=recorrente" className="btn btn-areia" id="footRec">
-            <i className="ph ph-arrows-clockwise"></i> Vaquinha recorrente
-          </Link>
-        </div>
-      </div>
       <div className="footer-grid">
         <div>
           <span className="logo">
@@ -62,14 +43,14 @@ export default function Footer() {
         <div>
           <h5>Para ONGs & parceiros</h5>
           <ul>
-            <li>
+            {/* <li>
               <Link href="/admin">Criar vaquinha única</Link>
             </li>
             <li>
               <Link href="/admin?tipo=recorrente" id="footRec2">
                 Criar vaquinha recorrente
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/parcerias">Cadastrar parceria</Link>
             </li>
@@ -82,10 +63,10 @@ export default function Footer() {
               <a href="mailto:ola@oxente.org">ola@oxente.org</a>
             </li>
             <li>
-              <DummyButton>(81) 9 8888-0000</DummyButton>
+              <a href="http://wa.me/+5581988880000" target="_blank">(81) 9 8888-0000</a>
             </li>
             <li>
-              <DummyButton>@oxente.doa</DummyButton>
+            <a href="https://www.instagram.com/projetooxenteanimais/" target="_blank">@projetooxenteanimais</a>
             </li>
           </ul>
         </div>

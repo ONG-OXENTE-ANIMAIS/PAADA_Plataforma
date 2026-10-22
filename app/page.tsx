@@ -10,7 +10,7 @@ export default function HomePage() {
   return (
     <section className="screen active" data-screen="home">
       <Hero />
-      <Ticker />
+      {/* <Ticker /> */}
       <VaquinhaSection />
       <div className="fita" aria-hidden="true"></div>
       <NumStrip />
