@@ -100,14 +100,14 @@ export const SEED_CAMPAIGNS: Campaign[] = [
       { label: "Kit adoção com ração e areia para 60 famílias", valor: 16400 },
     ],
     updates: [
-      // {
-      //   tag: "Marco",
-      //   iso: "2025-06-12",
-      //   data: "12 de junho de 2025",
-      //   titulo: "Primeiras 40 castrações feitas",
-      //   texto:
-      //     "O mutirão de sábado saiu do papel: quarenta animais castrados, dois adotados na hora e nenhum imprevisto. As notas do material cirúrgico já estão publicadas.",
-      // },
+      {
+        tag: "Marco",
+        iso: "2025-06-12",
+        data: "12 de junho de 2025",
+        titulo: "Primeiras 40 castrações feitas",
+        texto:
+          "O mutirão de sábado saiu do papel: quarenta animais castrados, dois adotados na hora e nenhum imprevisto. As notas do material cirúrgico já estão publicadas.",
+      },
     ],
   }),
 ];
