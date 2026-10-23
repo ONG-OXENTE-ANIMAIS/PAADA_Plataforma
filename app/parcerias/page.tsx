@@ -114,7 +114,7 @@ export default function ParceriasPage() {
               Nordeste: a Oxente dá a estrutura — construtor de vaquinhas,
               pagamento seguro e repasse direto — e você traz a causa.
             </p>
-            <ul className="compromissos">
+            {/* <ul className="compromissos">
               <li>
                 <i className="ph-fill ph-hand-heart"></i> Repasse direto na
                 conta
@@ -129,9 +129,9 @@ export default function ParceriasPage() {
                 <i className="ph-fill ph-presentation-chart"></i> Kit de
                 divulgação
               </li>
-            </ul>
+            </ul> */}
           </div>
-          <div className="idcard">
+          {/* <div className="idcard">
             <svg className="num-bg">
               <use href="#sol" />
             </svg>
@@ -169,7 +169,7 @@ export default function ParceriasPage() {
               <i className="ph-fill ph-seal-check" style={{ fontSize: "17px" }}></i>
               Resposta em até 5 dias úteis
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 

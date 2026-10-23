@@ -47,9 +47,9 @@ export default function Hero() {
           <HashLink href="/#vaquinhas" className="btn btn-marrom">
             Ir para Vaquinha <i className="ph ph-arrow-down"></i>
           </HashLink>
-          {/* <Link href="/admin" className="btn btn-fantasma">
+          <Link href="/admin" className="btn btn-fantasma">
             Sou da ONG — montar vaquinha <i className="ph ph-arrow-right"></i>
-          </Link> */}
+          </Link>
         </div>
         <div className="hero-confia">
           <div>

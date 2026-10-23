@@ -41,7 +41,7 @@ export default function Footer() {
           </ul>
         </div>
         <div>
-          <h5>Para ONGs & parceiros</h5>
+          <h5>Parceiros</h5>
           <ul>
             {/* <li>
               <Link href="/admin">Criar vaquinha única</Link>
