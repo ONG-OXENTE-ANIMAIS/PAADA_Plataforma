@@ -140,6 +140,7 @@ export type Parceiro = {
   place: string;
   desde: string;
   desc: string;
+  destaque?: boolean; // citado na história da vaquinha em destaque
 };
 
 export const PARCEIROS: Parceiro[] = [
@@ -151,6 +152,7 @@ export const PARCEIROS: Parceiro[] = [
     place: "Jaboatão, PE",
     desde: "2022",
     desc: "Castrações e vacinas a preço de custo nos mutirões de adoção.",
+    destaque: true,
   },
   {
     nome: "Coletivo Gatos do Recife",
@@ -196,6 +198,7 @@ export const PARCEIROS: Parceiro[] = [
     place: "Recife, PE",
     desde: "2021",
     desc: "Cede o galpão dos mutirões de castração e das feiras de adoção.",
+    destaque: true,
   },
   {
     nome: "Escola João Redondo",
@@ -241,6 +244,25 @@ export const TIPOS_SUGESTAO = [
   "Correção de problema",
   "Outro assunto",
 ];
+
+/* ---------- contato ---------- */
+
+export type StatusContato = "recebida" | "analise" | "respondido";
+
+export type MensagemContato = {
+  nome: string;
+  email: string;
+  assunto: string;
+  mensagem: string;
+  status: StatusContato;
+  quando: string;
+};
+
+export const ROTULO_STATUS: Record<StatusContato, string> = {
+  recebida: "Recebida",
+  analise: "Em análise",
+  respondido: "Respondido",
+};
 
 /* ---------- apoiadores recentes (página da vaquinha) ---------- */
 

@@ -54,11 +54,11 @@ export default function Navbar() {
             Como Ajudar
           </Link>
           <Link
-            href="/parcerias"
-            className={pathname === "/parcerias" ? "ativo" : undefined}
+            href="/contato"
+            className={pathname === "/contato" ? "ativo" : undefined}
             onClick={fecharMenu}
           >
-            Parcerias
+            Contato
           </Link>
           <Link
             href="/sobre"

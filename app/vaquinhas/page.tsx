@@ -203,7 +203,7 @@ export default function VaquinhasPage() {
             <Link href="/admin" className="btn btn-laranja">
               <i className="ph ph-plus"></i> Criar vaquinha
             </Link>
-            <Link href="/parcerias" className="btn btn-areia">
+            <Link href="/contato" className="btn btn-areia">
               <i className="ph ph-handshake"></i> Ser parceiro
             </Link>
           </div>

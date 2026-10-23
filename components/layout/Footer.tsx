@@ -35,24 +35,16 @@ export default function Footer() {
             <li>
               <Link href="/sobre">Sobre a Oxente</Link>
             </li>
-            <li>
-              <Link href="/sugestoes">Sugestões</Link>
-            </li>
           </ul>
         </div>
         <div>
-          <h5>Parceiros</h5>
+          <h5>Ajuda</h5>
           <ul>
-            {/* <li>
-              <Link href="/admin">Criar vaquinha única</Link>
+            <li>
+              <Link href="/contato">Fale com a gente</Link>
             </li>
             <li>
-              <Link href="/admin?tipo=recorrente" id="footRec2">
-                Criar vaquinha recorrente
-              </Link>
-            </li> */}
-            <li>
-              <Link href="/parcerias">Cadastrar parceria</Link>
+              <Link href="/sugestoes">Enviar sugestão</Link>
             </li>
           </ul>
         </div>
@@ -63,7 +55,7 @@ export default function Footer() {
               <a href="mailto:ola@oxente.org">ola@oxente.org</a>
             </li>
             <li>
-              <a href="http://wa.me/+5581988880000" target="_blank">(81) 9 8888-0000</a>
+              <a href="http://wa.me/+558****0000" target="_blank">(81) 9 8888-0000</a>
             </li>
             <li>
             <a href="https://www.instagram.com/projetooxenteanimais/" target="_blank">@projetooxenteanimais</a>

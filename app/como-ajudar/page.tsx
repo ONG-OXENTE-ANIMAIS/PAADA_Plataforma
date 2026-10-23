@@ -35,8 +35,8 @@ const FORMAS: Forma[] = [
     icon: "handshake",
     title: "Seja um parceiro",
     desc: "Empresas, escolas, coletivos e institutos caminham com a gente: cedem espaço, divulgam causas, doam serviços e sustentam campanhas.",
-    cta: "Cadastrar parceria",
-    href: "/parcerias",
+    cta: "Fale com a gente",
+    href: "/contato",
   },
   {
     icon: "megaphone",
@@ -227,15 +227,15 @@ export default function ComoAjudarPage() {
               Já sabe como <em>vai ajudar</em>?
             </h3>
             <p>
-              Então bora: escolha uma vaquinha no ar ou cadastre a parceria da
-              sua organização.
+              Então bora: escolha uma vaquinha no ar ou fale com a gente sobre
+              a parceria da sua organização.
             </p>
           </div>
           <div className="grupo-bts">
             <Link href="/vaquinhas" className="btn btn-laranja">
               <i className="ph ph-hand-heart"></i> Doar agora
             </Link>
-            <Link href="/parcerias" className="btn btn-areia">
+            <Link href="/contato" className="btn btn-areia">
               <i className="ph ph-handshake"></i> Ser parceiro
             </Link>
           </div>
