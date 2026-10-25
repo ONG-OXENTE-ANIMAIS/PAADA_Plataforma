@@ -2,28 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { apiFetch } from "@/lib/api-client";
 import { useToast } from "@/components/fx/ToastProvider";
 import { TIPOS_SUGESTAO } from "@/lib/campaigns";
 import HashLink from "@/components/shared/HashLink";
 
-const CHAVE = "oxente-sugestoes";
 const LIMITE_MSG = 600;
-
-type Sugestao = {
-  nome: string;
-  email: string;
-  tipo: string;
-  msg: string;
-  quando: string;
-};
-
-const lerLista = (): Sugestao[] => {
-  try {
-    return JSON.parse(localStorage.getItem(CHAVE) || "[]");
-  } catch {
-    return [];
-  }
-};
 
 export default function SugestoesPage() {
   const toast = useToast();
@@ -31,8 +15,9 @@ export default function SugestoesPage() {
   const [email, setEmail] = useState("");
   const [tipo, setTipo] = useState("");
   const [msg, setMsg] = useState("");
+  const [website, setWebsite] = useState(""); // honeypot anti-spam
+  const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
-  const [total, setTotal] = useState(0);
 
   const limpar = () => {
     setNome("");
@@ -42,8 +27,9 @@ export default function SugestoesPage() {
     setEnviado(false);
   };
 
-  function enviar(e: React.FormEvent) {
+  async function enviar(e: React.FormEvent) {
     e.preventDefault();
+    if (enviando) return;
     if (!tipo)
       return toast("Escolha o tipo da sua sugestão.", "warning");
     if (msg.trim().length < 10)
@@ -51,18 +37,26 @@ export default function SugestoesPage() {
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
       return toast("Esse e-mail não parece válido.", "warning");
 
-    const lista = lerLista();
-    lista.unshift({
-      nome: nome.trim(),
-      email: email.trim(),
-      tipo,
-      msg: msg.trim(),
-      quando: new Date().toISOString(),
-    });
-    localStorage.setItem(CHAVE, JSON.stringify(lista));
-    setTotal(lista.length);
-    setEnviado(true);
-    toast("Sugestão registrada. Obrigado por ajudar a melhorar!", "lightbulb");
+    setEnviando(true);
+    try {
+      await apiFetch("/api/contato", {
+        method: "POST",
+        body: JSON.stringify({
+          nome: nome.trim() || "Anônimo",
+          email: email.trim() || "sem-email@oxente.org",
+          assunto: `[Sugestão] ${tipo}`,
+          mensagem: msg.trim(),
+          tipo: "SUGESTAO",
+          website, // honeypot: deve permanecer vazio
+        }),
+      });
+      setEnviado(true);
+      toast("Sugestão registrada. Obrigado por ajudar a melhorar!", "lightbulb");
+    } catch (err) {
+      toast(err instanceof Error ? err.message : "Não foi possível registrar a sugestão.", "warning");
+    } finally {
+      setEnviando(false);
+    }
   }
 
   return (
@@ -89,9 +83,7 @@ export default function SugestoesPage() {
 
       <div className="fita" aria-hidden="true"></div>
 
-      <section
-        className="sec sec-wide"
-      >
+      <section className="sec sec-wide">
         <div className="form-grid">
           <div className="form-card">
             {enviado ? (
@@ -99,9 +91,9 @@ export default function SugestoesPage() {
                 <i className="ph-fill ph-check-circle"></i>
                 <h3>Sugestão registrada!</h3>
                 <p>
-                  Já são <b>{total}</b> sugestão(ões) guardadas neste
-                  navegador. Na plataforma final, a sua ideia cai direto na
-                  caixa de entrada da equipe — com resposta em até 15 dias.
+                  A sua ideia caiu direto na caixa de entrada da equipe — com
+                  resposta em até 15 dias no e-mail{" "}
+                  <b>{email || "informado"}</b>.
                 </p>
                 <div className="grupo-bts" style={{ justifyContent: "center" }}>
                   <button className="btn btn-marrom" onClick={limpar}>
@@ -170,16 +162,37 @@ export default function SugestoesPage() {
                     onChange={(e) => setMsg(e.target.value)}
                   ></textarea>
                 </div>
+                {/* honeypot: invisível para pessoas, atrai bots */}
+                <div className="campo" aria-hidden="true" style={{ position: "absolute", left: "-9999px", height: 0, overflow: "hidden" }}>
+                  <label htmlFor="sug-website">Website</label>
+                  <input
+                    id="sug-website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                  />
+                </div>
                 <button
                   type="submit"
                   className="btn btn-laranja"
                   style={{ width: "100%", padding: "16px", fontSize: "16px" }}
+                  disabled={enviando}
                 >
-                  <i className="ph-fill ph-lightbulb"></i> Enviar sugestão
+                  {enviando ? (
+                    <>
+                      <i className="ph ph-circle-notch spin"></i> Enviando…
+                    </>
+                  ) : (
+                    <>
+                      <i className="ph-fill ph-lightbulb"></i> Enviar sugestão
+                    </>
+                  )}
                 </button>
                 <p className="nota-bib">
-                  Protótipo visual: as sugestões ficam salvas apenas neste
-                  navegador.
+                  Sua sugestão vai direto para a fila de implementação da
+                  equipe.
                 </p>
               </form>
             )}

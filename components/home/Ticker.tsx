@@ -1,25 +1,20 @@
-import { DOACOES_TICKER, type TickerItem } from "@/lib/campaigns";
+"use client";
 
-function Item({ d }: { d: TickerItem }) {
-  return (
-    <>
-      <span className="tk">
-        <i className="ph-fill ph-hand-heart"></i>
-        {d[0]} <b>{d[1]}</b> para {d[2]}
-      </span>
-      <svg className="sol tk-sep" style={{ width: "11px", height: "11px" }}>
-        <use href="#sol" />
-      </svg>
-    </>
-  );
-}
+import type { TickerItem } from "@/lib/campaigns";
 
-export default function Ticker() {
+/** Faixa rolante de doações recentes. Não há ainda um endpoint público de
+ *  feed de doações, então o componente só renderiza quando recebe itens —
+ *  nenhum dado fictício é exibido. */
+export default function Ticker({ itens = [] }: { itens?: TickerItem[] }) {
+  if (!itens.length) return null;
   return (
-    <div className="ticker" aria-hidden="true">
-      <div className="ticker-track" id="tickerTrack">
-        {[...DOACOES_TICKER, ...DOACOES_TICKER].map((d, i) => (
-          <Item key={i} d={d} />
+    <div className="ticker" aria-label="Doações recentes">
+      <div className="ticker-track">
+        {[...itens, ...itens].map((d, i) => (
+          <span className="tick" key={i}>
+            <i className="ph-fill ph-hand-heart"></i>
+            <b>{d[0]}</b> {d[1]} · {d[2]}
+          </span>
         ))}
       </div>
     </div>

@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCampaigns } from "@/lib/CampaignsProvider";
 import { useToast } from "@/components/fx/ToastProvider";
 import BuilderPreview from "@/components/admin/BuilderPreview";
+import { apiFetch } from "@/lib/api-client";
+import { useRequireSession } from "@/hooks/useSession";
 import {
   BRL,
   CATEGORIAS,
@@ -13,8 +15,6 @@ import {
   NOMES_MODELO,
   fmtData,
   slug as slugify,
-  trunc,
-  type Campaign,
   type Draft,
   type Modelo,
   type TipoCampanha,
@@ -68,13 +68,16 @@ export default function Builder() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const toast = useToast();
-  const { campaigns, addCampaign } = useCampaigns();
+  const { reload } = useCampaigns();
+  const { user, loading: sessaoCarregando } = useRequireSession();
 
-  const recInicial = useRef(searchParams.get("tipo") === "recorrente");
+  const recorrenteInicial = searchParams.get("tipo") === "recorrente";
   const [draft, setDraft] = useState<Draft>(() =>
-    DRAFT_INICIAL(recInicial.current ? "recorrente" : "unica"),
+    DRAFT_INICIAL(recorrenteInicial ? "recorrente" : "unica"),
   );
   const [step, setStep] = useState(1);
+  const [publicando, setPublicando] = useState(false);
+  const avisouRecorrente = useRef(false);
 
   const inTitleRef = useRef<HTMLInputElement>(null);
   const inGoalRef = useRef<HTMLInputElement>(null);
@@ -83,11 +86,13 @@ export default function Builder() {
 
   /* aviso ao entrar pelo atalho "vaquinha recorrente" */
   useEffect(() => {
-    if (recInicial.current)
+    if (!avisouRecorrente.current && recorrenteInicial) {
+      avisouRecorrente.current = true;
       toast(
         "Modo vaquinha recorrente ativado — defina a meta mensal no passo 3.",
         "arrows-clockwise",
       );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -114,8 +119,8 @@ export default function Builder() {
     r.readAsDataURL(f);
   }
 
-  /* ---- publicar ---- */
-  function publicar() {
+  /* ---- publicar: grava no banco via API (requer sessão) ---- */
+  async function publicar() {
     const rec = draft.type === "recorrente";
     if (!draft.title.trim()) {
       toast("Dê um título à sua vaquinha antes de publicar.", "warning");
@@ -137,37 +142,71 @@ export default function Builder() {
       return;
     }
 
-    const base = slugify(draft.title) || "oxente-nova";
-    let finalSlug = base;
-    let i = 2;
-    while (campaigns.some((c) => c.slug === finalSlug))
-      finalSlug = `${base}-${i++}`;
+    setPublicando(true);
+    try {
+      const descricao = [draft.subtitle.trim(), draft.story.trim()]
+        .filter(Boolean)
+        .join("\n\n");
+      const criada = await apiFetch<{ id: string; slug: string }>("/api/campanhas", {
+        method: "POST",
+        body: JSON.stringify({
+          titulo: draft.title.trim(),
+          descricao,
+          categoria: draft.category,
+          localidade: "Pernambuco, PE",
+          status: "ATIVA",
+          valor_meta: metaAtual(),
+          mensal: rec,
+          destaque: false,
+          visivel: true,
+          ...(rec ? {} : { data_termino: draft.date || null }),
+        }),
+      });
 
-    const nova: Campaign = {
-      slug: finalSlug,
-      title: draft.title,
-      sub: draft.subtitle || "Campanha criada no construtor da Oxente.",
-      cat: draft.category,
-      place: "Pernambuco, PE",
-      raised: 0,
-      goal: metaAtual(),
-      backers: 0,
-      days: 30,
-      recurring: rec || undefined,
-      img: `https://picsum.photos/seed/${finalSlug}/640/420.jpg`,
-      full: `https://picsum.photos/seed/${finalSlug}/1600/740.jpg`,
-      customImg: draft.imgData,
-      flash: true,
-    };
-    addCampaign(nova);
-    toast(
-      `“${trunc(draft.title, 32)}” publicada${rec ? " — campanha mensal no ar!" : " — no ar na página inicial!"}`,
-      "hand-heart",
-    );
-    router.push("/#vaquinhas");
+      if (draft.imgData) {
+        try {
+          await apiFetch(`/api/campanhas/${criada.id}/imagens`, {
+            method: "POST",
+            body: JSON.stringify({
+              arquivo: draft.imgData,
+              papel: "CAPA",
+              descricao: `Capa da campanha ${draft.title.trim()}`,
+              ordem: 0,
+            }),
+          });
+        } catch (erroImg) {
+          toast(
+            erroImg instanceof Error
+              ? `Campanha criada, mas a capa falhou: ${erroImg.message}`
+              : "Campanha criada, mas o upload da capa falhou.",
+            "warning",
+          );
+        }
+      }
+
+      reload();
+      toast(
+        `“${draft.title.trim().slice(0, 32)}” publicada${rec ? " — campanha mensal no ar!" : " — no ar na página inicial!"}`,
+        "hand-heart",
+      );
+      router.push(`/vaquinha/${criada.slug}`);
+    } catch (erro) {
+      const msg = erro instanceof Error ? erro.message : "Não foi possível publicar a campanha.";
+      if (msg.toLowerCase().includes("sessão") || msg.toLowerCase().includes("painel") || msg.toLowerCase().includes("entrar")) {
+        toast("Sua sessão expirou. Faça login novamente.", "warning");
+        router.push("/admin/login");
+      } else {
+        toast(msg, "warning");
+      }
+    } finally {
+      setPublicando(false);
+    }
   }
 
   const rec = draft.type === "recorrente";
+
+  /* guarda de sessão: o painel exige login */
+  if (sessaoCarregando || !user) return null;
 
   return (
     <section className="screen active" data-screen="admin">
@@ -404,8 +443,8 @@ export default function Builder() {
                 />
               </div>
               <p className="nota-bib">
-                Neste protótipo a imagem fica só no seu navegador — no produto
-                real, o upload vai para o storage da plataforma.
+                A imagem vai para o Supabase Storage e a URL fica registrada no
+                banco — nada fica só no navegador.
               </p>
             </div>
             <div className="campo">
@@ -605,8 +644,10 @@ export default function Builder() {
                 className="btn btn-laranja"
                 id="btnPublish"
                 onClick={publicar}
+                disabled={publicando}
               >
-                <i className="ph-fill ph-hand-heart"></i> Publicar vaquinha
+                <i className="ph-fill ph-hand-heart"></i>{" "}
+                {publicando ? "Publicando…" : "Publicar vaquinha"}
               </button>
             </div>
           </div>

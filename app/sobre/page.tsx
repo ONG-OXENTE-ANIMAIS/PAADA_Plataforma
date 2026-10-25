@@ -108,8 +108,8 @@ export default function SobrePage() {
               <p>
                 Onze vizinhos se juntaram pra pagar a cirurgia de uma cachorra
                 atropelada em frente ao mercado do bairro. A vaquinha bateu a
-                meta em seis dias — e a pergunta que ficou foi: "por que a
-                gente não faz isso sempre?"
+                meta em seis dias — e a pergunta que ficou foi: &quot;por que a
+                gente não faz isso sempre?&quot;
               </p>
             </div>
           </div>
@@ -214,7 +214,7 @@ export default function SobrePage() {
               <div className="cargo">Coordenação geral · fundadora</div>
             </div>
             <span className="piada">
-              "Se não tá na prestação de contas, não aconteceu."
+              &quot;Se não tá na prestação de contas, não aconteceu.&quot;
             </span>
           </li>
           <li data-reveal>

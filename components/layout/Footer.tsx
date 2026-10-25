@@ -1,12 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import DummyButton from "@/components/ui/DummyButton";
 
 export default function Footer() {
-  const [ano, setAno] = useState(2025);
-  useEffect(() => setAno(new Date().getFullYear()), []);
+  const ano = new Date().getFullYear();
   return (
     <footer className="footer">
       <div className="fita" aria-hidden="true"></div>

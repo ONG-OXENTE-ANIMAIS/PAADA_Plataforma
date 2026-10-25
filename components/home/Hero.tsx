@@ -3,11 +3,31 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import HashLink from "@/components/shared/HashLink";
-import { BRL, DESTAQUE, pctOf } from "@/lib/campaigns";
+import { useCampaigns } from "@/lib/CampaignsProvider";
+import { BRL, pctOf, type Campaign } from "@/lib/campaigns";
 
 const PALAVRAS = ["vaquinha", "corrente", "ideia", "patinha", "coragem"];
 
+/** Card flutuante do hero: usa a campanha em destaque real (se houver). */
+function MiniCard({ c }: { c: Campaign }) {
+  return (
+    <Link className="mini-card" id="miniCard" href={`/vaquinha/${c.slug}`}>
+      <small>Em destaque</small>
+      <b>{c.title}</b>
+      <div className="barra">
+        <i style={{ width: pctOf(c) + "%" }}></i>
+      </div>
+      <div className="leg">
+        <b>{BRL(c.raised)}</b>
+        <span>{pctOf(c)}% da meta</span>
+      </div>
+    </Link>
+  );
+}
+
 export default function Hero() {
+  const { campaigns, loading } = useCampaigns();
+  const destaque = campaigns.find((c) => c.featured) ?? campaigns[0];
   const [idx, setIdx] = useState(0);
   const [troca, setTroca] = useState(false);
 
@@ -47,7 +67,7 @@ export default function Hero() {
           <HashLink href="/#vaquinhas" className="btn btn-marrom">
             Ir para Vaquinha <i className="ph ph-arrow-down"></i>
           </HashLink>
-          <Link href="/admin" className="btn btn-fantasma">
+          <Link href="/admin/nova" className="btn btn-fantasma">
             Sou da ONG — montar vaquinha <i className="ph ph-arrow-right"></i>
           </Link>
         </div>
@@ -95,25 +115,27 @@ export default function Hero() {
         </svg>
         <img
           className="hv-main"
-          src="https://picsum.photos/seed/oxente-patas/900/740.jpg"
-          alt="Cão resgatado em mutirão da Oxente"
+          src={destaque?.full ?? "https://picsum.photos/seed/oxente-patas/900/740.jpg"}
+          alt={destaque ? `Imagem da campanha ${destaque.title}` : "Cão resgatado em mutirão da Oxente"}
         />
         <img
           className="hv-side"
           src="https://picsum.photos/seed/oxente-abrigo/520/440.jpg"
           alt="Gatos do abrigo do Arraial"
         />
-        <Link className="mini-card" id="miniCard" href={`/vaquinha/${DESTAQUE.slug}`}>
-          <small>Em destaque</small>
-          <b>{DESTAQUE.title}</b>
-          <div className="barra">
-            <i style={{ width: pctOf(DESTAQUE) + "%" }}></i>
-          </div>
-          <div className="leg">
-            <b>{BRL(DESTAQUE.raised)}</b>
-            <span>{pctOf(DESTAQUE)}% da meta</span>
-          </div>
-        </Link>
+        {destaque ? (
+          <MiniCard c={destaque} />
+        ) : (
+          !loading && (
+            <Link className="mini-card" id="miniCard" href="/vaquinhas">
+              <small>Em breve</small>
+              <b>Nenhuma vaquinha no ar agora</b>
+              <div className="leg">
+                <span>Crie a primeira no painel da ONG</span>
+              </div>
+            </Link>
+          )
+        )}
       </div>
     </div>
   );

@@ -1,43 +1,48 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useCampaigns } from "@/lib/CampaignsProvider";
+import { useRouter } from "next/navigation";
 import { useToast } from "@/components/fx/ToastProvider";
 import DonateModal from "@/components/vaquinha/DonateModal";
 import HashLink from "@/components/shared/HashLink";
-import {
-  BACKERS_SEED,
-  BRL,
-  SEED_CAMPAIGNS,
-  VALORES,
-  pctOf,
-  slug as slugify,
-  type Backer,
-  type Freq,
-} from "@/lib/campaigns";
+import { BRL, VALORES, pctOf, type Campaign, type Freq } from "@/lib/campaigns";
 
-export default function CampaignDetail({ slug }: { slug: string }) {
-  const { campaigns, donate } = useCampaigns();
+export default function CampaignDetail({
+  campaign,
+  retornoDoacao,
+}: {
+  campaign: Campaign;
+  retornoDoacao?: string | null;
+}) {
   const toast = useToast();
+  const router = useRouter();
 
-  const campaign =
-    campaigns.find((c) => c.slug === slug) ??
-    SEED_CAMPAIGNS.find((c) => c.slug === slug);
-
-  const rec = !!campaign?.recurring;
-  const [freq, setFreq] = useState<Freq>(rec ? "mes" : "unica");
+  const rec = !!campaign.recurring;
+  const aceitaMensal = rec;
+  const [freq, setFreq] = useState<Freq>("unica");
   const [amtIdx, setAmtIdx] = useState(0);
   const [custom, setCustom] = useState("");
   const [modal, setModal] = useState(false);
-  const [backers, setBackers] = useState<Backer[]>(BACKERS_SEED);
 
   /* ---- contadores animados (como refreshCampaign do protótipo) ---- */
   const raisedRef = useRef<HTMLSpanElement>(null);
   const prevRaised = useRef<number | null>(null);
   const [barW, setBarW] = useState("0%");
 
+  /* ---- aviso de retorno do Mercado Pago (limpa a query da URL) ---- */
   useEffect(() => {
-    if (!campaign) return;
+    if (!retornoDoacao) return;
+    if (retornoDoacao === "PAGA")
+      toast("Doação confirmada! Obrigado por ajudar.", "hand-heart");
+    else if (retornoDoacao === "PENDENTE")
+      toast("Recebemos sua doação — o pagamento está em processamento.", "hourglass");
+    else
+      toast("A doação não foi concluída. Você pode tentar novamente quando quiser.", "warning");
+    router.replace(`/vaquinha/${campaign.slug}`, { scroll: false });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     const to = campaign.raised;
     const first = prevRaised.current === null;
     const from = prevRaised.current ?? 0;
@@ -55,43 +60,7 @@ export default function CampaignDetail({ slug }: { slug: string }) {
     const t = setTimeout(() => setBarW(pctOf(campaign) + "%"), 90);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [campaign?.raised, campaign?.goal]);
-
-  if (!campaign) {
-    return (
-      <section className="screen active" style={{ padding: "150px 0 110px" }}>
-        <div className="wrap" style={{ textAlign: "center" }}>
-          <p className="eyebrow">
-            <svg className="sol">
-              <use href="#sol" />
-            </svg>{" "}
-            Vaquinha não encontrada
-          </p>
-          <h1
-            style={{
-              fontFamily: '"Bricolage Grotesque", sans-serif',
-              fontSize: "clamp(2rem, 6vw, 3.4rem)",
-              letterSpacing: "-0.03em",
-            }}
-          >
-            Essa vaquinha <em>já se foi</em>.
-          </h1>
-          <p
-            className="lead"
-            style={{ maxWidth: "540px", margin: "16px auto 30px", opacity: 0.85 }}
-          >
-            O endereço não bate com nenhuma campanha no ar. Volte pra lista e
-            escolha outra causa.
-          </p>
-          <div className="hero-ctas" style={{ justifyContent: "center" }}>
-            <HashLink href="/#vaquinhas" className="btn btn-marrom">
-              <i className="ph ph-arrow-left"></i> Ver vaquinhas no ar
-            </HashLink>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  }, [campaign.raised, campaign.goal]);
 
   const pct = pctOf(campaign);
   const temCustom = !!(parseFloat(custom) && parseFloat(custom) >= 5);
@@ -102,24 +71,8 @@ export default function CampaignDetail({ slug }: { slug: string }) {
     if (!parseFloat(custom)) setAmtIdx(0);
   };
 
-  const aplicarDoacao = (v: number) => {
-    donate(campaign.slug, v);
-    setBackers((b) =>
-      [
-        {
-          ini: "VO",
-          nome: "Você" + (freq === "mes" ? " · assinatura mensal" : ""),
-          quando: "agora mesmo",
-          valor: v,
-        },
-        ...b,
-      ].slice(0, 6),
-    );
-    toast("Doação confirmada. Obrigado por ajudar!", "hand-heart");
-  };
-
   const compartilhar = async () => {
-    const link = "https://oxente.org/v/" + slugify(campaign.title || "vaquinha");
+    const link = window.location.href.split("?")[0];
     try {
       await navigator.clipboard.writeText(link);
     } catch {
@@ -131,7 +84,7 @@ export default function CampaignDetail({ slug }: { slug: string }) {
       i.remove();
     }
     toast("Link copiado: " + link, "link");
-  }
+  };
 
   return (
     <section className="screen active" data-screen="vaquinha">
@@ -149,20 +102,33 @@ export default function CampaignDetail({ slug }: { slug: string }) {
               <i className="ph ph-map-pin"></i>
               <span id="vPlace">{campaign.place}</span>
             </span>
-            <span>
-              <i className="ph ph-calendar-blank"></i> Criada em 12 de março de
-              2025
-            </span>
+            {campaign.days !== undefined && (
+              <span>
+                <i className="ph ph-calendar-blank"></i>{" "}
+                {campaign.days > 0
+                  ? `Termina em ${campaign.days} ${campaign.days === 1 ? "dia" : "dias"}`
+                  : "Prazo encerrado"}
+              </span>
+            )}
             <span>
               <i className="ph ph-users"></i>
               <b id="vBackersMeta">{campaign.backers}</b>&nbsp;apoiadores
             </span>
           </div>
-          <img
-            id="vImg"
-            src={campaign.customImg || campaign.full}
-            alt="Imagem da campanha"
-          />
+          {campaign.full ? (
+            <img id="vImg" src={campaign.full} alt={`Imagem da campanha ${campaign.title}`} />
+          ) : (
+            <div
+              id="vImg"
+              aria-hidden="true"
+              style={{
+                width: "100%",
+                aspectRatio: "16 / 7",
+                borderRadius: "18px",
+                background: "linear-gradient(135deg, #FC681A 0%, #301607 100%)",
+              }}
+            />
+          )}
         </div>
       </div>
 
@@ -170,7 +136,7 @@ export default function CampaignDetail({ slug }: { slug: string }) {
         <div className="v-conteudo">
           <h2>Sobre esta vaquinha</h2>
           <div className="texto">
-            {(campaign.story ?? [campaign.sub]).map((p, i) => (
+            {(campaign.story?.length ? campaign.story : [campaign.sub]).map((p, i) => (
               <p key={i}>{p}</p>
             ))}
           </div>
@@ -201,27 +167,6 @@ export default function CampaignDetail({ slug }: { slug: string }) {
               ))}
             </div>
           ) : null}
-
-          <div className="apoiadores">
-            <h2>Apoiadores recentes</h2>
-            <div id="backerList">
-              {backers.map((b, i) => (
-                <div className="apoio" key={i}>
-                  <span
-                    className="avatar-ini"
-                    style={b.ini === "VO" ? { background: "var(--laranja)" } : undefined}
-                  >
-                    {b.ini}
-                  </span>
-                  <div>
-                    <div className="nome">{b.nome}</div>
-                    <div className="quando">{b.quando}</div>
-                  </div>
-                  <span className="valor">{BRL(b.valor)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
 
           <div className="compartilhar">
             <div>
@@ -280,22 +225,24 @@ export default function CampaignDetail({ slug }: { slug: string }) {
               </span>
             </div>
           </div>
-          <div className="freq" role="group" aria-label="Frequência da doação">
-            <button
-              className={freq === "unica" ? "on" : ""}
-              id="freqU"
-              onClick={() => marcaFreq("unica")}
-            >
-              Doação única
-            </button>
-            <button
-              className={freq === "mes" ? "on" : ""}
-              id="freqM"
-              onClick={() => marcaFreq("mes")}
-            >
-              Todo mês
-            </button>
-          </div>
+          {aceitaMensal ? (
+            <div className="freq" role="group" aria-label="Frequência da doação">
+              <button
+                className={freq === "unica" ? "on" : ""}
+                id="freqU"
+                onClick={() => marcaFreq("unica")}
+              >
+                Doação única
+              </button>
+              <button
+                className={freq === "mes" ? "on" : ""}
+                id="freqM"
+                onClick={() => marcaFreq("mes")}
+              >
+                Todo mês
+              </button>
+            </div>
+          ) : null}
           <div className="amts" id="amtChips">
             {VALORES[freq].map((v, i) => (
               <button
@@ -351,12 +298,12 @@ export default function CampaignDetail({ slug }: { slug: string }) {
       </div>
 
       <DonateModal
+        key={modal ? "aberto" : "fechado"}
         open={modal}
         campaign={campaign}
         valor={valor}
         freq={freq}
         onClose={() => setModal(false)}
-        onConfirm={aplicarDoacao}
       />
     </section>
   );

@@ -45,12 +45,16 @@ function Tile({ c, i }: { c: Campaign; i: number }) {
       style={{ "--d": `${Math.min(i, 8) * 0.05}s` } as React.CSSProperties}
     >
       <div className="vt-img">
-        <img src={c.customImg || c.img} alt={c.title} />
+        {c.img ? (
+          <img src={c.img} alt={c.title} />
+        ) : (
+          <div aria-hidden="true" style={{ width: "100%", height: "100%", background: "linear-gradient(135deg, #FC681A 0%, #301607 100%)" }} />
+        )}
         {c.featured && <span className="vt-chip">Em destaque</span>}
         {c.recurring && <span className="vt-chip rec">Apoio mensal</span>}
         <span className="vt-dias">
           <i className="ph ph-clock"></i>
-          {c.recurring ? "contínua" : `${c.days} dias restantes`}
+          {c.recurring || c.days === undefined ? "contínua" : `${c.days} dias restantes`}
         </span>
       </div>
       <div className="vt-info">
@@ -200,7 +204,7 @@ export default function VaquinhasPage() {
             </p>
           </div>
           <div className="grupo-bts">
-            <Link href="/admin" className="btn btn-laranja">
+            <Link href="/admin/nova" className="btn btn-laranja">
               <i className="ph ph-plus"></i> Criar vaquinha
             </Link>
             <Link href="/contato" className="btn btn-areia">

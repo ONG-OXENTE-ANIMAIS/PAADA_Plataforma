@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { apiFetch } from "@/lib/api-client";
 import { useToast } from "@/components/fx/ToastProvider";
-import { ROTULO_STATUS, type MensagemContato } from "@/lib/campaigns";
 import HashLink from "@/components/shared/HashLink";
 
-const CHAVE = "oxente-contatos";
 const LIMITE_MSG = 600;
 
 /* Canais publicados no rodapé — nenhum contato inventado. */
@@ -37,20 +36,14 @@ const CANAIS = [
   },
 ];
 
-const lerLista = (): MensagemContato[] => {
-  try {
-    return JSON.parse(localStorage.getItem(CHAVE) || "[]");
-  } catch {
-    return [];
-  }
-};
-
 export default function ContatoPage() {
   const toast = useToast();
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [assunto, setAssunto] = useState("");
   const [mensagem, setMensagem] = useState("");
+  const [website, setWebsite] = useState(""); // honeypot anti-spam
+  const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
 
   const limpar = () => {
@@ -61,8 +54,9 @@ export default function ContatoPage() {
     setEnviado(false);
   };
 
-  function enviar(e: React.FormEvent) {
+  async function enviar(e: React.FormEvent) {
     e.preventDefault();
+    if (enviando) return;
     if (!nome.trim()) return toast("Informe o seu nome.", "warning");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
       return toast("Informe um e-mail válido para a resposta.", "warning");
@@ -70,18 +64,26 @@ export default function ContatoPage() {
     if (mensagem.trim().length < 10)
       return toast("Conte um pouco mais — mínimo de 10 caracteres.", "warning");
 
-    const lista = lerLista();
-    lista.unshift({
-      nome: nome.trim(),
-      email: email.trim(),
-      assunto: assunto.trim(),
-      mensagem: mensagem.trim(),
-      status: "recebida",
-      quando: new Date().toISOString(),
-    });
-    localStorage.setItem(CHAVE, JSON.stringify(lista));
-    setEnviado(true);
-    toast("Mensagem enviada. Já está na nossa caixa de entrada!", "envelope-open");
+    setEnviando(true);
+    try {
+      await apiFetch("/api/contato", {
+        method: "POST",
+        body: JSON.stringify({
+          nome: nome.trim(),
+          email: email.trim(),
+          assunto: assunto.trim(),
+          mensagem: mensagem.trim(),
+          tipo: "CONTATO",
+          website, // honeypot: deve permanecer vazio
+        }),
+      });
+      setEnviado(true);
+      toast("Mensagem enviada. Já está na nossa caixa de entrada!", "envelope-open");
+    } catch (err) {
+      toast(err instanceof Error ? err.message : "Não foi possível enviar a mensagem.", "warning");
+    } finally {
+      setEnviando(false);
+    }
   }
 
   return (
@@ -145,8 +147,7 @@ export default function ContatoPage() {
                   <b>{email}</b>.
                 </p>
                 <span className="ct-status">
-                  <i className="ph-fill ph-envelope-open"></i> status:{" "}
-                  {ROTULO_STATUS.recebida}
+                  <i className="ph-fill ph-envelope-open"></i> status: Recebida
                 </span>
                 <div className="grupo-bts" style={{ justifyContent: "center" }}>
                   <button className="btn btn-marrom" onClick={limpar}>
@@ -213,16 +214,37 @@ export default function ContatoPage() {
                     onChange={(e) => setMensagem(e.target.value)}
                   ></textarea>
                 </div>
+                {/* honeypot: invisível para pessoas, atrai bots */}
+                <div className="campo" aria-hidden="true" style={{ position: "absolute", left: "-9999px", height: 0, overflow: "hidden" }}>
+                  <label htmlFor="ct-website">Website</label>
+                  <input
+                    id="ct-website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                  />
+                </div>
                 <button
                   type="submit"
                   className="btn btn-laranja"
                   style={{ width: "100%", padding: "16px", fontSize: "16px" }}
+                  disabled={enviando}
                 >
-                  <i className="ph-fill ph-paper-plane-tilt"></i> Enviar mensagem
+                  {enviando ? (
+                    <>
+                      <i className="ph ph-circle-notch spin"></i> Enviando…
+                    </>
+                  ) : (
+                    <>
+                      <i className="ph-fill ph-paper-plane-tilt"></i> Enviar mensagem
+                    </>
+                  )}
                 </button>
                 <p className="nota-bib">
-                  Protótipo visual: as mensagens ficam salvas apenas neste
-                  navegador.
+                  Sua mensagem vai direto para a caixa de entrada da equipe,
+                  com status de acompanhamento.
                 </p>
               </form>
             )}

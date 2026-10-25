@@ -3958,3 +3958,81 @@ body.is-admin .adminbar {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ============ tabelas do painel ============ */
+.adm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(48, 22, 7, 0.08);
+}
+.adm-table th,
+.adm-table td {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(48, 22, 7, 0.1);
+  vertical-align: middle;
+}
+.adm-table th {
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+.adm-table tbody tr:hover td {
+  background: rgba(252, 104, 26, 0.05);
+}
+.adm-table .adm-acoes {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.adm-tag-status {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.adm-linha-link {
+  font-weight: 700;
+  color: var(--marrom);
+  text-decoration: none;
+}
+.adm-linha-link:hover {
+  color: var(--laranja);
+}
+.adm-acao-btn {
+  padding: 7px 12px;
+  font-size: 12.5px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(48, 22, 7, 0.2);
+  background: transparent;
+  color: var(--marrom);
+  cursor: pointer;
+  font-weight: 600;
+}
+.adm-acao-btn:hover {
+  border-color: var(--laranja);
+  color: var(--laranja);
+}
+.adm-acao-btn.perigo {
+  border-color: rgba(179, 38, 30, 0.35);
+  color: #b3261e;
+}
+.adm-acao-btn.perigo:hover {
+  background: #b3261e;
+  color: #fff;
+}
+.adm-paginacao {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  font-size: 13.5px;
+}

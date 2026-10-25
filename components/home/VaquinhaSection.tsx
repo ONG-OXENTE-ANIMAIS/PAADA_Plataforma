@@ -6,8 +6,6 @@ import Link from "next/link";
 import { useCampaigns } from "@/lib/CampaignsProvider";
 import {
   BRL,
-  CATEGORIAS,
-  DESTAQUE,
   pctOf,
   type Campaign,
 } from "@/lib/campaigns";
@@ -50,53 +48,6 @@ function useAbrir() {
   return (c: Campaign) => router.push(`/vaquinha/${c.slug}`);
 }
 
-function Row({
-  c,
-  n,
-  onEnter,
-  onLeave,
-}: HoverProps & { c: Campaign; n: number }) {
-  const abrir = useAbrir();
-  const pct = pctOf(c);
-  return (
-    <li
-      className={"row vaq-card" + (c.flash ? " flash" : "")}
-      tabIndex={0}
-      role="button"
-      onMouseEnter={() => onEnter(c)}
-      onMouseLeave={onLeave}
-      onClick={() => abrir(c)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          abrir(c);
-        }
-      }}
-    >
-      <div className="row-top">
-        <span className="row-num">{pad2(n)}</span>
-        <div className="row-main">
-          <h3>{c.title}</h3>
-          <p>
-            {c.cat} · {c.place}
-            {c.recurring ? <span className="tag-rec">Apoio mensal</span> : null}
-          </p>
-        </div>
-        <div className="row-data">
-          <b>{BRL(c.raised)}</b>
-          <span>
-            {pct}% da meta{c.recurring ? " mensal" : ""}
-          </span>
-        </div>
-        <span className="row-go">
-          <i className="ph ph-arrow-up-right"></i>
-        </span>
-      </div>
-      <Barra pct={pct} className="row-bar" />
-    </li>
-  );
-}
-
 function DestaqueCard({ c, onEnter, onLeave }: HoverProps & { c: Campaign }) {
   const abrir = useAbrir();
   const pct = pctOf(c);
@@ -117,26 +68,32 @@ function DestaqueCard({ c, onEnter, onLeave }: HoverProps & { c: Campaign }) {
       }}
     >
       <div className="destaque-img">
-        <img
-          src={c.customImg || c.full}
-          alt={c.title}
-        />
+        {c.full ? (
+          <img src={c.full} alt={c.title} />
+        ) : (
+          <div
+            aria-hidden="true"
+            style={{ width: "100%", height: "100%", background: "linear-gradient(135deg, #FC681A 0%, #301607 100%)" }}
+          />
+        )}
         <span className="chip-destaque">
           <svg className="sol" style={{ width: "12px", height: "12px" }}>
             <use href="#sol" />
           </svg>
           Em destaque
         </span>
-        {c.days && <span className="carimbo-dias">
-          <span>
-            <b>{c.days}</b>
-            <small>
-              dias
-              <br />
-              restantes
-            </small>
+        {c.days !== undefined && (
+          <span className="carimbo-dias">
+            <span>
+              <b>{c.days}</b>
+              <small>
+                dias
+                <br />
+                restantes
+              </small>
+            </span>
           </span>
-        </span>}
+        )}
       </div>
       <div className="destaque-info">
         <span className="cat">
@@ -176,16 +133,48 @@ function DestaqueCard({ c, onEnter, onLeave }: HoverProps & { c: Campaign }) {
   );
 }
 
-export default function VaquinhaSection() {
-  const { campaigns } = useCampaigns();
-  const [filtro, setFiltro] = useState("todas");
+function Esqueleto() {
+  return (
+    <div className="destaque vaq-card" aria-hidden="true">
+      <div className="destaque-img" style={{ background: "linear-gradient(135deg, #FDE7CD, #FC681A55)" }} />
+      <div className="destaque-info">
+        <span className="cat">carregando…</span>
+        <h3 style={{ opacity: 0.5 }}>Buscando as vaquinhas no ar</h3>
+        <p style={{ opacity: 0.5 }}>
+          Um instante — estamos trazendo as campanhas direto do banco.
+        </p>
+      </div>
+    </div>
+  );
+}
 
-  const destaque = campaigns.find((c) => c.featured) ?? DESTAQUE;
-  const lista = campaigns.filter((c) => !c.featured);
-  const visiveis =
-    filtro === "todas" ? lista : lista.filter((c) => c.cat === filtro);
-  const destaqueVisivel = filtro === "todas" || destaque.cat === filtro;
-  const total = visiveis.length + (destaqueVisivel ? 1 : 0);
+function Vazio() {
+  return (
+    <div className="destaque vaq-card">
+      <div className="destaque-img" style={{ background: "linear-gradient(135deg, #301607, #FC681A)" }} />
+      <div className="destaque-info">
+        <span className="cat">Aguardando a primeira causa</span>
+        <h3>Nenhuma vaquinha no ar agora</h3>
+        <p>
+          Assim que a equipe publicar uma campanha, ela aparece aqui na hora.
+          Quer ver como funciona? Monte a primeira no painel da ONG.
+        </p>
+        <div className="hero-ctas" style={{ marginTop: "18px" }}>
+          <Link href="/admin" className="btn btn-laranja">
+            <i className="ph ph-plus"></i> Criar vaquinha
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function VaquinhaSection() {
+  const { campaigns, loading, error } = useCampaigns();
+
+  const destaque = campaigns.find((c) => c.featured) ?? campaigns[0];
+  const lista = campaigns.filter((c) => c.id !== destaque?.id);
+  const total = campaigns.length;
 
   /* ---- imagem flutuante que segue o cursor (lerp como no protótipo) ---- */
   const fiRef = useRef<HTMLDivElement>(null);
@@ -208,9 +197,10 @@ export default function VaquinhaSection() {
   }, []);
 
   const mostrarImg = (c: Campaign) => {
+    if (!c.img) return;
     const fi = fiRef.current;
     if (!fi) return;
-    fi.style.backgroundImage = `url("${c.customImg || c.img}")`;
+    fi.style.backgroundImage = `url("${c.img}")`;
     fi.classList.add("on");
     ligado.current = true;
   };
@@ -233,51 +223,17 @@ export default function VaquinhaSection() {
               (<span id="vaqCount">{pad2(total)}</span>)
             </span>
           </h2>
-          {/* <Link href="/vaquinhas" className="link-mais">
-            Ver todas as vaquinhas <i className="ph ph-arrow-right"></i>
-          </Link> */}
         </div>
-        {/* <div
-          className="filtros"
-          id="filtros"
-          aria-label="Filtrar vaquinhas por categoria"
-        >
-          <button
-            className={filtro === "todas" ? "on" : ""}
-            onClick={() => setFiltro("todas")}
-          >
-            Todas
-          </button>
-          {CATEGORIAS.map((cat) => (
-            <button
-              key={cat}
-              className={filtro === cat ? "on" : ""}
-              onClick={() => setFiltro(cat)}
-            >
-              {cat}
-            </button>
-          ))}
-        </div> */}
 
-        {destaqueVisivel && (
-          <DestaqueCard
-            c={destaque}
-            onEnter={mostrarImg}
-            onLeave={esconderImg}
-          />
+        {loading ? (
+          <Esqueleto />
+        ) : destaque ? (
+          <DestaqueCard c={destaque} onEnter={mostrarImg} onLeave={esconderImg} />
+        ) : error ? (
+          <Vazio />
+        ) : (
+          <Vazio />
         )}
-
-        {/* <ul className="lista-vaquinhas" id="vaquinhaList">
-          {visiveis.map((c, i) => (
-            <Row
-              key={c.slug}
-              c={c}
-              n={i + 1}
-              onEnter={mostrarImg}
-              onLeave={esconderImg}
-            />
-          ))}
-        </ul> */}
       </section>
       <div className="float-img" id="floatImg" ref={fiRef} aria-hidden="true"></div>
     </div>

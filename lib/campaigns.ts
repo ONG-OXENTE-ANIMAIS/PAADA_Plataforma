@@ -1,4 +1,8 @@
-/* Dados e utilidades da Oxente — extraídos do protótipo original */
+/* Tipos e utilidades de interface da Oxente.
+ *
+ * Os dados reais vêm da API (/api/campanhas, /api/parceiros …) — este arquivo
+ * concentra apenas tipos de UI, mapeadores API→UI e constantes de interface
+ * (categorias, valores sugeridos, cores do construtor). */
 
 export type Freq = "unica" | "mes";
 export type TipoCampanha = "unica" | "recorrente";
@@ -14,6 +18,7 @@ export type Atualizacao = {
 };
 
 export type Campaign = {
+  id: string;
   slug: string;
   title: string;
   sub: string;
@@ -24,17 +29,69 @@ export type Campaign = {
   backers: number;
   days?: number; // dias restantes (campanha única)
   recurring?: boolean;
-  img: string; // imagem da listagem
-  full: string; // imagem grande da página
+  img: string | null; // imagem da listagem
+  full: string | null; // imagem grande da página
   featured?: boolean;
   flash?: boolean; // recém-publicada no construtor
-  customImg?: string | null; // imagem enviada no construtor (dataURL)
   story?: string[]; // parágrafos "Sobre esta vaquinha"
   usos?: Uso[]; // para onde o dinheiro vai
   updates?: Atualizacao[]; // atualizações publicadas
 };
 
 export type TickerItem = [nome: string, valor: string, causa: string];
+
+/* ---------- payload da API ---------- */
+
+export type CampanhaApi = {
+  id: string;
+  slug: string;
+  titulo: string;
+  descricao: string | null;
+  categoria: string | null;
+  localidade: string | null;
+  status: string;
+  valor_meta: number;
+  valor_arrecadado: number;
+  data_inicio: string | null;
+  data_termino: string | null;
+  mensal: boolean;
+  destaque: boolean;
+  visivel: boolean;
+  criado_em: string;
+  atualizado_em: string;
+  imagem?: string | null;
+  apoiadores?: number;
+};
+
+const dataCurta = (iso: string) =>
+  new Date(iso).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
+
+export function diasRestantes(dataTermino: string | null): number | undefined {
+  if (!dataTermino) return undefined;
+  const fim = new Date(`${dataTermino}T23:59:59`).getTime();
+  return Math.max(0, Math.ceil((fim - Date.now()) / 86_400_000));
+}
+
+/** Mapeia o payload da API para a forma usada pelos componentes. */
+export function campaignFromApi(c: CampanhaApi): Campaign {
+  const paragrafos = (c.descricao ?? "").split(/\n{2,}/).filter(Boolean);
+  return {
+    id: c.id,
+    slug: c.slug,
+    title: c.titulo,
+    sub: paragrafos[0] ?? "Campanha da Oxente.",
+    cat: c.categoria ?? "Campanha",
+    place: c.localidade ?? "Pernambuco, PE",
+    raised: Number(c.valor_arrecadado),
+    goal: Number(c.valor_meta),
+    backers: c.apoiadores ?? 0,
+    days: c.mensal ? undefined : diasRestantes(c.data_termino),
+    recurring: c.mensal || undefined,
+    img: c.imagem ?? null,
+    full: c.imagem ?? null,
+    featured: c.destaque || undefined,
+  };
+}
 
 /* ---------- utilidades ---------- */
 
@@ -52,7 +109,7 @@ export const slug = (s: string) =>
     .replace(/(^-|-$)/g, "");
 
 export const pctOf = (c: { raised: number; goal: number }) =>
-  Math.min(100, Math.round((c.raised / c.goal) * 100));
+  c.goal > 0 ? Math.min(100, Math.round((c.raised / c.goal) * 100)) : 0;
 
 export const VALORES: Record<Freq, number[]> = {
   unica: [25, 50, 100, 250],
@@ -71,64 +128,7 @@ export const pickText = (hex: string) =>
 
 export const CORES_SWATCH = ["#FC681A", "#301607", "#FDE7CD"];
 
-/* ---------- campanhas (seed do protótipo) ---------- */
-
-const mk = (c: Omit<Campaign, "slug">): Campaign => ({ ...c, slug: slug(c.title) });
-
-export const SEED_CAMPAIGNS: Campaign[] = [
-  mk({
-    title: "Patas do Mercadão: castração e adoção",
-    sub: "Cem castrações, microchips e um mutirão de adoção responsável para os gatos e cães do Mercadão da Madalena.",
-    cat: "Recorrente",
-    place: "Petrolina, PE",
-    raised: 42380,
-    goal: 60000,
-    backers: 312,
-    img: "https://picsum.photos/seed/oxente-patas/640/420.jpg",
-    full: "https://picsum.photos/seed/oxente-patas/1600/740.jpg",
-    featured: true,
-    recurring: true,
-    story: [
-      "O Mercadão da Madalena sempre teve uma colônia de gatos e uma matilha de cães que vive do carinho dos feirantes. Em 2023, com a Clínica Bicho de Estimação, a Oxente fez o primeiro mutirão: quarenta castrações num sábado só. Fila na porta, caixa de transporte emprestada, café pra quem esperou.",
-      "Agora a meta é maior: cem castrações com microchip, vacina múltipla e um mutirão de adoção responsável — com visita prévia, termo de guarda e kit de ração pra quem levar um bichano pra casa. Faltam os insumos da última etapa e o aluguel das gaiolas: é pra isso que esta vaquinha corre.",
-      "Quem não pode adotar pode ser lar temporário por um fim de semana — é o respiro que um animal acostumado à rua precisa pra aprender que sofá também é dele.",
-    ],
-    usos: [
-      { label: "100 castrações com microchip", valor: 28000 },
-      { label: "Vacinas, vermífugos e testes", valor: 8400 },
-      { label: "Aluguel de 30 gaiolas de transporte (3 meses)", valor: 7200 },
-      { label: "Kit adoção com ração e areia para 60 famílias", valor: 16400 },
-    ],
-    updates: [
-      {
-        tag: "Marco",
-        iso: "2025-06-12",
-        data: "12 de junho de 2025",
-        titulo: "Primeiras 40 castrações feitas",
-        texto:
-          "O mutirão de sábado saiu do papel: quarenta animais castrados, dois adotados na hora e nenhum imprevisto. As notas do material cirúrgico já estão publicadas.",
-      },
-    ],
-  }),
-];
-
 export const CATEGORIAS = ["Resgate", "Castração", "Abrigo", "Adoção", "Veterinário"];
-
-export const DESTAQUE = SEED_CAMPAIGNS.find((c) => c.featured)!;
-export const LISTA_SEED = SEED_CAMPAIGNS.filter((c) => !c.featured);
-
-/* ---------- ticker da home ---------- */
-
-export const DOACOES_TICKER: TickerItem[] = [
-  ["Tereza M. doou", "R$ 80", "Patas do Mercadão"],
-  ["Anônimo doou", "R$ 25", "Resgate de Jaboatão"],
-  ["Rafael & Ana doaram", "R$ 200", "Abrigo do Arraial"],
-  ["Padre Jonas doou", "R$ 60", "Castração da Casa Amarela"],
-  ["Grupo Zé de Lula doou", "R$ 310", "Cavalos de carroça"],
-  ["Anônimo doou", "R$ 120", "Feira de Adoção de Olinda"],
-  ["Cida do Aconchego doou", "R$ 130", "Patas do Mercadão"],
-  ["Donana doou", "R$ 45", "Abrigo do Arraial"],
-];
 
 /* ---------- parceiros ---------- */
 
@@ -143,82 +143,28 @@ export type Parceiro = {
   destaque?: boolean; // citado na história da vaquinha em destaque
 };
 
-export const PARCEIROS: Parceiro[] = [
-  {
-    nome: "Clínica Bicho de Estimação",
-    sigla: "BE",
-    tipo: "Empresa",
-    area: "Veterinário",
-    place: "Jaboatão, PE",
-    desde: "2022",
-    desc: "Castrações e vacinas a preço de custo nos mutirões de adoção.",
-    destaque: true,
-  },
-  {
-    nome: "Coletivo Gatos do Recife",
-    sigla: "GR",
-    tipo: "Coletivo",
-    area: "Abrigo",
-    place: "Recife, PE",
-    desde: "2021",
-    desc: "Cuida das colônias de gatos do centro e cede as gaiolas dos mutirões.",
-  },
-  {
-    nome: "Petshop Boa Pata",
-    sigla: "BP",
-    tipo: "Empresa",
-    area: "Alimentação",
-    place: "Recife, PE",
-    desde: "2023",
-    desc: "Doa 400 kg de ração por mês para os abrigos e lares temporários.",
-  },
-  {
-    nome: "Lar Temporário Recife",
-    sigla: "LT",
-    tipo: "ONG",
-    area: "Resgate",
-    place: "Olinda, PE",
-    desde: "2022",
-    desc: "Rede de casas de passagem que acolhe cães resgatados até a adoção.",
-  },
-  {
-    nome: "Associação dos Carroceiros",
-    sigla: "AC",
-    tipo: "Coletivo",
-    area: "Veterinário",
-    place: "Recife, PE",
-    desde: "2023",
-    desc: "Cede o terreiro de descanso e cuida da escala dos vinte cavalos.",
-  },
-  {
-    nome: "Mercado da Madalena",
-    sigla: "MM",
-    tipo: "Empresa",
-    area: "Comunidade",
-    place: "Recife, PE",
-    desde: "2021",
-    desc: "Cede o galpão dos mutirões de castração e das feiras de adoção.",
-    destaque: true,
-  },
-  {
-    nome: "Escola João Redondo",
-    sigla: "JR",
-    tipo: "Escola",
-    area: "Educação",
-    place: "Natal, RN",
-    desde: "2024",
-    desc: "Mantém o projeto Guardiões dos Animais e uma vaquinha recorrente do abrigo.",
-  },
-  {
-    nome: "Rádio Comunidade 91.5",
-    sigla: "RC",
-    tipo: "Empresa",
-    area: "Comunicação",
-    place: "Petrolina, PE",
-    desde: "2024",
-    desc: "Divulga de graça os mutirões de adoção e as vaquinhas de resgate.",
-  },
-];
+/** Mapeia o payload de /api/parceiros para a UI. */
+export function parceiroFromApi(p: {
+  nome: string;
+  sigla: string | null;
+  tipo: string | null;
+  area: string | null;
+  localidade: string | null;
+  descricao: string | null;
+  desde: string | null;
+  destaque: boolean;
+}): Parceiro {
+  return {
+    nome: p.nome,
+    sigla: p.sigla ?? p.nome.slice(0, 2).toUpperCase(),
+    tipo: p.tipo ?? "Parceiro",
+    area: p.area ?? "—",
+    place: p.localidade ?? "—",
+    desde: p.desde ?? "",
+    desc: p.descricao ?? "",
+    destaque: p.destaque || undefined,
+  };
+}
 
 export const TIPOS_ORG = [
   "ONG",
@@ -245,28 +191,14 @@ export const TIPOS_SUGESTAO = [
   "Outro assunto",
 ];
 
-/* ---------- contato ---------- */
+/* ---------- contato (rótulos de status da API) ---------- */
 
-export type StatusContato = "recebida" | "analise" | "respondido";
-
-export type MensagemContato = {
-  nome: string;
-  email: string;
-  assunto: string;
-  mensagem: string;
-  status: StatusContato;
-  quando: string;
+export const ROTULO_STATUS: Record<string, string> = {
+  RECEBIDA: "Recebida",
+  EM_ANALISE: "Em análise",
+  RESPONDIDA: "Respondida",
+  ARQUIVADA: "Arquivada",
 };
-
-export const ROTULO_STATUS: Record<StatusContato, string> = {
-  recebida: "Recebida",
-  analise: "Em análise",
-  respondido: "Respondido",
-};
-
-/* ---------- apoiadores recentes (página da vaquinha) ---------- */
-
-export type Backer = { ini: string; nome: string; quando: string; valor: number };
 
 /* ---------- construtor ---------- */
 
@@ -296,10 +228,4 @@ export const fmtData = (iso: string) => {
   return `${d}/${m}/${a}`;
 };
 
-export const BACKERS_SEED: Backer[] = [
-  { ini: "TM", nome: "Tereza M.", quando: "há 2 horas", valor: 80 },
-  { ini: "AN", nome: "Anônimo", quando: "há 5 horas", valor: 25 },
-  { ini: "RA", nome: "Rafael & Ana", quando: "ontem", valor: 200 },
-  { ini: "PJ", nome: "Padre Jonas", quando: "ontem", valor: 60 },
-  { ini: "CA", nome: "Cida do Aconchego", quando: "há 2 dias", valor: 130 },
-];
+export { dataCurta as fmtDataLonga };
