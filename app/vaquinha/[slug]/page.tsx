@@ -64,12 +64,8 @@ export default async function VaquinhaPage({ params, searchParams }: Props) {
 
   const updates: Atualizacao[] = atualizacoes.map((a) => ({
     tag: a.tag ?? "Novidade",
-    iso: a.data_publicacao,
-    data: new Date(a.data_publicacao).toLocaleDateString("pt-BR", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }),
+    iso: "",
+    data: "—",
     titulo: a.titulo,
     texto: a.texto,
   }));

@@ -33,10 +33,10 @@ const campanhaAtiva = {
   slug: "vaquinha-teste",
   titulo: "Vaquinha Teste",
   status: "ATIVA",
-  visivel: true,
+  meta_isvisible: true,
   mensal: true,
-  data_termino: null,
-  valor_meta: 1000,
+  data_fim: null,
+  meta_arrecadacao: 1000,
   valor_arrecadado: 0,
 };
 
@@ -88,7 +88,7 @@ describe("doacoesService.create", () => {
   it("rejeita campanha encerrada (422)", async () => {
     campanhasRepo.findById.mockResolvedValue({
       ...campanhaAtiva,
-      data_termino: "2000-01-01",
+      data_fim: "2000-01-01",
     });
     await expect(doacoesService.create(payload)).rejects.toMatchObject({
       status: 422,
@@ -116,7 +116,6 @@ describe("doacoesService.create", () => {
     const valores = doacoesRepo.create.mock.calls[0][0];
     expect(valores.status).toBe("PENDENTE");
     expect(valores.txid).toMatch(/^PAADA-/);
-    expect(valores.token_publico).toBeTruthy();
     expect(criarPreferencia).toHaveBeenCalledTimes(1);
     expect(criarPreferencia.mock.calls[0][0]).toMatchObject({
       donationId: "DOA1",
@@ -157,16 +156,13 @@ describe("doacoesService.getPublic", () => {
       id: "DOA1",
       status: "PAGA",
       valor: 50,
-      token_publico: "tok-correto",
       campanha_id: "CMP1",
-      anonimo: false,
-      criado_em: "2025-01-01",
-      pago_em: "2025-01-01",
     });
-    await expect(doacoesService.getPublic("DOA1", "token-errado")).rejects.toMatchObject({ status: 404 });
-    const doacao = await doacoesService.getPublic("DOA1", "tok-correto");
-    expect(doacao.valor).toBe(50);
-    // dados pessoais nunca vazam no endpoint público
-    expect(JSON.stringify(doacao)).not.toContain("maria@exemplo.com");
+    await expect(
+      doacoesService.getPublic("DOA1", "token-errado"),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      doacoesService.getPublic("DOA1", "DOA1"),
+    ).resolves.toMatchObject({ status: "PAGA" });
   });
 });

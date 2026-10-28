@@ -166,10 +166,12 @@ export default function AdminParceirosPage() {
               <label htmlFor="pc-logo">Logo (URL)</label>
               <input id="pc-logo" type="url" placeholder="https://…" value={form.logo_url} onChange={(e) => setForm({ ...form, logo_url: e.target.value })} />
             </div>
-            <label htmlFor="pc-destaque" style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px", marginBottom: "14px", cursor: "pointer" }}>
-              <input id="pc-destaque" type="checkbox" checked={form.destaque} onChange={(e) => setForm({ ...form, destaque: e.target.checked })} />
-              Parceria em destaque (aparece na home)
-            </label>
+            <div className="campo">
+              <label htmlFor="pc-destaque" className="campo-check">
+                <input id="pc-destaque" type="checkbox" checked={form.destaque} onChange={(e) => setForm({ ...form, destaque: e.target.checked })} />
+                Parceria em destaque (aparece na home)
+              </label>
+            </div>
             <button type="submit" className="btn btn-laranja" disabled={salvando}>
               {salvando ? <><i className="ph ph-circle-notch spin"></i> Salvando…</> : <><i className="ph ph-floppy-disk"></i> Cadastrar parceiro</>}
             </button>

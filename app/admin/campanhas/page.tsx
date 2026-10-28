@@ -164,10 +164,10 @@ export default function AdminCampanhasPage() {
                     </td>
                     <td style={{ fontSize: "12.5px" }}>
                       {c.mensal ? "mensal · " : ""}
-                      {c.visivel ? "visível" : "oculta"}
+                      {c.meta_isvisible ? "visível" : "oculta"}
                       {c.destaque ? " · destaque" : ""}
                     </td>
-                    <td style={{ fontSize: "12.5px", opacity: 0.7 }}>{dataCurta(c.criado_em)}</td>
+                    <td style={{ fontSize: "12.5px", opacity: 0.7 }}>{dataCurta(c.criada_em)}</td>
                     <td>
                       <div className="adm-acoes">
                         <select
@@ -184,9 +184,9 @@ export default function AdminCampanhasPage() {
                         </select>
                         <button
                           className="adm-acao-btn"
-                          onClick={() => alterar(c.id, { visivel: !c.visivel }, c.visivel ? "Campanha oculta do site." : "Campanha visível no site.")}
+                          onClick={() => alterar(c.id, { meta_isvisible: !c.meta_isvisible }, c.meta_isvisible ? "Campanha oculta do site." : "Campanha visível no site.")}
                         >
-                          {c.visivel ? "Ocultar" : "Publicar"}
+                          {c.meta_isvisible ? "Ocultar" : "Publicar"}
                         </button>
                         <button
                           className="adm-acao-btn"

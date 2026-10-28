@@ -10,18 +10,20 @@ export type CampanhaRow = {
   id: string;
   slug: string;
   titulo: string;
+  subtitulo: string;
   descricao: string | null;
   categoria: string | null;
   localidade: string | null;
-  status: StatusCampanha;
-  valor_meta: number;
+  historia: string | null;
+  meta_arrecadacao: number | null;
   valor_arrecadado: number;
-  data_inicio: string | null;
-  data_termino: string | null;
+  meta_isvisible: boolean;
   mensal: boolean;
   destaque: boolean;
-  visivel: boolean;
-  criado_em: string;
+  status: StatusCampanha;
+  data_inicio: string | null;
+  data_fim: string | null;
+  criada_em: string;
   atualizado_em: string;
 };
 
@@ -29,10 +31,8 @@ export type SubmetaRow = {
   id: string;
   campanha_id: string;
   titulo: string;
-  descricao: string | null;
   valor: number;
   ordem: number;
-  criado_em: string;
 };
 
 export type AtualizacaoRow = {
@@ -41,9 +41,6 @@ export type AtualizacaoRow = {
   titulo: string;
   texto: string;
   tag: string | null;
-  data_publicacao: string;
-  privado: boolean;
-  criado_em: string;
 };
 
 export type ImagemRow = {
@@ -59,21 +56,13 @@ export type ImagemRow = {
 export type DoacaoRow = {
   id: string;
   campanha_id: string;
-  nome: string | null;
-  email: string | null;
-  telefone: string | null;
-  anonimo: boolean;
   valor: number;
   status: StatusDoacao;
   txid: string;
   assinatura_id: string | null;
-  payment_provider: string | null;
   payment_id: string | null;
-  payment_preference_id: string | null;
-  token_publico: string;
-  criado_em: string;
-  atualizado_em: string;
   pago_em: string | null;
+  atualizado_em: string;
 };
 
 export type UsuarioRow = {
@@ -98,9 +87,7 @@ export type ParceiroRow = {
   descricao: string | null;
   logo_url: string | null;
   desde: string | null;
-  destaque: boolean;
   ativo: boolean;
-  criado_em: string;
   atualizado_em: string;
 };
 
@@ -110,11 +97,8 @@ export type ContatoRow = {
   email: string;
   assunto: string;
   mensagem: string;
-  tipo: TipoMensagem;
   status: StatusContato;
-  criado_em: string;
   atualizado_em: string;
-  respondido_em: string | null;
 };
 
 export type Database = {

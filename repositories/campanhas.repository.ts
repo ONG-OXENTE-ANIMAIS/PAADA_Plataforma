@@ -6,13 +6,13 @@ export class CampanhasRepository {
 
   async listPublic(filters: { q?: string; categoria?: string; localidade?: string; destaque?: boolean; mensal?: boolean; from: number; to: number }) {
     const db = this.db();
-    let query = db.from("campanhas").select("*", { count: "exact" }).eq("status", "ATIVA").eq("visivel", true);
+    let query = db.from("campanhas").select("*", { count: "exact" }).eq("status", "ATIVA").eq("meta_isvisible", true);
     if (filters.q) query = query.or(`titulo.ilike.%${filters.q}%,descricao.ilike.%${filters.q}%`);
     if (filters.categoria) query = query.eq("categoria", filters.categoria);
     if (filters.localidade) query = query.ilike("localidade", `%${filters.localidade}%`);
     if (typeof filters.destaque === "boolean") query = query.eq("destaque", filters.destaque);
     if (typeof filters.mensal === "boolean") query = query.eq("mensal", filters.mensal);
-    const { data, error, count } = await query.order("destaque", { ascending: false }).order("criado_em", { ascending: false }).range(filters.from, filters.to);
+    const { data, error, count } = await query.order("destaque", { ascending: false }).order("criada_em", { ascending: false }).range(filters.from, filters.to);
     if (error) throw error;
     return { data: (data ?? []) as CampanhaRow[], count: count ?? 0 };
   }
@@ -22,7 +22,7 @@ export class CampanhasRepository {
     let query = db.from("campanhas").select("*", { count: "exact" });
     if (filters.q) query = query.or(`titulo.ilike.%${filters.q}%,slug.ilike.%${filters.q}%`);
     if (filters.status) query = query.eq("status", filters.status as CampanhaRow["status"]);
-    const { data, error, count } = await query.order("criado_em", { ascending: false }).range(filters.from, filters.to);
+    const { data, error, count } = await query.order("criada_em", { ascending: false }).range(filters.from, filters.to);
     if (error) throw error;
     return { data: (data ?? []) as CampanhaRow[], count: count ?? 0 };
   }
@@ -136,8 +136,7 @@ export class CampanhasRepository {
 
   async updates(campanhaId: string, includePrivate = false) {
     let query = this.db().from("atualizacoes_campanhas").select("*").eq("campanha_id", campanhaId);
-    if (!includePrivate) query = query.eq("privado", false);
-    const { data, error } = await query.order("data_publicacao", { ascending: false });
+    const { data, error } = await query.order("titulo", { ascending: true });
     if (error) throw error;
     return (data ?? []) as AtualizacaoRow[];
   }

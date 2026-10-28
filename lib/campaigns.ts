@@ -7,6 +7,7 @@
 export type Freq = "unica" | "mes";
 export type TipoCampanha = "unica" | "recorrente";
 export type Modelo = "full" | "split" | "center" | "solid";
+import type { StatusCampanha } from "@/types/database.types";
 
 export type Uso = { label: string; valor: number };
 export type Atualizacao = {
@@ -46,29 +47,31 @@ export type CampanhaApi = {
   id: string;
   slug: string;
   titulo: string;
+  subtitulo: string;
   descricao: string | null;
   categoria: string | null;
   localidade: string | null;
-  status: string;
+  historia: string | null;
+  meta_arrecadacao: number | null;
   valor_meta: number;
   valor_arrecadado: number;
   data_inicio: string | null;
-  data_termino: string | null;
+  data_fim: string | null;
+  status: StatusCampanha;
   mensal: boolean;
   destaque: boolean;
-  visivel: boolean;
-  criado_em: string;
+  meta_isvisible: boolean;
+  criada_em: string;
   atualizado_em: string;
   imagem?: string | null;
   apoiadores?: number;
 };
 
-const dataCurta = (iso: string) =>
-  new Date(iso).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
+const dataCurta = (iso: string) => new Date(iso).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
 
-export function diasRestantes(dataTermino: string | null): number | undefined {
-  if (!dataTermino) return undefined;
-  const fim = new Date(`${dataTermino}T23:59:59`).getTime();
+export function diasRestantes(dataFim: string | null): number | undefined {
+  if (!dataFim) return undefined;
+  const fim = new Date(`${dataFim}T23:59:59`).getTime();
   return Math.max(0, Math.ceil((fim - Date.now()) / 86_400_000));
 }
 
@@ -85,7 +88,7 @@ export function campaignFromApi(c: CampanhaApi): Campaign {
     raised: Number(c.valor_arrecadado),
     goal: Number(c.valor_meta),
     backers: c.apoiadores ?? 0,
-    days: c.mensal ? undefined : diasRestantes(c.data_termino),
+    days: c.mensal ? undefined : diasRestantes(c.data_fim),
     recurring: c.mensal || undefined,
     img: c.imagem ?? null,
     full: c.imagem ?? null,

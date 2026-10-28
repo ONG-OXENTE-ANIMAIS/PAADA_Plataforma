@@ -8,9 +8,9 @@ export class DoacoesRepository {
     let query = db.from("doacoes").select("*, campanhas(titulo)", { count: "exact" });
     if (filters.campanha_id) query = query.eq("campanha_id", filters.campanha_id);
     if (filters.status) query = query.eq("status", filters.status as DoacaoRow["status"]);
-    if (filters.from) query = query.gte("criado_em", filters.from);
-    if (filters.to) query = query.lte("criado_em", filters.to);
-    const { data, error, count } = await query.order("criado_em", { ascending: false }).range((filters.page - 1) * filters.limit, filters.page * filters.limit - 1);
+    if (filters.from) query = query.gte("atualizado_em", filters.from);
+    if (filters.to) query = query.lte("atualizado_em", filters.to);
+    const { data, error, count } = await query.order("atualizado_em", { ascending: false }).range((filters.page - 1) * filters.limit, filters.page * filters.limit - 1);
     if (error) throw error;
     const rows = (data ?? []) as (DoacaoRow & { campanhas?: { titulo: string | null } | null })[];
     return {

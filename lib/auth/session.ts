@@ -25,7 +25,7 @@ function getSecret() {
 export async function createSessionToken(user: SessionUser) {
   return new SignJWT({ nome: user.nome, email: user.email, login: user.login, tipo: user.tipo })
     .setProtectedHeader({ alg: "HS256" })
-    .setSubject(user.id)
+    .setSubject(String(user.id))
     .setIssuedAt()
     .setExpirationTime(`${SESSION_MAX_AGE}s`)
     .sign(getSecret());

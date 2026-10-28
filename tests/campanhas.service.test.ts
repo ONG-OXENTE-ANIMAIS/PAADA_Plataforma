@@ -34,14 +34,14 @@ const campanhaPublica = {
   categoria: "Resgate",
   localidade: "Recife, PE",
   status: "ATIVA",
-  valor_meta: 1000,
+  meta_arrecadacao: 1000,
   valor_arrecadado: 250,
   data_inicio: "2025-01-01",
-  data_termino: "2025-12-31",
+  data_fim: "2025-12-31",
   mensal: false,
   destaque: true,
-  visivel: true,
-  criado_em: "2025-01-01T00:00:00Z",
+  meta_isvisible: true,
+  criada_em: "2025-01-01T00:00:00Z",
   atualizado_em: "2025-01-01T00:00:00Z",
 };
 
@@ -58,7 +58,7 @@ describe("visibilidade pública das campanhas", () => {
   });
 
   it("getBySlug 404 para campanha oculta", async () => {
-    campanhasRepo.findBySlug.mockResolvedValue({ ...campanhaPublica, visivel: false });
+    campanhasRepo.findBySlug.mockResolvedValue({ ...campanhaPublica, meta_isvisible: false });
     await expect(campanhasService.getBySlug("vaquinha-teste")).rejects.toMatchObject({
       status: 404,
     });

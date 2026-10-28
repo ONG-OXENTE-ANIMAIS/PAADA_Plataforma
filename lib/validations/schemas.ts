@@ -17,25 +17,26 @@ export const paginationSchema = z.object({
 /** Forma base (sem refinamentos) para reutilizar em create/update. */
 const campanhaBaseSchema = z.object({
   titulo: z.string().trim().min(3).max(160),
+  subtitulo: z.string().trim().min(1).max(160),
   slug: z.string().trim().min(1).max(100).optional(),
   descricao: optionalText,
   categoria: z.string().trim().max(80).nullable().optional(),
   localidade: z.string().trim().max(120).nullable().optional(),
   status: campanhaStatusSchema.default("RASCUNHO"),
-  valor_meta: money,
+  meta_arrecadacao: money.nullish().optional(),
   data_inicio: z.string().date().nullable().optional(),
-  data_termino: z.string().date().nullable().optional(),
+  data_fim: z.string().date().nullable().optional(),
   mensal: z.boolean().default(false),
   destaque: z.boolean().default(false),
-  visivel: z.boolean().default(false),
+  meta_isvisible: z.boolean().default(false),
 });
 
 function validarDatas(
-  data: { data_inicio?: string | null; data_termino?: string | null },
+  data: { data_inicio?: string | null; data_fim?: string | null },
   ctx: z.RefinementCtx,
 ) {
-  if (data.data_inicio && data.data_termino && new Date(data.data_termino) < new Date(data.data_inicio)) {
-    ctx.addIssue({ code: "custom", path: ["data_termino"], message: "A data de término deve ser posterior à data de início." });
+  if (data.data_inicio && data.data_fim && new Date(data.data_fim) < new Date(data.data_inicio)) {
+    ctx.addIssue({ code: "custom", path: ["data_fim"], message: "A data de término deve ser posterior à data de início." });
   }
 }
 
@@ -44,7 +45,6 @@ export const campanhaUpdateSchema = campanhaBaseSchema.partial().superRefine(val
 
 export const submetaCreateSchema = z.object({
   titulo: z.string().trim().min(2).max(160),
-  descricao: optionalText,
   valor: money,
   ordem: z.coerce.number().int().min(0).default(0),
 });
@@ -53,8 +53,6 @@ export const atualizacaoCreateSchema = z.object({
   titulo: z.string().trim().min(3).max(160),
   texto: z.string().trim().min(10).max(10000),
   tag: z.string().trim().max(60).nullable().optional(),
-  data_publicacao: z.string().datetime().optional(),
-  privado: z.boolean().default(false),
 });
 
 /** Forma base (sem refinamentos) para reutilizar em create/update/upload. */

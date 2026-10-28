@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const db = createAdminClient();
     const [campanhas, doacoes, valores] = await Promise.all([
-      db.from("campanhas").select("id", { count: "exact", head: true }).eq("status", "ATIVA").eq("visivel", true),
+      db.from("campanhas").select("id", { count: "exact", head: true }).eq("status", "ATIVA").eq("meta_isvisible", true),
       db.from("doacoes").select("id", { count: "exact", head: true }).eq("status", "PAGA"),
       db.from("doacoes").select("valor").eq("status", "PAGA"),
     ]);

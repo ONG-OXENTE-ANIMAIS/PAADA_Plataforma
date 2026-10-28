@@ -13,8 +13,7 @@ const publicDonation = (donation: DoacaoRow) => ({
   campanha_id: donation.campanha_id,
   status: donation.status,
   valor: Number(donation.valor),
-  anonimo: donation.anonimo,
-  criado_em: donation.criado_em,
+  atualizado_em: donation.atualizado_em,
   pago_em: donation.pago_em,
 });
 
@@ -29,37 +28,32 @@ export const doacoesService = {
     const data = doacaoCreateSchema.parse(input);
     assertPaymentConfigured();
     const campaign = await campanhas.findById(data.campanha_id);
-    if (!campaign || campaign.status !== "ATIVA" || !campaign.visivel) throw new ApiError(422, "CAMPAIGN_NOT_ACCEPTING_DONATIONS", "Esta campanha não está aceitando doações.");
-    if (campaign.data_termino && new Date(campaign.data_termino) < new Date()) throw new ApiError(422, "CAMPAIGN_ENDED", "Esta campanha já foi encerrada.");
+    if (!campaign || campaign.status !== "ATIVA" || !campaign.meta_isvisible) throw new ApiError(422, "CAMPAIGN_NOT_ACCEPTING_DONATIONS", "Esta campanha não está aceitando doações.");
+    if (campaign.data_fim && new Date(campaign.data_fim) < new Date()) throw new ApiError(422, "CAMPAIGN_ENDED", "Esta campanha já foi encerrada.");
     if (data.mensal && !campaign.mensal) throw new ApiError(422, "RECURRING_NOT_ALLOWED", "Esta campanha não aceita doações recorrentes.");
-    if (data.anonimo && data.email) throw new ApiError(400, "ANONYMOUS_EMAIL", "Doações anônimas não devem incluir e-mail.");
+    if (data.anonimo && (data.email || data.nome)) throw new ApiError(400, "ANONYMOUS_EMAIL", "Doações anônimas não devem incluir e-mail.");
 
     const donation = await repo.create({
       campanha_id: data.campanha_id,
       valor: data.valor,
-      nome: data.anonimo ? null : (data.nome ?? null),
-      email: data.anonimo ? null : (data.email ?? null),
-      telefone: data.anonimo ? null : (data.telefone ?? null),
-      anonimo: data.anonimo,
       status: "PENDENTE",
       txid: `PAADA-${crypto.randomUUID()}`,
       assinatura_id: null,
-      payment_provider: "mercadopago",
-      token_publico: crypto.randomUUID(),
+      payment_id: null,
     });
 
     try {
       const preference = await criarPreferenciaPagamento({
         donationId: donation.id,
-        donationToken: donation.token_publico,
+        donationToken: donation.id,
         campaignSlug: campaign.slug,
         txid: donation.txid,
         amount: Number(donation.valor),
         campaignTitle: campaign.titulo,
-        payerEmail: data.anonimo ? undefined : (data.email ?? undefined),
-        payerName: data.anonimo ? undefined : (data.nome ?? undefined),
+        payerEmail: data.email ?? undefined,
+        payerName: data.nome ?? undefined,
       });
-      await repo.update(donation.id, { payment_preference_id: preference.id });
+      await repo.update(donation.id, { payment_id: preference.id });
       return { donation: publicDonation(donation), checkout_url: preference.checkoutUrl, pagamento: preference };
     } catch (error) {
       await repo.setStatus(donation.id, "CANCELADA");
@@ -78,7 +72,7 @@ export const doacoesService = {
   async getPublic(id: string, token: string | null) {
     const donation = await repo.findById(id);
     if (!donation) throw new ApiError(404, "NOT_FOUND", "Doação não encontrada.");
-    if (token !== donation.token_publico) throw new ApiError(404, "NOT_FOUND", "Doação não encontrada.");
+    if (token !== donation.id) throw new ApiError(404, "NOT_FOUND", "Doação não encontrada.");
     return publicDonation(donation);
   },
   async updateStatus(id: string, input: unknown) {

@@ -2840,8 +2840,10 @@ body.is-admin .adminbar {
 }
 .campo input[type="text"],
 .campo input[type="email"],
+.campo input[type="password"],
 .campo input[type="number"],
 .campo input[type="date"],
+.campo input[type="url"],
 .campo textarea {
   width: 100%;
   padding: 13px 16px;
@@ -2858,6 +2860,44 @@ body.is-admin .adminbar {
 }
 .campo input:focus,
 .campo textarea:focus {
+  border-color: var(--laranja);
+  box-shadow: 0 0 0 3.5px rgba(252, 104, 26, 0.15);
+}
+.campo select {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 13px;
+  border: 1.5px solid var(--m15);
+  background: var(--carta);
+  outline: none;
+  transition: 0.2s;
+}
+.campo select:focus {
+  border-color: var(--laranja);
+  box-shadow: 0 0 0 3.5px rgba(252, 104, 26, 0.15);
+}
+.campo label.campo-check {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--m70);
+  margin-bottom: 0;
+  cursor: pointer;
+}
+.campo input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  border: 1.5px solid var(--m15);
+  border-radius: 6px;
+  background: var(--carta);
+  cursor: pointer;
+}
+.campo input[type="checkbox"]:focus {
   border-color: var(--laranja);
   box-shadow: 0 0 0 3.5px rgba(252, 104, 26, 0.15);
 }

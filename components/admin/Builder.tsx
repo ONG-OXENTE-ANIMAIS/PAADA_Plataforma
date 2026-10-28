@@ -77,6 +77,7 @@ export default function Builder() {
   );
   const [step, setStep] = useState(1);
   const [publicando, setPublicando] = useState(false);
+  const [goals, setGoals] = useState<{ id?: string; titulo: string; descricao: string; valor: number; ordem: number }[]>([]);
   const avisouRecorrente = useRef(false);
 
   const inTitleRef = useRef<HTMLInputElement>(null);
@@ -100,6 +101,22 @@ export default function Builder() {
   const setTipo = (t: TipoCampanha) => set({ type: t });
   const metaAtual = () => (draft.type === "recorrente" ? draft.goalM : draft.goal);
   const slugPrevisto = slugify(draft.title) || "sua-vaquinha";
+
+  /* ---- metas intermediárias (submetas) ---- */
+  const addGoal = () => {
+    setGoals((g) => [
+      ...g,
+      { titulo: "Nova meta", descricao: "", valor: 0, ordem: g.length },
+    ]);
+  };
+  const removeGoal = (index: number) => {
+    setGoals((g) => g.filter((_, i) => i !== index).map((goal, i) => ({ ...goal, ordem: i })));
+  };
+  const updateGoal = (index: number, patch: Partial<{ titulo: string; descricao: string; valor: number }>) => {
+    setGoals((g) =>
+      g.map((goal, i) => (i === index ? { ...goal, ...patch } : goal)),
+    );
+  };
 
   /* ---- upload de imagem ---- */
   function lerArquivo(f: File) {
@@ -151,15 +168,16 @@ export default function Builder() {
         method: "POST",
         body: JSON.stringify({
           titulo: draft.title.trim(),
+          subtitulo: draft.subtitle.trim(),
           descricao,
           categoria: draft.category,
           localidade: "Pernambuco, PE",
           status: "ATIVA",
-          valor_meta: metaAtual(),
+          meta_arrecadacao: metaAtual(),
           mensal: rec,
           destaque: false,
-          visivel: true,
-          ...(rec ? {} : { data_termino: draft.date || null }),
+          meta_isvisible: true,
+          ...(rec ? {} : { data_fim: draft.date || null }),
         }),
       });
 
@@ -181,6 +199,33 @@ export default function Builder() {
               : "Campanha criada, mas o upload da capa falhou.",
             "warning",
           );
+        }
+      }
+
+      /* ---- cria as metas intermediárias (submetas) ---- */
+      if (goals.length) {
+        const metasValidas = goals
+          .filter((g) => g.titulo.trim() && g.valor > 0)
+          .map((g) => ({
+            titulo: g.titulo.trim(),
+            descricao: g.descricao.trim(),
+            valor: g.valor,
+            ordem: g.ordem,
+          }));
+        for (const meta of metasValidas) {
+          try {
+            await apiFetch(`/api/campanhas/${criada.id}/submetas`, {
+              method: "POST",
+              body: JSON.stringify(meta),
+            });
+          } catch (erroMeta) {
+            toast(
+              erroMeta instanceof Error
+                ? `Campanha criada, mas a meta "${meta.titulo}" falhou: ${erroMeta.message}`
+                : `Campanha criada, mas a meta "${meta.titulo}" falhou.`,
+              "warning",
+            );
+          }
         }
       }
 
@@ -234,7 +279,7 @@ export default function Builder() {
       </div>
 
       <ol className="stepper wrap" id="stepper">
-        {[1, 2, 3, 4].map((s) => (
+        {[1, 2, 3, 4, 5].map((s) => (
           <li
             key={s}
             className={
@@ -246,7 +291,7 @@ export default function Builder() {
               {s < step ? <i className="ph ph-check"></i> : s}
             </span>
             <span className="s-lab">
-              {["Cabeçalho", "Conteúdo", "Meta", "Revisar"][s - 1]}
+              {[ "Cabeçalho", "Conteúdo", "Meta", "Metas", "Revisar" ][s - 1]}
             </span>
           </li>
         ))}
@@ -583,6 +628,98 @@ export default function Builder() {
 
           {/* PASSO 4 */}
           <div className={"step painel" + (step === 4 ? " active" : "")}>
+            <h2>Metas intermediárias</h2>
+            <p>
+              Defina metas parciais para mostrar o avanço da campanha aos
+              apoiadores. Cada meta tem um título, descrição e valor alvo.
+            </p>
+            <div className="metas-conteudo">
+              <div className="campo" style={{ marginBottom: 12 }}>
+                <button
+                  className="btn btn-fantasma"
+                  onClick={addGoal}
+                  style={{ display: "flex", alignItems: "center", gap: 8 }}
+                >
+                  <i className="ph ph-plus"></i> Adicionar meta
+                </button>
+              </div>
+              {goals.length === 0 ? (
+                <p className="nota-bib">
+                  Nenhuma meta intermediária definida. A campanha ainda pode ser
+                  publicada com a meta principal apenas.
+                </p>
+              ) : (
+                <div className="metas-lista">
+                  {goals.map((goal, i) => (
+                    <div key={i} className="meta-item">
+                      <div className="meta-campos">
+                        <div className="campo">
+                          <label>Título da meta</label>
+                          <input
+                            value={goal.titulo}
+                            onChange={(e) =>
+                              updateGoal(i, { titulo: e.target.value })}
+                            placeholder="Ex: Primeira fase – 100 castrações"
+                          />
+                        </div>
+                        <div className="campo">
+                          <label>Descrição</label>
+                          <input
+                            value={goal.descricao}
+                            onChange={(e) =>
+                              updateGoal(i, { descricao: e.target.value })}
+                            placeholder="O que essa etapa vai entregar"
+                          />
+                        </div>
+                        <div className="campo">
+                          <label>Valor alvo (R$)</label>
+                          <div className="input-moeda">
+                            <span>R$</span>
+                            <input
+                              type="number"
+                              value={goal.valor}
+                              min={0}
+                              step={10}
+                              onChange={(e) =>
+                                updateGoal(i, {
+                                  valor: Math.max(0,
+                                    parseFloat(e.target.value) || 0),
+                                })}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        className="btn btn-fantasma perigo"
+                        onClick={() => removeGoal(i)}
+                        style={{ padding: "6px 10px" }}
+                      >
+                        <i className="ph ph-trash" />
+                      </button>
+                    </div>
+                  ))}
+                  <p className="nota-bib">
+                    As metas aparecem na página pública como submetas da
+                    campanha.
+                  </p>
+                </div>
+              )}
+              <div className="step-nav">
+                <button className="btn btn-fantasma" onClick={() => setStep(3)}>
+                  <i className="ph ph-arrow-left"></i> Voltar
+                </button>
+                <button
+                  className="btn btn-laranja"
+                  onClick={() => setStep(5)}
+                >
+                  Continuar <i className="ph ph-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* PASSO 5 */}
+          <div className={"step painel" + (step === 5 ? " active" : "")}>
             <h2>Tudo pronto para publicar?</h2>
             <p>
               Confira o resumo — o preview ao lado mostra exatamente como a
@@ -627,6 +764,16 @@ export default function Builder() {
                 <dt>Categoria</dt>
                 <dd id="rvCat">{draft.category}</dd>
               </div>
+              {goals.length > 0 && (
+                <div>
+                  <dt>Metas intermediárias</dt>
+                  <dd id="rvMetas">
+                    {goals
+                      .map((g) => `${g.titulo} (R$ ${g.valor})`)
+                      .join(" · ")}
+                  </dd>
+                </div>
+              )}
             </dl>
             <div className="aviso-revisao">
               <i className="ph ph-info"></i>

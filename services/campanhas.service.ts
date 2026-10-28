@@ -12,18 +12,21 @@ function publicCampaign(c: CampanhaRow) {
     id: c.id,
     slug: c.slug,
     titulo: c.titulo,
+    subtitulo: c.subtitulo,
     descricao: c.descricao,
     categoria: c.categoria,
     localidade: c.localidade,
-    status: c.status,
-    valor_meta: Number(c.valor_meta),
+    historia: c.historia,
+    meta_arrecadacao: c.meta_arrecadacao,
+    valor_meta: Number(c.meta_arrecadacao ?? 0),
     valor_arrecadado: Number(c.valor_arrecadado),
     data_inicio: c.data_inicio,
-    data_termino: c.data_termino,
+    data_fim: c.data_fim,
+    status: c.status,
     mensal: c.mensal,
     destaque: c.destaque,
-    visivel: c.visivel,
-    criado_em: c.criado_em,
+    meta_isvisible: c.meta_isvisible,
+    criada_em: c.criada_em,
     atualizado_em: c.atualizado_em,
   };
 }
@@ -72,12 +75,12 @@ export const campanhasService = {
   },
   async getPublicById(id: string) {
     const campaign = await repo.findById(id);
-    if (!campaign || campaign.status !== "ATIVA" || !campaign.visivel) throw new ApiError(404, "NOT_FOUND", "Campanha não encontrada.");
+    if (!campaign || campaign.status !== "ATIVA" || !campaign.meta_isvisible) throw new ApiError(404, "NOT_FOUND", "Campanha não encontrada.");
     return this.montarDetalhePublico(campaign);
   },
   async getBySlug(slug: string) {
     const campaign = await repo.findBySlug(slug);
-    if (!campaign || campaign.status !== "ATIVA" || !campaign.visivel) throw new ApiError(404, "NOT_FOUND", "Campanha não encontrada.");
+    if (!campaign || campaign.status !== "ATIVA" || !campaign.meta_isvisible) throw new ApiError(404, "NOT_FOUND", "Campanha não encontrada.");
     return this.montarDetalhePublico(campaign);
   },
   async montarDetalhePublico(campaign: CampanhaRow) {
@@ -116,7 +119,7 @@ export const campanhasService = {
       categoria: data.categoria ?? null,
       localidade: data.localidade ?? null,
       data_inicio: data.data_inicio ?? new Date().toISOString().slice(0, 10),
-      data_termino: data.data_termino ?? null,
+      data_fim: data.data_fim ?? null,
     }));
   },
   async update(id: string, input: unknown) {
@@ -189,7 +192,7 @@ export const campanhasService = {
   async createUpdate(campanhaId: string, input: unknown) {
     await this.assertCampaign(campanhaId);
     const data = atualizacaoCreateSchema.parse(input);
-    return repo.createUpdate({ ...data, campanha_id: campanhaId, data_publicacao: data.data_publicacao ?? new Date().toISOString() });
+    return repo.createUpdate({ ...data, campanha_id: campanhaId });
   },
   async updateUpdate(campanhaId: string, id: string, input: unknown) {
     await this.assertCampaign(campanhaId);

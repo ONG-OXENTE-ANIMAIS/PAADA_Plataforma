@@ -10,7 +10,7 @@ export class ParceirosRepository {
     if (filters.tipo) query = query.ilike("tipo", `%${filters.tipo}%`);
     if (filters.area) query = query.ilike("area", `%${filters.area}%`);
     if (filters.localidade) query = query.ilike("localidade", `%${filters.localidade}%`);
-    const { data, error, count } = await query.order("destaque", { ascending: false }).order("nome").range(filters.from, filters.to);
+    const { data, error, count } = await query.order("nome").range(filters.from, filters.to);
     if (error) throw error;
     return { data: (data ?? []) as ParceiroRow[], count: count ?? 0 };
   }

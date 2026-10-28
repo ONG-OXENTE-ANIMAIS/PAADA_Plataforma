@@ -9,22 +9,22 @@ import {
 } from "@/lib/validations/schemas";
 
 describe("campanhaCreateSchema", () => {
-  const base = { titulo: "Vaquinha do abrigo", valor_meta: 1000 };
+  const base = { titulo: "Vaquinha do abrigo", subtitulo: "Sub de teste", meta_arrecadacao: 1000 };
 
   it("aceita payload válido", () => {
-    const r = campanhaCreateSchema.parse({ ...base, data_inicio: "2025-01-01", data_termino: "2025-03-01" });
+    const r = campanhaCreateSchema.parse({ ...base, data_inicio: "2025-01-01", data_fim: "2025-03-01" });
     expect(r.status).toBe("RASCUNHO");
-    expect(r.visivel).toBe(false);
+    expect(r.meta_isvisible).toBe(false);
   });
 
   it("rejeita término anterior ao início", () => {
     expect(() =>
-      campanhaCreateSchema.parse({ ...base, data_inicio: "2025-03-01", data_termino: "2025-01-01" }),
+      campanhaCreateSchema.parse({ ...base, data_inicio: "2025-03-01", data_fim: "2025-01-01" }),
     ).toThrow();
   });
 
   it("rejeita valores monetários negativos", () => {
-    expect(() => campanhaCreateSchema.parse({ ...base, valor_meta: -5 })).toThrow();
+    expect(() => campanhaCreateSchema.parse({ ...base, meta_arrecadacao: -5 })).toThrow();
   });
 });
 

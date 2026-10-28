@@ -5,7 +5,7 @@ import { UsuariosRepository } from "@/repositories/usuarios.repository";
 import type { UsuarioRow } from "@/types/database.types";
 
 const repo = new UsuariosRepository();
-const publicUser = (user: UsuarioRow) => ({ id: user.id, nome: user.nome, email: user.email, login: user.login, tipo: user.tipo, ativo: user.ativo, criado_em: user.criado_em, atualizado_em: user.atualizado_em });
+const publicUser = (user: UsuarioRow) => ({ id: String(user.id), nome: user.nome, email: user.email, login: user.login, tipo: user.tipo, ativo: user.ativo, criado_em: user.criado_em, atualizado_em: user.atualizado_em });
 
 export const usuariosService = {
   async list(page: number, limit: number) {
