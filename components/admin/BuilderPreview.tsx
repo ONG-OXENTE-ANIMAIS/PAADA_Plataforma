@@ -148,7 +148,7 @@ export default function BuilderPreview({ draft }: { draft: Draft }) {
         <h3>Sobre a vaquinha</h3>
         <p>{hist}</p>
         <div className="pv-cta" style={{ background: pc, color: tc }}>
-          {rec ? "Apoiar todo mês" : "Doar agora"} · Mercado Pago
+          {rec ? "Apoiar todo mês" : "Doar agora"} · Efi Pix
         </div>
       </div>
     </div>

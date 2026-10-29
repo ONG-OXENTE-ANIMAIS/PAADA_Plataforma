@@ -117,9 +117,9 @@ export default function AdminDashboardPage() {
             </h3>
             <p>
               Cada doação nasce PENDENTE no banco e só vira PAGA quando o
-              webhook do Mercado Pago confirma o pagamento — o valor
-              arrecadado da campanha é creditado por uma função atômica no
-              banco, nunca pelo navegador.
+              webhook do Efi confirma o pagamento — o valor arrecadado da
+              campanha é creditado por uma função atômica no banco, nunca pelo
+              navegador.
             </p>
           </div>
           <div className="grupo-bts" style={{ alignItems: "center" }}>

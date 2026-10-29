@@ -21,8 +21,8 @@ vi.mock("@/repositories/doacoes.repository", () => ({
 vi.mock("@/repositories/campanhas.repository", () => ({
   CampanhasRepository: vi.fn(() => campanhasRepo),
 }));
-vi.mock("@/lib/payments/mercadopago", () => ({
-  criarPreferenciaPagamento: criarPreferencia,
+vi.mock("@/lib/payments/efi", () => ({
+  criarCobrancaPagamento: criarPreferencia,
 }));
 
 import { doacoesService } from "@/services/doacoes.service";
@@ -51,7 +51,8 @@ const payload = {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  process.env.MERCADO_PAGO_ACCESS_TOKEN = "token-de-teste";
+  process.env.EFI_CLIENT_ID = "client-id-teste";
+  process.env.EFI_CLIENT_SECRET = "client-secret-teste";
   campanhasRepo.findById.mockResolvedValue(campanhaAtiva);
   doacoesRepo.create.mockImplementation((values: Record<string, unknown>) =>
     Promise.resolve({ id: "DOA1", token_publico: "tok-1", ...values }),
@@ -59,16 +60,19 @@ beforeEach(() => {
   doacoesRepo.update.mockResolvedValue({});
   doacoesRepo.setStatus.mockResolvedValue({});
   criarPreferencia.mockResolvedValue({
-    id: "pref-1",
-    checkoutUrl: "https://mp.example/checkout",
-    initPoint: "https://mp.example/checkout",
+    id: "cob-1",
+    checkoutUrl: "https://efi.example/qr",
+    qrCode: "00020126580014BR.GOV.BCB.PIX0136",
+    qrcodeBase64: "iVBORw0KGgo",
+    initPoint: "https://efi.example/qr",
     sandboxInitPoint: null,
   });
 });
 
 describe("doacoesService.create", () => {
   it("rejeita quando o provedor não está configurado (503)", async () => {
-    delete process.env.MERCADO_PAGO_ACCESS_TOKEN;
+    delete process.env.EFI_CLIENT_ID;
+    delete process.env.EFI_CLIENT_SECRET;
     await expect(doacoesService.create(payload)).rejects.toMatchObject({
       status: 503,
       code: "PAYMENT_PROVIDER_NOT_CONFIGURED",
@@ -123,7 +127,7 @@ describe("doacoesService.create", () => {
       amount: 50,
       payerEmail: "maria@exemplo.com",
     });
-    expect(resultado.checkout_url).toBe("https://mp.example/checkout");
+    expect(resultado.checkout_url).toBe("https://efi.example/qr");
     expect(resultado.donation.status).toBe("PENDENTE");
   });
 

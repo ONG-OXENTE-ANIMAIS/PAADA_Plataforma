@@ -138,9 +138,9 @@ export default function ComoAjudarPage() {
                 </p>
                 <h3>Sua doação cai na conta da campanha</h3>
                 <p>
-                  O pagamento é processado pelo Mercado Pago e o repasse vai
-                  direto para a conta vinculada da ONG responsável — sem
-                  intermediário, sem burocracia.
+                  O pagamento é via Pix (Efi) e o repasse vai direto para a
+                  conta vinculada da ONG responsável — sem intermediário, sem
+                  burocracia.
                 </p>
               </div>
             </div>

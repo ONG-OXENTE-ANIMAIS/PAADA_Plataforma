@@ -23,6 +23,11 @@ export class DoacoesRepository {
     if (error) throw error;
     return data as DoacaoRow | null;
   }
+  async findByTxid(txid: string) {
+    const { data, error } = await this.db().from("doacoes").select("*").eq("txid", txid).maybeSingle();
+    if (error) throw error;
+    return data as DoacaoRow | null;
+  }
   async create(values: Partial<DoacaoRow> & Pick<DoacaoRow, "campanha_id" | "valor" | "txid">) {
     const { data, error } = await this.db().from("doacoes").insert(values).select("*").single();
     if (error) throw error;

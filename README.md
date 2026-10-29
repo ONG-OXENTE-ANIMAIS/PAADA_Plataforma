@@ -1,12 +1,12 @@
 # PAADA Plataforma
 
-Plataforma de vaquinhas/campanhas de arrecadação com backend completo (Next.js 15 + Supabase + Mercado Pago).
+Plataforma de vaquinhas/campanhas de arrecadacao com backend completo (Next.js 15 + Supabase + Efi/Pix).
 
 ## Stack
 
 - **Frontend**: Next.js 15 (App Router), React 19, Tailwind v4
 - **Backend**: Next.js API Routes, Supabase (PostgreSQL + Storage + Auth)
-- **Pagamentos**: Mercado Pago (Pix, Cartão, Boleto) via webhook HMAC
+- **Pagamentos**: Efi / Banco Efí (Pix via Cobrança Imediata) com confirmação por webhook (validacao servidor-a-servidor na API do Efi).
 - **Admin**: Painel próprio (`/admin`) com login, dashboard, CRUD de campanhas/doações/parceiros/contato/usuários
 
 ## Estrutura
@@ -23,7 +23,7 @@ components/
 services/                 # Regras de negócio (5 services)
 repositories/             # Acesso a dados (5 repos, Supabase admin client)
 lib/
-  payments/mercadopago.ts # Criação preference + consulta + validação HMAC
+  payments/efi.ts # Criacao cobranca Pix + consulta + confirmacao via webhook
   auth/session.ts         # Cookies assinadas (iron-session)
   api/                    # Helpers: response, request, rate-limit, pagination
 supabase/migrations/      # 13 migrations (schema + functions + adaptação)
@@ -37,12 +37,11 @@ types/database.types.ts   # Tipos TypeScript do schema
 2. DonateModal POST /api/doacoes → doacoesService.create()
    - Valida campanha ATIVA, visível, não encerrada
    - Cria doação PENDENTE + txid único
-   - Cria preference Mercado Pago → checkout_url
-3. Redirect para checkout_url (ambiente seguro MP)
-4. Webhook POST /api/pagamentos/mercadopago/webhook
-   - Valida HMAC (x-signature + x-request-id)
-   - Consulta pagamento no MP
-   - Se approved → doacoesService.confirm() → RPC confirmar_doacao()
+   - Cria cobrança Pix no Efi → checkout_url (QR code / copia e cola)
+3. Pagar o QR code Pix (ambiente Efi) ou voltar para a campanha
+4. Webhook POST /api/pagamentos/efi/webhook
+   - Consulta cobrança no Efi (servidor-a-servidor, sem confiar na notificação)
+   - Se CONCLUIDA → doacoesService.confirm() → RPC confirmar_doacao()
      - Idempotente: ignora se já PAGA com mesmo payment_id
      - Atualiza campanha.valor_arrecadado atomicamente
 5. Usuário retorna para /vaquinha/[slug]?doacao=ID&token=TOKEN
@@ -60,8 +59,10 @@ Copie `.env.example` para `.env` e preencha:
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Chave anon (client) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Chave service_role (admin/server) |
 | `SUPABASE_STORAGE_BUCKET` | Bucket para imagens (default: `campanhas`) |
-| `MERCADO_PAGO_ACCESS_TOKEN` | Access token produção MP |
-| `MERCADO_PAGO_WEBHOOK_SECRET` | Secret HMAC do webhook (gere: `openssl rand -hex 32`) |
+| `EFI_CLIENT_ID` | Client ID OAuth da aplicação Efi |
+| `EFI_CLIENT_SECRET` | Client Secret OAuth da aplicação Efi |
+| `EFI_PIX_KEY` | Chave Pix cadastrada na Efi (CNPJ, CPF, e-mail, telefone ou aleatória) |
+| `EFI_SANDBOX` | `true` (sandbox) ou `false` (produção), default `true` |
 | `NEXT_PUBLIC_APP_URL` | URL base (dev: `http://localhost:3000`) |
 | `AUTH_SECRET` | Secret para cookies (gere: `openssl rand -base64 32`) |
 
@@ -99,7 +100,7 @@ npm run dev
 - [x] API routes + services + repositories
 - [x] Frontend público (CampaignDetail, DonateModal)
 - [x] Admin panel (login, dashboard, CRUDs)
-- [x] Webhook Mercado Pago com HMAC
+- [x] Webhook Efi com confirmação via API (servidor-a-servidor)
 - [x] `.env.example`
 
 ### 🔧 Pendentes para Deploy
@@ -109,12 +110,13 @@ npm run dev
 - [ ] Criar bucket `campanhas` (público)
 - [ ] Configurar RLS policies se necessário (atualmente usa service_role no server)
 
-#### 2. Mercado Pago
-- [ ] Criar aplicação em https://developers.mercadopago.com.br
-- [ ] Gerar `ACCESS_TOKEN` de produção
-- [ ] Configurar webhook: `https://SEU_DOMINIO.com/api/pagamentos/mercadopago/webhook`
-- [ ] Eventos: `payment.created`, `payment.updated`
-- [ ] Definir `back_urls` no preference (success/pending/failure → `/vaquinha/[slug]`)
+#### 2. Efi (Pix)
+
+- [ ] Criar aplicação no portal de desenvolvedor Efi e obter `EFI_CLIENT_ID` / `EFI_CLIENT_SECRET`
+- [ ] Cadastrar a `EFI_PIX_KEY` da ONG na Efi
+- [ ] Definir `EFI_SANDBOX=false` para produção
+- [ ] Configurar webhook: `https://SEU_DOMINIO.com/api/pagamentos/efi/webhook`
+- [ ] Eventos de cobrança imediata (status `CONCLUIDA`)
 
 #### 3. Deploy (Vercel recomendado)
 - [ ] Conectar repo na Vercel

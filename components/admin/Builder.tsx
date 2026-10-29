@@ -779,7 +779,7 @@ export default function Builder() {
               <i className="ph ph-info"></i>
               <span>
                 No produto final, esta etapa inclui também a revisão da ONG e a
-                vinculação da conta do Mercado Pago, para que os repasses caiam
+                vinculação da chave Pix da ONG na Efi, para que os repasses caiam
                 direto na conta da instituição.
               </span>
             </div>

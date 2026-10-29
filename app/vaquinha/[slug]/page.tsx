@@ -39,7 +39,7 @@ export default async function VaquinhaPage({ params, searchParams }: Props) {
     notFound();
   }
 
-  /* Status de uma doação que voltou do checkout do Mercado Pago
+  /* Status de uma doação que voltou do checkout do Efi (Pix)
      (back_urls: /vaquinha/[slug]?doacao=ID&token=TOKEN). */
   const sp = await searchParams;
   const doacaoId = typeof sp.doacao === "string" ? sp.doacao : null;

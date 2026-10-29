@@ -29,7 +29,7 @@ export default function CampaignDetail({
   const prevRaised = useRef<number | null>(null);
   const [barW, setBarW] = useState("0%");
 
-  /* ---- aviso de retorno do Mercado Pago (limpa a query da URL) ---- */
+  /* ---- aviso de retorno do Efi (Pix) (limpa a query da URL) ---- */
   useEffect(() => {
     if (!retornoDoacao) return;
     if (retornoDoacao === "PAGA")
@@ -285,13 +285,10 @@ export default function CampaignDetail({
           </button>
           <div className="segura">
             <div className="linha1">
-              <i className="ph-fill ph-lock-key"></i> Pagamento seguro processado
-              pelo Mercado Pago
+              <i className="ph-fill ph-lock-key"></i> Pagamento seguro via Pix (Efi)
             </div>
             <div className="formas">
               <i className="ph-fill ph-pix-logo" title="Pix"></i>
-              <i className="ph ph-credit-card" title="Cartão"></i>
-              <i className="ph ph-barcode" title="Boleto"></i>
             </div>
           </div>
         </aside>

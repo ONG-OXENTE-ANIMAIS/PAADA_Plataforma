@@ -2,7 +2,7 @@ import { ApiError } from "@/lib/api/errors";
 import { doacaoCreateSchema, doacaoStatusUpdateSchema } from "@/lib/validations/schemas";
 import { DoacoesRepository } from "@/repositories/doacoes.repository";
 import { CampanhasRepository } from "@/repositories/campanhas.repository";
-import { criarPreferenciaPagamento } from "@/lib/payments/mercadopago";
+import { criarCobrancaPagamento } from "@/lib/payments/efi";
 import type { DoacaoRow } from "@/types/database.types";
 
 const repo = new DoacoesRepository();
@@ -18,8 +18,8 @@ const publicDonation = (donation: DoacaoRow) => ({
 });
 
 function assertPaymentConfigured() {
-  if (!process.env.MERCADO_PAGO_ACCESS_TOKEN) {
-    throw new ApiError(503, "PAYMENT_PROVIDER_NOT_CONFIGURED", "O provedor de pagamento ainda não foi configurado.");
+  if (!process.env.EFI_CLIENT_ID || !process.env.EFI_CLIENT_SECRET) {
+    throw new ApiError(503, "PAYMENT_PROVIDER_NOT_CONFIGURED", "O provedor de pagamento (Efi) ainda não foi configurado.");
   }
 }
 
@@ -43,7 +43,7 @@ export const doacoesService = {
     });
 
     try {
-      const preference = await criarPreferenciaPagamento({
+      const preference = await criarCobrancaPagamento({
         donationId: donation.id,
         donationToken: donation.id,
         campaignSlug: campaign.slug,

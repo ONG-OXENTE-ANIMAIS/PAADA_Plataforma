@@ -127,7 +127,7 @@ export default function SobrePage() {
           <div className="tl" data-reveal>
             <span className="ano">2023</span>
             <div>
-              <h4>Plataforma própria, pagos pelo Mercado Pago</h4>
+              <h4>Plataforma própria, pagos via Pix (Efi)</h4>
               <p>
                 Saímos das listas de pessoas e ganhamos endereço na internet:
                 vaquinhas com página própria, doação por Pix em segundos e
