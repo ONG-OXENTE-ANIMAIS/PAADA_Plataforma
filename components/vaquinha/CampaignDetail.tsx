@@ -144,7 +144,7 @@ export default function CampaignDetail({
             <ul className="lista-usos">
               {campaign.usos.map((u, i) => (
                 <li key={i}>
-                  <i className="ph-fill ph-check-circle"></i>
+                  <i className={u.alcancada ? "ph-fill ph-check-circle" : "ph ph-circle"}></i>
                   <span>{u.label}</span>
                   <b>{BRL(u.valor)}</b>
                 </li>
