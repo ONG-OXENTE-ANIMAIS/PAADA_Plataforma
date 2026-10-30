@@ -106,15 +106,34 @@ export const usuarioCreateSchema = z.object({
 
 export const usuarioUpdateSchema = usuarioCreateSchema.partial();
 
+const anoAtual = new Date().getFullYear();
+
 export const parceiroCreateSchema = z.object({
   nome: z.string().trim().min(2).max(160),
-  sigla: z.string().trim().max(20).nullable().optional(),
+  sigla: z.string().trim().toUpperCase().max(3).nullable().optional(),
   tipo: z.string().trim().max(80).nullable().optional(),
   area: z.string().trim().max(80).nullable().optional(),
   localidade: z.string().trim().max(120).nullable().optional(),
   descricao: optionalText,
   logo_url: url.nullable().optional(),
-  desde: z.string().trim().max(30).nullable().optional(),
+  desde: z
+    .string()
+    .trim()
+    .max(4)
+    .nullable()
+    .optional()
+    .refine(
+      (v) => !v || /^\d{4}$/.test(v),
+      { message: "Informe um ano válido (4 dígitos)." }
+    )
+    .refine(
+      (v) => {
+        if (!v) return true;
+        const ano = Number(v);
+        return ano >= 1900 && ano <= anoAtual + 1;
+      },
+      { message: `O ano deve estar entre 1900 e ${anoAtual + 1}.` }
+    ),
   destaque: z.boolean().default(false),
   ativo: z.boolean().default(true),
 });

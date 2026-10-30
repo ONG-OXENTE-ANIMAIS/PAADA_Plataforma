@@ -2876,6 +2876,20 @@ body.is-admin .adminbar {
   border-color: var(--laranja);
   box-shadow: 0 0 0 3.5px rgba(252, 104, 26, 0.15);
 }
+
+.campo-erro {
+  color: #b3261e;
+  font-size: 11.5px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.campo-aviso {
+  color: var(--m50);
+  font-size: 11.5px;
+  margin-top: 6px;
+}
 .campo label.campo-check {
   display: inline-flex;
   gap: 8px;
