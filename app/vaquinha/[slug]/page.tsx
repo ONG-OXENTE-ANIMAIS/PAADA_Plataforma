@@ -56,10 +56,12 @@ export default async function VaquinhaPage({ params, searchParams }: Props) {
 
   const { campanha, submetas, atualizacoes } = detalhe;
   const base = campaignFromApi(campanha);
+  const arrecadado = Number(campanha.valor_arrecadado ?? 0);
 
   const usos: Uso[] = submetas.map((s) => ({
     label: s.titulo,
     valor: Number(s.valor),
+    alcancada: arrecadado >= Number(s.valor),
   }));
 
   const updates: Atualizacao[] = atualizacoes.map((a) => ({

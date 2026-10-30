@@ -9,7 +9,7 @@ export type TipoCampanha = "unica" | "recorrente";
 export type Modelo = "full" | "split" | "center" | "solid";
 import type { StatusCampanha } from "@/types/database.types";
 
-export type Uso = { label: string; valor: number };
+export type Uso = { label: string; valor: number; alcancada: boolean };
 export type Atualizacao = {
   tag: string;
   iso: string;
@@ -71,7 +71,10 @@ const dataCurta = (iso: string) => new Date(iso).toLocaleDateString("pt-BR", { d
 
 export function diasRestantes(dataFim: string | null): number | undefined {
   if (!dataFim) return undefined;
-  const fim = new Date(`${dataFim}T23:59:59`).getTime();
+  // Supabase returns timestamp strings like "2027-02-24 00:00:00" or "2027-02-24T00:00:00.000Z"
+  // Parse directly without appending time (already has time component or is ISO)
+  const fim = new Date(dataFim.replace(" ", "T")).getTime();
+  if (isNaN(fim)) return undefined;
   return Math.max(0, Math.ceil((fim - Date.now()) / 86_400_000));
 }
 
