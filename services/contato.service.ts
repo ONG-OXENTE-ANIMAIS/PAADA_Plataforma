@@ -15,7 +15,9 @@ export const contatoService = {
   },
   async create(input: unknown) {
     const data = contatoCreateSchema.parse(input);
-    return repo.create({ ...data, status: "RECEBIDA" });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { website, ...cleanData } = data;
+    return repo.create({ ...cleanData, status: "RECEBIDA" });
   },
   async update(id: string, input: unknown) {
     const data = contatoUpdateSchema.parse(input);

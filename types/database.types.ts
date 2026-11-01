@@ -97,6 +97,7 @@ export type ContatoRow = {
   email: string;
   assunto: string;
   mensagem: string;
+  tipo: TipoMensagem;
   status: StatusContato;
   atualizado_em: string;
 };
@@ -131,7 +132,7 @@ export type Database = {
       };
       usuarios: { Row: UsuarioRow; Insert: Partial<UsuarioRow> & Pick<UsuarioRow, "nome" | "email" | "login" | "senha">; Update: Partial<UsuarioRow>; Relationships: [] };
       parceiros: { Row: ParceiroRow; Insert: Partial<ParceiroRow> & Pick<ParceiroRow, "nome">; Update: Partial<ParceiroRow>; Relationships: [] };
-      contato: { Row: ContatoRow; Insert: Partial<ContatoRow> & Pick<ContatoRow, "nome" | "email" | "assunto" | "mensagem">; Update: Partial<ContatoRow>; Relationships: [] };
+      contato: { Row: ContatoRow; Insert: Partial<ContatoRow> & Pick<ContatoRow, "nome" | "email" | "assunto" | "mensagem" | "tipo">; Update: Partial<ContatoRow>; Relationships: [] };
     };
     Views: Record<string, never>;
     Functions: {
