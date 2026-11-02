@@ -1743,20 +1743,37 @@ body.is-admin .adminbar {
   transform: translateY(-50%);
   font-weight: 700;
   color: var(--m50);
+  pointer-events: none;
+  z-index: 2;
+  user-select: none;
+  line-height: 1;
 }
+.campo .campo-valor input,
 .campo-valor input {
   width: 100%;
-  padding: 13px 16px 13px 46px;
+  padding: 13px 16px 13px 52px !important;
   border-radius: 14px;
   border: 1.5px solid var(--m15);
-  background: transparent;
+  background: var(--carta);
+  font: inherit;
   font-weight: 600;
   outline: none;
   transition: 0.2s;
+  box-sizing: border-box;
 }
+.campo .campo-valor input:focus,
 .campo-valor input:focus {
   border-color: var(--laranja);
   box-shadow: 0 0 0 3.5px rgba(252, 104, 26, 0.15);
+}
+.campo-valor input::-webkit-outer-spin-button,
+.campo-valor input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.campo-valor input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 .v-doar .btn {
   width: 100%;
@@ -2840,6 +2857,7 @@ body.is-admin .adminbar {
 }
 .campo input[type="text"],
 .campo input[type="email"],
+.campo input[type="tel"],
 .campo input[type="password"],
 .campo input[type="number"],
 .campo input[type="date"],
@@ -2850,8 +2868,10 @@ body.is-admin .adminbar {
   border-radius: 13px;
   border: 1.5px solid var(--m15);
   background: var(--carta);
+  font: inherit;
   outline: none;
   transition: 0.2s;
+  box-sizing: border-box;
 }
 .campo textarea {
   resize: vertical;
@@ -2869,8 +2889,10 @@ body.is-admin .adminbar {
   border-radius: 13px;
   border: 1.5px solid var(--m15);
   background: var(--carta);
+  font: inherit;
   outline: none;
   transition: 0.2s;
+  box-sizing: border-box;
 }
 .campo select:focus {
   border-color: var(--laranja);
