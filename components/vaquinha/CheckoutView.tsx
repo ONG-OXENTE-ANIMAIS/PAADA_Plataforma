@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { apiFetch } from "@/lib/api-client";
 import { BRL, VALORES, pctOf, trunc, type Campaign, type Freq } from "@/lib/campaigns";
+import { carregarSdkEfi, gerarPaymentTokenEfi } from "@/lib/payments/efi-client";
 
 type MetodoPagamento = "pix" | "cartao";
 
@@ -169,6 +170,13 @@ export default function CheckoutView({
 
   useEffect(() => () => pararPoll(), []);
 
+  // Pré-carrega o script de segurança da Efí quando o usuário clica na aba de cartão
+  useEffect(() => {
+    if (metodo === "cartao") {
+      carregarSdkEfi();
+    }
+  }, [metodo]);
+
   function pararPoll() {
     if (poll.current) {
       clearInterval(poll.current);
@@ -253,6 +261,31 @@ export default function CheckoutView({
       const digitosCartao = numCartao.replace(/\D/g, "");
       const bandeira = detectarBandeira(digitosCartao);
 
+      // Tokenização Segura Client-Side (PCI-DSS):
+      // Gera o payment_token diretamente no navegador com a Efí antes de chamar o nosso servidor
+      let paymentToken: string | undefined = undefined;
+      if (metodo === "cartao") {
+        try {
+          const [mesVal, anoVal] = validade.split("/");
+          paymentToken = await gerarPaymentTokenEfi({
+            numero: digitosCartao,
+            cvv: cvv.replace(/\D/g, ""),
+            mes: mesVal,
+            ano: anoVal,
+            bandeira: bandeira.toLowerCase(),
+          });
+        } catch (tokenErr: unknown) {
+          const mensagemErro =
+            tokenErr instanceof Error
+              ? tokenErr.message
+              : "Não foi possível validar o cartão com a operadora.";
+          setErro(mensagemErro);
+          setEtapa("form");
+          enviando.current = false;
+          return;
+        }
+      }
+
       const corpoRequisicao: Record<string, unknown> = {
         campanha_id: campaign.id,
         valor,
@@ -270,6 +303,7 @@ export default function CheckoutView({
 
       if (metodo === "cartao") {
         corpoRequisicao.cartao = {
+          payment_token: paymentToken,
           funcao: funcaoCartao,
           parcelas: funcaoCartao === "debito" ? 1 : parcelas,
           titular_nome: nomeTitular.trim(),
@@ -1089,9 +1123,9 @@ export default function CheckoutView({
 
         {/* COLUNA LATERAL: RESUMO DA CAMPANHA E DO PAGAMENTO */}
         <aside className="v-doar" aria-label="Resumo da doação">
-          {campaign.thumb || campaign.full ? (
+          {campaign.img || campaign.full ? (
             <img
-              src={campaign.thumb || campaign.full}
+              src={campaign.img || campaign.full || ""}
               alt={campaign.title}
               style={{
                 width: "100%",

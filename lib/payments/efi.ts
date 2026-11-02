@@ -445,7 +445,7 @@ export async function criarCobrancaCartao(input: CartaoInput): Promise<{
     throw new ApiError(
       400,
       "CARD_TOKEN_REQUIRED",
-      "Token de segurança do cartão não gerado. Verifique NEXT_PUBLIC_EFI_ACCOUNT_ID em produção.",
+      "Token de segurança do cartão não gerado. Verifique NEXT_PUBLIC_EFI_PAYEE_CODE em produção.",
     );
   }
 
