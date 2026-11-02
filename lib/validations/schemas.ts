@@ -7,7 +7,7 @@ const url = z.string().trim().url().max(2000);
 
 export const campanhaStatusSchema = z.enum(["RASCUNHO", "ATIVA", "PAUSADA", "CONCLUIDA", "CANCELADA"]);
 export const doacaoStatusSchema = z.enum(["PENDENTE", "PAGA", "CANCELADA", "REEMBOLSADA"]);
-export const contatoStatusSchema = z.enum(["RECEBIDA", "EM_ANALISE", "RESPONDIDA", "ARQUIVADA"]);
+export const contatoStatusSchema = z.enum(["RECEBIDA", "EM_ANALISE", "CONCLUIDA", "ARQUIVADA"]);
 
 export const paginationSchema = z.object({
   page: z.coerce.number().int().positive().default(1),

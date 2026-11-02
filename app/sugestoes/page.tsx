@@ -91,16 +91,17 @@ export default function SugestoesPage() {
                 <i className="ph-fill ph-check-circle"></i>
                 <h3>Sugestão registrada!</h3>
                 <p>
-                  A sua ideia caiu direto na caixa de entrada da equipe — com
-                  resposta em até 15 dias no e-mail{" "}
+                  A sua ideia caiu direto na caixa de entrada da equipe.{" "}
                   <b>{email || "informado"}</b>.
                 </p>
-                <div className="grupo-bts" style={{ justifyContent: "center" }}>
+                <div className="grupo-bt">
                   <button className="btn btn-marrom" onClick={limpar}>
-                    <i className="ph ph-plus"></i> Enviar outra sugestão
+                    Enviar outra sugestão
                   </button>
-                  <Link href="/vaquinhas" className="btn btn-areia">
-                    <i className="ph ph-hand-heart"></i> Ver vaquinhas
+                  <Link href="/vaquinhas">
+                    <button className="btn btn-areia">
+                      Ver vaquinhas
+                    </button>
                   </Link>
                 </div>
               </div>
@@ -215,26 +216,18 @@ export default function SugestoesPage() {
             </div>
             <dl>
               <div>
-                <dt>Semana 1</dt>
+                <dt>Etapa 1</dt>
                 <dd>Chegou e foi registrada</dd>
               </div>
               <div>
-                <dt>Semana 2</dt>
-                <dd>A equipe técnica avalia</dd>
+                <dt>Etapa 2</dt>
+                <dd>A equipe avalia</dd>
               </div>
               <div>
-                <dt>Até 15 dias</dt>
+                <dt>Etapa 3</dt>
                 <dd>Você recebe a resposta</dd>
               </div>
-              <div>
-                <dt>Se aprovada</dt>
-                <dd>Entra no roadmap público</dd>
-              </div>
             </dl>
-            <div className="id-valido">
-              <i className="ph-fill ph-seal-check" style={{ fontSize: "17px" }}></i>
-              Toda sugestão recebe resposta
-            </div>
           </aside>
         </div>
       </section>

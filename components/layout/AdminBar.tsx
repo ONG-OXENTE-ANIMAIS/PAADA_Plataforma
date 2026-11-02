@@ -33,7 +33,7 @@ export default function AdminBar() {
     } catch {
       /* sessão já encerrada */
     }
-    router.push("/");
+    router.push("/admin/login");
     router.refresh();
   };
 

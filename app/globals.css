@@ -2852,6 +2852,7 @@ body.is-admin .adminbar {
   background: var(--carta);
   outline: none;
   transition: 0.2s;
+  height: 45px;
 }
 .campo textarea {
   resize: vertical;
@@ -4070,6 +4071,7 @@ body.is-admin .adminbar {
   color: var(--marrom);
   cursor: pointer;
   font-weight: 600;
+  margin-right: 3px;
 }
 .adm-acao-btn:hover {
   border-color: var(--laranja);
@@ -4089,4 +4091,19 @@ body.is-admin .adminbar {
   gap: 14px;
   margin-top: 18px;
   font-size: 13.5px;
+}
+.bg-bege:hover{
+  background: #fde7cd;
+  color: var(--marrom);
+}
+.grupo-bt{
+  display: flex;
+  justify-content: center;
+  gap: 5px
+}
+.grupo-bt button{
+  height: 45px;
+}
+.grupo-bt:last-child:hover{
+  color: var(--marrom);
 }

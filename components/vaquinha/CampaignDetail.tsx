@@ -178,7 +178,7 @@ export default function CampaignDetail({
                 do trabalho, a turma do futebol.
               </p>
             </div>
-            <button className="btn btn-laranja" id="btnShare" onClick={compartilhar}>
+          <button className="btn btn-laranja  bg-bege" id="btnShare" onClick={compartilhar}>
               <i className="ph ph-link"></i> Copiar link da vaquinha
             </button>
           </div>
