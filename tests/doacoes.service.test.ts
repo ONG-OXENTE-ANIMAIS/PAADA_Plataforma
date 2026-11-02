@@ -14,6 +14,7 @@ const campanhasRepo = vi.hoisted(() => ({
 }));
 
 const criarPreferencia = vi.hoisted(() => vi.fn());
+const criarCartao = vi.hoisted(() => vi.fn());
 
 vi.mock("@/repositories/doacoes.repository", () => ({
   DoacoesRepository: vi.fn(() => doacoesRepo),
@@ -23,6 +24,7 @@ vi.mock("@/repositories/campanhas.repository", () => ({
 }));
 vi.mock("@/lib/payments/efi", () => ({
   criarCobrancaPagamento: criarPreferencia,
+  criarCobrancaCartao: criarCartao,
 }));
 
 import { doacoesService } from "@/services/doacoes.service";
@@ -114,12 +116,12 @@ describe("doacoesService.create", () => {
     ).rejects.toMatchObject({ status: 400, code: "ANONYMOUS_EMAIL" });
   });
 
-  it("cria doação PENDENTE e retorna checkout_url do provedor", async () => {
+  it("cria doação PENDENTE e retorna checkout_url e pagando do provedor", async () => {
     const resultado = await doacoesService.create(payload);
     expect(doacoesRepo.create).toHaveBeenCalledTimes(1);
     const valores = doacoesRepo.create.mock.calls[0][0];
     expect(valores.status).toBe("PENDENTE");
-    expect(valores.txid).toMatch(/^PAADA-/);
+    expect(valores.txid).toMatch(/^PAADA[a-zA-Z0-9]{27}$/);
     expect(criarPreferencia).toHaveBeenCalledTimes(1);
     expect(criarPreferencia.mock.calls[0][0]).toMatchObject({
       donationId: "DOA1",
@@ -128,6 +130,12 @@ describe("doacoesService.create", () => {
       payerEmail: "maria@exemplo.com",
     });
     expect(resultado.checkout_url).toBe("https://efi.example/qr");
+    expect(resultado.pagando).toMatchObject({
+      tipo: "pix",
+      qrCode: "00020126580014BR.GOV.BCB.PIX0136",
+      qrcodeBase64: "iVBORw0KGgo",
+      copiaCola: "00020126580014BR.GOV.BCB.PIX0136",
+    });
     expect(resultado.donation.status).toBe("PENDENTE");
   });
 
@@ -135,6 +143,39 @@ describe("doacoesService.create", () => {
     criarPreferencia.mockRejectedValue(new ApiError(502, "PAYMENT_PROVIDER_ERROR", "boom"));
     await expect(doacoesService.create(payload)).rejects.toMatchObject({ status: 502 });
     expect(doacoesRepo.setStatus).toHaveBeenCalledWith("DOA1", "CANCELADA");
+  });
+
+  it("processa e confirma doação paga com cartão de crédito", async () => {
+    criarCartao.mockResolvedValue({
+      id: "CARD-1",
+      status: "approved",
+      parcelas: 2,
+      bandeira: "VISA",
+      ultimos_digitos: "4242",
+    });
+    doacoesRepo.findById.mockResolvedValue({
+      id: "DOA1",
+      campanha_id: "CMP1",
+      valor: 50,
+      status: "PAGA",
+    });
+
+    const resultado = await doacoesService.create({
+      ...payload,
+      metodo_pagamento: "cartao",
+      cartao: {
+        parcelas: 2,
+        titular_nome: "MARIA SILVA",
+        titular_cpf: "12345678909",
+        bandeira: "VISA",
+        ultimos_digitos: "4242",
+      },
+    });
+
+    expect(criarCartao).toHaveBeenCalledTimes(1);
+    expect(doacoesRepo.confirm).toHaveBeenCalledWith("DOA1", "CARD-1", 50);
+    expect(resultado.metodo).toBe("cartao");
+    expect(resultado.donation.status).toBe("PAGA");
   });
 });
 

@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/fx/ToastProvider";
-import DonateModal from "@/components/vaquinha/DonateModal";
 import HashLink from "@/components/shared/HashLink";
 import { BRL, VALORES, pctOf, type Campaign, type Freq } from "@/lib/campaigns";
 
@@ -21,8 +20,8 @@ export default function CampaignDetail({
   const aceitaMensal = rec;
   const [freq, setFreq] = useState<Freq>("unica");
   const [amtIdx, setAmtIdx] = useState(0);
+  const [outroAtivo, setOutroAtivo] = useState(false);
   const [custom, setCustom] = useState("");
-  const [modal, setModal] = useState(false);
 
   /* ---- contadores animados (como refreshCampaign do protótipo) ---- */
   const raisedRef = useRef<HTMLSpanElement>(null);
@@ -63,12 +62,13 @@ export default function CampaignDetail({
   }, [campaign.raised, campaign.goal]);
 
   const pct = pctOf(campaign);
-  const temCustom = !!(parseFloat(custom) && parseFloat(custom) >= 5);
-  const valor = temCustom ? parseFloat(custom) : VALORES[freq][amtIdx];
+  const numCustom = parseFloat(custom.replace(",", "."));
+  const temCustom = outroAtivo && !Number.isNaN(numCustom) && numCustom >= 1;
+  const valor = temCustom ? numCustom : (VALORES[freq][amtIdx] ?? 25);
 
   const marcaFreq = (f: Freq) => {
     setFreq(f);
-    if (!parseFloat(custom)) setAmtIdx(0);
+    if (!outroAtivo) setAmtIdx(0);
   };
 
   const compartilhar = async () => {
@@ -247,8 +247,10 @@ export default function CampaignDetail({
             {VALORES[freq].map((v, i) => (
               <button
                 key={i}
-                className={!temCustom && i === amtIdx ? "on" : ""}
+                type="button"
+                className={!outroAtivo && i === amtIdx ? "on" : ""}
                 onClick={() => {
+                  setOutroAtivo(false);
                   setAmtIdx(i);
                   setCustom("");
                 }}
@@ -256,27 +258,43 @@ export default function CampaignDetail({
                 R$ {v}
               </button>
             ))}
-          </div>
-          <div className="campo-valor">
-            <span>R$</span>
-            <input
-              type="number"
-              id="amtCustom"
-              min={5}
-              step={5}
-              placeholder="Ou outro valor"
-              value={custom}
-              onChange={(e) => {
-                setCustom(e.target.value);
-                if (!parseFloat(e.target.value)) setAmtIdx(0);
+            <button
+              type="button"
+              className={outroAtivo ? "on" : ""}
+              onClick={() => {
+                setOutroAtivo(true);
+                if (!custom) setCustom("1");
               }}
-            />
+            >
+              Outro
+            </button>
           </div>
+          {outroAtivo && (
+            <div className="campo" style={{ marginBottom: "18px" }}>
+              <label htmlFor="amtCustom">
+                Escolha outro valor <span className="contador">mínimo R$ 1,00</span>
+              </label>
+              <div className="campo-valor" style={{ marginBottom: 0 }}>
+                <span>R$</span>
+                <input
+                  type="number"
+                  id="amtCustom"
+                  min={1}
+                  step="0.01"
+                  inputMode="decimal"
+                  placeholder="Digite o valor (mín. R$ 1,00)"
+                  value={custom}
+                  style={{ paddingLeft: "52px" }}
+                  onChange={(e) => setCustom(e.target.value)}
+                />
+              </div>
+            </div>
+          )}
           <button
             className="btn btn-laranja"
             id="btnDonate"
             style={{ fontSize: "16px", padding: "16px" }}
-            onClick={() => setModal(true)}
+            onClick={() => router.push(`/vaquinha/${campaign.slug}/pagamento?valor=${valor}&freq=${freq}`)}
           >
             <i className="ph-fill ph-hand-heart"></i>
             <span id="btnDonateTxt">
@@ -285,23 +303,15 @@ export default function CampaignDetail({
           </button>
           <div className="segura">
             <div className="linha1">
-              <i className="ph-fill ph-lock-key"></i> Pagamento seguro via Pix (Efi)
+              <i className="ph-fill ph-lock-key"></i> Pagamento seguro via Pix ou Cartão (Efí)
             </div>
             <div className="formas">
               <i className="ph-fill ph-pix-logo" title="Pix"></i>
+              <i className="ph-fill ph-credit-card" title="Cartão de Crédito"></i>
             </div>
           </div>
         </aside>
       </div>
-
-      <DonateModal
-        key={modal ? "aberto" : "fechado"}
-        open={modal}
-        campaign={campaign}
-        valor={valor}
-        freq={freq}
-        onClose={() => setModal(false)}
-      />
     </section>
   );
 }

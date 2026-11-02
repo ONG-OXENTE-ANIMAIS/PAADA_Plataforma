@@ -101,7 +101,18 @@ export function campaignFromApi(c: CampanhaApi): Campaign {
 
 /* ---------- utilidades ---------- */
 
-export const BRL = (v: number) => "R$ " + Math.round(v).toLocaleString("pt-BR");
+export const BRL = (v: number) => {
+  if (Number.isInteger(v)) {
+    return "R$ " + v.toLocaleString("pt-BR");
+  }
+  return (
+    "R$ " +
+    v.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+  );
+};
 
 export const trunc = (s: string, n: number) =>
   (s || "").length > n ? s.slice(0, n).trimEnd() + "…" : s || "";
@@ -118,8 +129,8 @@ export const pctOf = (c: { raised: number; goal: number }) =>
   c.goal > 0 ? Math.min(100, Math.round((c.raised / c.goal) * 100)) : 0;
 
 export const VALORES: Record<Freq, number[]> = {
-  unica: [25, 50, 100, 250],
-  mes: [15, 30, 60, 120],
+  unica: [25, 50, 100],
+  mes: [25, 50, 100],
 };
 
 export const NOMES_MODELO: Record<Modelo, string> = {

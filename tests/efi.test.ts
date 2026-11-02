@@ -1,5 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { criarCobrancaPagamento, consultarPagamento, statusEfiParaDoacao } from "@/lib/payments/efi";
+import {
+  criarCobrancaPagamento,
+  consultarPagamento,
+  normalizarTxid,
+  statusEfiParaDoacao,
+} from "@/lib/payments/efi";
 
 const fetchMock = vi.fn();
 
@@ -31,6 +36,14 @@ function respostaErro(status = 400, texto = "erro") {
   return { ok: false, status, json: async () => ({}), text: async () => texto } as unknown as Response;
 }
 
+describe("normalizarTxid", () => {
+  it("remove hífens e garante entre 26 e 35 caracteres alfanuméricos", () => {
+    const txid = normalizarTxid("PAADA-123");
+    expect(txid).toMatch(/^[a-zA-Z0-9]{26,35}$/);
+    expect(txid.startsWith("PAADA123")).toBe(true);
+  });
+});
+
 describe("statusEfiParaDoacao", () => {
   it("mapeia CONCLUIDA para approved", () => {
     expect(statusEfiParaDoacao("CONCLUIDA")).toBe("approved");
@@ -54,27 +67,32 @@ describe("criarCobrancaPagamento", () => {
         donationId: "DOA1",
         donationToken: "DOA1",
         campaignSlug: "vaquinha",
-        txid: "PAADA-123",
+        txid: "PAADA123456789012345678901234567",
         amount: 50,
         campaignTitle: "Vaquinha",
       }),
     ).rejects.toMatchObject({ status: 503, code: "PAYMENT_PROVIDER_NOT_CONFIGURED" });
   });
 
-  it("cria cobrança Pix, busca o QR e retorna os dados", async () => {
+  it("cria cobrança Pix via PUT /v2/cob/:txid, mapeia imagemQrcode e qrcode da Efí e remove prefixo data:image duplicado", async () => {
+    const txidValido = "PAADA123456789012345678901234567";
     fetchMock.mockImplementation((url: string) => {
       const u = String(url);
       if (u.endsWith("/oauth/token")) return respostaJson({ access_token: "tok-efi", expires_in: 3600 });
-      if (u.endsWith("/v2/cob")) {
-        const init = fetchMock.mock.calls[fetchMock.mock.calls.length - 1]?.[1] as { body?: string } | undefined;
+      if (u.includes(`/v2/cob/${txidValido}`)) {
+        const init = fetchMock.mock.calls[fetchMock.mock.calls.length - 1]?.[1] as { body?: string; method?: string } | undefined;
+        expect(init?.method).toBe("PUT");
         const corpo = JSON.parse(init?.body ?? "{}");
-        expect(corpo.txid).toBe("PAADA-123");
         expect(corpo.valor.original).toBe("25.00");
         expect(corpo.chave).toBe("chave-pix-teste");
-        return respostaJson({ txid: "PAADA-123", status: "ATIVA", loc: { id: "LOC1" }, calendario: { expiracao: 3600 } });
+        expect(corpo.devedor).toBeUndefined();
+        return respostaJson({ txid: txidValido, status: "ATIVA", loc: { id: 99 }, calendario: { expiracao: 3600 } });
       }
-      if (u.includes("/v2/loc/LOC1/qrcode")) {
-        return respostaJson({ qrCode: "00020126...payload", qrcode: "iVBORw0KGgo==" });
+      if (u.includes("/v2/loc/99/qrcode")) {
+        return respostaJson({
+          qrcode: "00020126...payload",
+          imagemQrcode: "data:image/png;base64,iVBORw0KGgo==",
+        });
       }
       return respostaErro(404);
     });
@@ -83,7 +101,7 @@ describe("criarCobrancaPagamento", () => {
       donationId: "DOA1",
       donationToken: "DOA1",
       campaignSlug: "vaquinha-teste",
-      txid: "PAADA-123",
+      txid: txidValido,
       amount: 25,
       campaignTitle: "Vaquinha Teste",
       payerEmail: "maria@exemplo.com",
@@ -91,7 +109,7 @@ describe("criarCobrancaPagamento", () => {
     });
 
     expect(resultado).toMatchObject({
-      id: "PAADA-123",
+      id: txidValido,
       checkoutUrl: "00020126...payload",
       qrCode: "00020126...payload",
       qrcodeBase64: "iVBORw0KGgo==",
@@ -101,16 +119,18 @@ describe("criarCobrancaPagamento", () => {
 
     const chamadas = fetchMock.mock.calls.map((c) => c[0] as string);
     expect(chamadas.some((u) => u.endsWith("/oauth/token"))).toBe(true);
-    expect(chamadas.some((u) => u.endsWith("/v2/cob"))).toBe(true);
-    expect(chamadas.some((u) => u.includes("/v2/loc/LOC1/qrcode"))).toBe(true);
+    expect(chamadas.some((u) => u.includes(`/v2/cob/${txidValido}`))).toBe(true);
+    expect(chamadas.some((u) => u.includes("/v2/loc/99/qrcode"))).toBe(true);
   });
 
   it("reutiliza o token de acesso (uma só autenticacao)", async () => {
     fetchMock.mockImplementation((url: string) => {
-      if (String(url).endsWith("/oauth/token")) return respostaJson({ access_token: "tok-efi", expires_in: 3600 });
-      if (String(url).endsWith("/v2/cob"))
-        return respostaJson({ txid: "PAADA-X", status: "ATIVA", loc: { id: "LOC2" } });
-      if (String(url).includes("/v2/loc/LOC2/qrcode")) return respostaJson({ qrCode: "payload", qrcode: "base64" });
+      const u = String(url);
+      if (u.endsWith("/oauth/token")) return respostaJson({ access_token: "tok-efi", expires_in: 3600 });
+      if (u.includes("/v2/cob/"))
+        return respostaJson({ txid: "PAADAX12345678901234567890123456", status: "ATIVA", loc: { id: "LOC2" } });
+      if (u.includes("/v2/loc/LOC2/qrcode"))
+        return respostaJson({ qrcode: "payload", imagemQrcode: "base64" });
       return respostaErro(404);
     });
 
@@ -118,9 +138,8 @@ describe("criarCobrancaPagamento", () => {
     await criarCobrancaPagamento({ donationId: "B", donationToken: "B", campaignSlug: "s", txid: "PAADA-B", amount: 1, campaignTitle: "T" });
 
     const oauth = fetchMock.mock.calls.filter((c) => (c[0] as string).endsWith("/oauth/token"));
-    // O token ja estava em cache do teste anterior: nenhuma autenticacao nova deve ocorrer
     expect(oauth).toHaveLength(0);
-    const cob = fetchMock.mock.calls.filter((c) => (c[0] as string).endsWith("/v2/cob"));
+    const cob = fetchMock.mock.calls.filter((c) => (c[0] as string).includes("/v2/cob/"));
     expect(cob).toHaveLength(2);
   });
 
@@ -141,7 +160,7 @@ describe("consultarPagamento", () => {
     fetchMock.mockImplementation((url: string) => {
       if (String(url).endsWith("/oauth/token")) return respostaJson({ access_token: "tok-efi", expires_in: 3600 });
       if (String(url).endsWith("/v2/cob/TX1"))
-        return respostaJson({ txid: "TX1", status: "CONCLUIDA", valor: { original: 50 } });
+        return respostaJson({ txid: "TX1", status: "CONCLUIDA", valor: { original: "50.00" } });
       return respostaErro(404);
     });
 

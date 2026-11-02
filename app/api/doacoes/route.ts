@@ -5,6 +5,8 @@ import { doacoesService } from "@/services/doacoes.service";
 import { paginated } from "@/lib/api/pagination";
 import { enforceRateLimit } from "@/lib/api/rate-limit";
 
+export const runtime = "nodejs";
+
 export async function GET(request: Request) {
   try {
     await authorize("doacoes:manage");

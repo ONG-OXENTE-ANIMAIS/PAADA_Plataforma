@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const id = z.string().trim().min(1).max(100).regex(/^[a-zA-Z0-9_-]+$/);
-const money = z.coerce.number().finite().positive().max(10_000_000);
+const money = z.coerce.number().finite().min(1, "O valor mínimo é de R$ 1,00.").max(10_000_000);
 const optionalText = z.string().trim().max(2000).nullable().optional();
 const url = z.string().trim().url().max(2000);
 
@@ -86,14 +86,35 @@ export const imagemUploadSchema = imagemUploadShape.refine((d) => Boolean(d.arqu
 
 export const imagemUpdateSchema = imagemUploadShape.partial();
 
+export const cartaoPagamentoSchema = z.object({
+  payment_token: z.string().trim().min(4).max(256).optional(),
+  funcao: z.enum(["credito", "debito"]).default("credito"),
+  parcelas: z.coerce.number().int().min(1).max(6).default(1),
+  titular_nome: z.string().trim().min(3).max(160),
+  titular_cpf: z.string().trim().regex(/^\d{11}$/, "Informe um CPF válido com 11 dígitos."),
+  titular_telefone: z.string().trim().min(10).max(20).optional(),
+  titular_nascimento: z.string().trim().optional(),
+  cep: z.string().trim().optional(),
+  endereco: z.string().trim().optional(),
+  numero: z.string().trim().optional(),
+  bairro: z.string().trim().optional(),
+  cidade: z.string().trim().optional(),
+  estado: z.string().trim().optional(),
+  bandeira: z.string().trim().max(30).optional(),
+  ultimos_digitos: z.string().trim().max(4).optional(),
+});
+
 export const doacaoCreateSchema = z.object({
   campanha_id: id,
   valor: money,
   nome: z.string().trim().min(2).max(160).nullable().optional(),
   email: z.string().trim().email().max(254).nullable().optional(),
   telefone: z.string().trim().max(30).nullable().optional(),
+  mensagem: z.string().trim().max(500).nullable().optional(),
   anonimo: z.boolean().default(false),
   mensal: z.boolean().default(false),
+  metodo_pagamento: z.enum(["pix", "cartao"]).default("pix"),
+  cartao: cartaoPagamentoSchema.optional(),
 });
 
 export const doacaoStatusUpdateSchema = z.object({
