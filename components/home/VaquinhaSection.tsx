@@ -157,12 +157,11 @@ function Vazio() {
         <h3>Nenhuma vaquinha no ar agora</h3>
         <p>
           Assim que a equipe publicar uma campanha, ela aparece aqui na hora.
-          Quer ver como funciona? Monte a primeira no painel da ONG.
         </p>
         <div className="hero-ctas" style={{ marginTop: "18px" }}>
-          <Link href="/admin" className="btn btn-laranja">
+          {/* <Link href="/admin" className="btn btn-laranja">
             <i className="ph ph-plus"></i> Criar vaquinha
-          </Link>
+          </Link> */}
         </div>
       </div>
     </div>

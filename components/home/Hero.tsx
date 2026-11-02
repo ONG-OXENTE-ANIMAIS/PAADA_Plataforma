@@ -59,7 +59,7 @@ export default function Hero() {
           .
         </h1>
         <p className="sub">
-          Escolha uma causa, pague por Pix ou cartão em menos de um
+          Escolha uma causa, doe por Pix ou cartão em menos de um
           minuto — e acompanhe cada real virando história. Sem cadastro, sem
           burocracia, com total compromisso com a causa animal.
         </p>
@@ -67,9 +67,9 @@ export default function Hero() {
           <HashLink href="/#vaquinhas" className="btn btn-marrom">
             Ir para Vaquinha <i className="ph ph-arrow-down"></i>
           </HashLink>
-          <Link href="/admin/nova" className="btn btn-fantasma">
+          {/* <Link href="/admin/nova" className="btn btn-fantasma">
             Sou da ONG — montar vaquinha <i className="ph ph-arrow-right"></i>
-          </Link>
+          </Link> */}
         </div>
         <div className="hero-confia">
           <div>

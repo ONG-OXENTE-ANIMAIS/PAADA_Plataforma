@@ -24,7 +24,7 @@ export default function SobrePage() {
           </p>
           <div className="compromissos">
             <li>
-              <i className="ph-fill ph-map-pin"></i> Nascida e sediada no Recife
+              <i className="ph-fill ph-map-pin"></i> Nascida e sediada em Petrolina
             </li>
             <li>
               <i className="ph-fill ph-calendar-check"></i> Desde 2019
@@ -46,7 +46,7 @@ export default function SobrePage() {
               </defs>
               <text>
                 <textPath href="#circ2">
-                  DESDE 2019 • RECIFE • PE • OXENTE •&#160;
+                  DESDE 2019 • PETROLINA-PE •&#160;
                 </textPath>
               </text>
             </g>
@@ -85,7 +85,7 @@ export default function SobrePage() {
           Doar tem que ser <b>simples</b> como um oi,
         </p>
         <p data-reveal>
-          transparente como <b>conta de bar</b> no fim da noite,
+          transparente como <b>vidro de compota</b> na casa de vó,
         </p>
         <p data-reveal>
           e bonito como <b>frevo</b> na segunda-feira de carnaval.

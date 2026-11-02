@@ -17,8 +17,8 @@ export default function Footer() {
             oxente
           </span>
           <p className="sobre">
-            Plataforma de doações do Instituto Oxente. Feita no Recife,
-            Pernambuco — ajudando o Nordeste inteiro.
+            Plataforma de doações do Instituto Oxente. Feita em Petrolina,
+            Pernambuco — ajudando o Nordeste.
           </p>
         </div>
         <div>
@@ -53,7 +53,7 @@ export default function Footer() {
               <a href="mailto:ola@oxente.org">ola@oxente.org</a>
             </li>
             <li>
-              <a href="http://wa.me/+558****0000" target="_blank">(81) 9 8888-0000</a>
+              <a href="http://wa.me/+5581988880000" target="_blank">(81) 9 8888-0000</a>
             </li>
             <li>
             <a href="https://www.instagram.com/projetooxenteanimais/" target="_blank">@projetooxenteanimais</a>
