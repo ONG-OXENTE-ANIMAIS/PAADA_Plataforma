@@ -75,15 +75,15 @@ export default function SugestoesPage() {
           Sua ideia deixa a Oxente <em>melhor</em>.
         </h1>
         <p className="lead">
-          A plataforma é feita junto com quem usa: doou, criou vaquinha,
+          A plataforma é feita junto com quem usa: doou,
           divulgou uma causa e viu algo que pode melhorar? Escreve aqui —
-          toda sugestão entra na fila de implementação e recebe resposta.
+          toda sugestão é avaliada e recebe resposta.
         </p>
       </div>
 
       <div className="fita" aria-hidden="true"></div>
 
-      <section className="sec sec-wide">
+      <section className="sec sec-wide"> 
         <div className="form-grid">
           <div className="form-card">
             {enviado ? (
@@ -191,8 +191,7 @@ export default function SugestoesPage() {
                   )}
                 </button>
                 <p className="nota-bib">
-                  Sua sugestão vai direto para a fila de implementação da
-                  equipe.
+                  Sua sugestão vai direto para a avaliação.
                 </p>
               </form>
             )}

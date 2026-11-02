@@ -108,8 +108,8 @@ export default function VaquinhasPage() {
           Cada vaquinha no ar, <em>numa página só</em>.
         </h1>
         <p className="lead">
-          A lista completa das campanhas abertas da plataforma — filtre por
-          categoria, busque por causa ou cidade e escolha qual história você
+          A lista completa das campanhas — filtre por
+          categoria e busque por causa e escolha qual história você
           quer ajudar a terminar bem.
         </p>
         <div className="vt-resumo" data-reveal>
@@ -134,7 +134,7 @@ export default function VaquinhasPage() {
         className="sec sec-wide"
       >
         <div className="vt-filtros">
-          {/* <div className="chips" aria-label="Filtrar vaquinhas por categoria">
+          <div className="chips" aria-label="Filtrar vaquinhas por categoria">
             <button
               className={filtro === "todas" ? "on" : ""}
               onClick={() => setFiltro("todas")}
@@ -150,8 +150,8 @@ export default function VaquinhasPage() {
                 {cat}
               </button>
             ))}
-          </div> */}
-          {/* <div className="vt-busca">
+          </div>
+          <div className="vt-busca">
             <i className="ph ph-magnifying-glass"></i>
             <input
               type="text"
@@ -160,7 +160,7 @@ export default function VaquinhasPage() {
               onChange={(e) => setBusca(e.target.value)}
               aria-label="Buscar vaquinhas"
             />
-          </div> */}
+          </div>
         </div>
 
         {visiveis.length ? (
@@ -175,8 +175,7 @@ export default function VaquinhasPage() {
             <h3>Nenhuma vaquinha encontrada</h3>
             <p>
               Nada com esses filtros por aqui. Tente outra categoria ou limpe a
-              busca — o povo do lugar sempre cria uma vaquinha nova toda
-              semana.
+              busca.
             </p>
             <button
               className="btn btn-marrom"
@@ -192,7 +191,7 @@ export default function VaquinhasPage() {
         )}
       </section>
 
-      <div className="wrap" style={{ paddingBottom: "90px" }}>
+      {/* <div className="wrap" style={{ paddingBottom: "90px" }}>
         <div className="compartilhar" style={{ marginTop: 0 }}>
           <div>
             <h3>
@@ -212,7 +211,7 @@ export default function VaquinhasPage() {
             </Link>
           </div>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 }

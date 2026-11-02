@@ -13,7 +13,7 @@ const FORMAS: Forma[] = [
   {
     icon: "hand-heart",
     title: "Doe numa vaquinha",
-    desc: "Escolha uma campanha aberta e pague por Pix, cartão ou boleto em menos de um minuto — sem cadastro, sem burocracia, até como anônimo.",
+    desc: "Escolha uma campanha aberta e doe por Pix ou cartão em menos de um minuto — sem cadastro, sem burocracia, até como anônimo.",
     cta: "Ver todas as vaquinhas",
     href: "/vaquinhas",
   },
@@ -24,13 +24,13 @@ const FORMAS: Forma[] = [
     cta: "Encontrar apoio mensal",
     href: "/vaquinhas",
   },
-  {
-    icon: "target",
-    title: "Monte a vaquinha da sua ONG",
-    desc: "Organizações parceiras criam campanhas com identidade própria em minutos, no construtor — a Oxente cuida do pagamento e do repasse.",
-    cta: "Criar vaquinha",
-    href: "/admin",
-  },
+  // {
+  //   icon: "target",
+  //   title: "Monte a vaquinha da sua ONG",
+  //   desc: "Organizações parceiras criam campanhas com identidade própria em minutos, no construtor — a Oxente cuida do pagamento e do repasse.",
+  //   cta: "Criar vaquinha",
+  //   href: "/admin",
+  // },
   {
     icon: "handshake",
     title: "Seja um parceiro",
@@ -85,9 +85,9 @@ export default function ComoAjudarPage() {
           <li>
             <i className="ph-fill ph-incognito"></i> Anônimo, se preferir
           </li>
-          <li>
+          {/* <li>
             <i className="ph-fill ph-handshake"></i> Parceria em até 5 dias
-          </li>
+          </li> */}
         </ul>
       </div>
 
@@ -138,8 +138,8 @@ export default function ComoAjudarPage() {
                 </p>
                 <h3>Sua doação cai na conta da campanha</h3>
                 <p>
-                  O pagamento é via Pix (Efi) e o repasse vai direto para a
-                  conta vinculada da ONG responsável — sem intermediário, sem
+                  A doação vai vai direto para a
+                  conta vinculada da ONG — sem intermediário, sem
                   burocracia.
                 </p>
               </div>
@@ -186,7 +186,7 @@ export default function ComoAjudarPage() {
           <details>
             <summary>Preciso criar conta para doar?</summary>
             <p className="faq-a">
-              Não. Você escolhe a vaquinha, paga e pronto — o comprovante e as
+              Não. Você escolhe a vaquinha, doa e pronto — o comprovante e as
               atualizações da campanha chegam no e-mail que você informar na
               hora, sem senha, sem cadastro.
             </p>
@@ -194,27 +194,17 @@ export default function ComoAjudarPage() {
           <details>
             <summary>Posso doar pouco? De R$ 5?</summary>
             <p className="faq-a">
-              Pode e vale. Boa parte das doações da Oxente é de valores
-              pequenos — é o R$ 10 recorrente de dona Tereza que segura o
-              abrigo inteiro no fim do mês.
+              Toda ajuda importa. A Oxente se mantém graças às 
+              pequenas contribuições — como os R$ 10 recorrentes de dona Tereza, 
+              fundamentais para garantir o funcionamento do abrigo.
             </p>
           </details>
           <details>
             <summary>Como acompanho para onde foi meu dinheiro?</summary>
             <p className="faq-a">
-              Cada vaquinha tem uma página de atualizações publicada por quem
-              criou a campanha, com fotos e notas fiscais dos gastos. Quem
+              Cada vaquinha tem uma página de atualizações, com fotos e notas de atualização. Quem
               doa recebe cada novidade por e-mail, inclusive quem doou como
               anônimo.
-            </p>
-          </details>
-          <details>
-            <summary>Minha ONG pode criar vaquinha aqui?</summary>
-            <p className="faq-a">
-              Pode. Organizações parceiras usam o construtor para montar
-              campanhas com identidade própria em minutos — única ou
-              recorrente. Faça o cadastro de parceria que a gente cuida do
-              resto.
             </p>
           </details>
         </div>

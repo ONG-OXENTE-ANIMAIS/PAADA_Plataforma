@@ -32,8 +32,7 @@ export default function ComoFunciona() {
               </p>
               <h3>Doe em menos de um minuto</h3>
               <p>
-                Pix ou cartão, processados com segurança pelo Mercado
-                Pago. Sem cadastro, sem burocracia: você pode doar até como
+                Pix ou cartão, processados com segurança. Sem cadastro, sem burocracia: você pode doar até como
                 anônimo.
               </p>
             </div>
