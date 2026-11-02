@@ -35,6 +35,11 @@ function validarDatas(
   data: { data_inicio?: string | null; data_fim?: string | null },
   ctx: z.RefinementCtx,
 ) {
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+  if (data.data_fim && new Date(data.data_fim) < hoje) {
+    ctx.addIssue({ code: "custom", path: ["data_fim"], message: "A data de término não pode ser no passado." });
+  }
   if (data.data_inicio && data.data_fim && new Date(data.data_fim) < new Date(data.data_inicio)) {
     ctx.addIssue({ code: "custom", path: ["data_fim"], message: "A data de término deve ser posterior à data de início." });
   }

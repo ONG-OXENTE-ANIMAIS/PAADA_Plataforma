@@ -110,6 +110,9 @@ export const campanhasService = {
   },
   async create(input: unknown) {
     const data = campanhaCreateSchema.parse(input);
+    if (data.data_fim && new Date(data.data_fim) < new Date(new Date().setHours(0, 0, 0, 0))) {
+      throw new ApiError(400, "DATA_FIM_PASSADO", "A data de término não pode ser no passado.");
+    }
     const existing = await repo.findBySlug(data.slug ?? slugify(data.titulo));
     const slug = existing ? uniqueSlug(data.titulo) : (data.slug ?? slugify(data.titulo));
     return publicCampaign(await repo.create({
@@ -170,8 +173,13 @@ export const campanhasService = {
     return repo.goals(campanhaId);
   },
   async createGoal(campanhaId: string, input: unknown) {
-    await this.assertCampaign(campanhaId);
-    return repo.createGoal({ ...submetaCreateSchema.parse(input), campanha_id: campanhaId });
+    const campaign = await this.assertCampaign(campanhaId);
+    const data = submetaCreateSchema.parse(input);
+    const metaCampanha = Number(campaign.meta_arrecadacao ?? 0);
+    if (data.valor > metaCampanha) {
+      throw new ApiError(400, "GOAL_ABOVE_CAMPAIGN", "O valor da meta não pode exceder o valor total da campanha.");
+    }
+    return repo.createGoal({ ...data, campanha_id: campanhaId });
   },
   async updateGoal(campanhaId: string, id: string, input: unknown) {
     await this.assertCampaign(campanhaId);
@@ -211,5 +219,13 @@ export const campanhasService = {
     const campaign = await repo.findById(campanhaId);
     if (!campaign) throw new ApiError(404, "NOT_FOUND", "Campanha não encontrada.");
     return campaign;
+  },
+
+  /**
+   * Finaliza campanhas ATIVA que completaram 10 dias desde a data_inicio.
+   * Retorna o número de campanhas finalizadas.
+   */
+  async finalizarCampanhasAntigas(): Promise<number> {
+    return repo.finalizarCampanhasAntigas();
   },
 };

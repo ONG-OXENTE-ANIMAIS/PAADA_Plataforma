@@ -163,4 +163,25 @@ export class CampanhasRepository {
     const { error } = await this.db().from("atualizacoes_campanhas").delete().eq("campanha_id", campanhaId).eq("id", id);
     if (error) throw error;
   }
+
+  /**
+   * Finaliza campanhas ATIVA cuja data_inicio foi há 10 ou mais dias.
+   * Retorna o número de campanhas finalizadas.
+   */
+  async finalizarCampanhasAntigas(): Promise<number> {
+    const db = this.db();
+    const dezDiasAtras = new Date();
+    dezDiasAtras.setDate(dezDiasAtras.getDate() - 10);
+    const dataLimite = dezDiasAtras.toISOString().slice(0, 10);
+
+    const { data, error } = await db
+      .from("campanhas")
+      .update({ status: "CONCLUIDA", atualizado_em: new Date().toISOString() })
+      .eq("status", "ATIVA")
+      .lte("data_inicio", dataLimite)
+      .select("id");
+
+    if (error) throw error;
+    return data?.length ?? 0;
+  }
 }
