@@ -83,7 +83,7 @@ export default function SugestoesPage() {
 
       <div className="fita" aria-hidden="true"></div>
 
-      <section className="sec sec-wide">
+      <section className="sec sec-wide"> 
         <div className="form-grid">
           <div className="form-card">
             {enviado ? (
