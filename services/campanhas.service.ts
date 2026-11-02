@@ -120,7 +120,7 @@ export const campanhasService = {
       slug,
       descricao: data.descricao ?? null,
       categoria: data.categoria ?? null,
-      localidade: data.localidade ?? null,
+      localidade: "Petrolina-PE",
       data_inicio: data.data_inicio ?? new Date().toISOString().slice(0, 10),
       data_fim: data.data_fim ?? null,
     }));
