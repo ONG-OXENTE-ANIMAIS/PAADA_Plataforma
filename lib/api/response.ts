@@ -8,7 +8,8 @@ export function apiSuccess<T>(data: T, status = 200, message = "Operação reali
 export function apiFailure(error: unknown, context = "api") {
   const normalized = toApiError(error);
   if (normalized.status >= 500) {
-    console.error(`[${context}]`, error instanceof Error ? error.message : "Erro interno");
+    const details = error instanceof Error ? { message: error.message, stack: error.stack } : error;
+    console.error(`[${context}]`, JSON.stringify(details, null, 2));
   }
   return NextResponse.json(
     {

@@ -25,6 +25,7 @@ export function toApiError(error: unknown): ApiError {
     if (error.code === "23505") return new ApiError(409, "CONFLICT", "Já existe um registro com estes dados.");
     if (error.code === "23503") return new ApiError(409, "REFERENCE_CONFLICT", "O registro está vinculado a outros dados.");
     if (error.code === "23504") return new ApiError(409, "CONFLICT", "Os dados enviados violam uma restrição do banco de dados.");
+    if (error.code === "42703") return new ApiError(400, "INVALID_COLUMN", "Coluna inválida nos dados enviados.");
     if (error.code === "PGRST116") return new ApiError(404, "NOT_FOUND", "Registro não encontrado.");
   }
   return new ApiError(500, "INTERNAL_ERROR", "Não foi possível concluir a operação.");

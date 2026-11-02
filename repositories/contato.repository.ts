@@ -18,7 +18,7 @@ export class ContatoRepository {
     if (error) throw error;
     return data as ContatoRow | null;
   }
-  async create(values: Partial<ContatoRow> & Pick<ContatoRow, "nome" | "email" | "assunto" | "mensagem">) {
+  async create(values: Partial<ContatoRow> & Pick<ContatoRow, "nome" | "email" | "assunto" | "mensagem" | "tipo">) {
     const { data, error } = await this.db().from("contato").insert(values).select("*").single();
     if (error) throw error;
     return data as ContatoRow;
