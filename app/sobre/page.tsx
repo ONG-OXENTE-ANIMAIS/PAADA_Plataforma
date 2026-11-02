@@ -275,7 +275,7 @@ export default function SobrePage() {
         </div>
       </section>
 
-      <div className="wrap" style={{ paddingBottom: "90px" }}>
+      {/* <div className="wrap" style={{ paddingBottom: "90px" }}>
         <div className="compartilhar" style={{ marginTop: 0 }}>
           <div>
             <h3>
@@ -295,7 +295,7 @@ export default function SobrePage() {
             </HashLink>
           </div>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 }

@@ -213,7 +213,7 @@ export const TIPOS_SUGESTAO = [
 export const ROTULO_STATUS: Record<string, string> = {
   RECEBIDA: "Recebida",
   EM_ANALISE: "Em análise",
-  RESPONDIDA: "Respondida",
+  CONCLUIDA: "Concluida",
   ARQUIVADA: "Arquivada",
 };
 

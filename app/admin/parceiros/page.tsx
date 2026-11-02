@@ -249,17 +249,21 @@ export default function AdminParceirosPage() {
                 </label>
                 <input
                   id="pc-nome"
+                  type="text"
+                  placeholder="Nome ou Razão Social"
                   value={form.nome}
                   onChange={(e) => setForm({ ...form, nome: e.target.value })}
                 />
               </div>
               <div className="campo">
                 <label htmlFor="pc-sigla">
-                  Sigla <span className="contador">até 3 letras</span>
+                  Sigla <span className="contador">até 4 letras</span>
                 </label>
                 <input
                   id="pc-sigla"
-                  maxLength={3}
+                  type="text"
+                  placeholder="Sigla"
+                  maxLength={4}
                   value={form.sigla.toUpperCase()}
                   onChange={(e) =>
                     setForm({ ...form, sigla: e.target.value.toUpperCase() })
@@ -292,8 +296,12 @@ export default function AdminParceirosPage() {
                 <label htmlFor="pc-area">Área de atuação</label>
                 <input
                   id="pc-area"
+                  type="text"
+                  placeholder="Área de atuação"
                   value={form.area}
-                  onChange={(e) => setForm({ ...form, area: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, area: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -398,11 +406,11 @@ export default function AdminParceirosPage() {
 
             <div className="campo">
               <label htmlFor="pc-desc">
-                Descrição <span className="contador">uma linha no card</span>
+                Descrição <span className="contador">255 caracteres</span>
               </label>
               <textarea
                 id="pc-desc"
-                maxLength={220}
+                maxLength={255}
                 value={form.descricao}
                 onChange={(e) =>
                   setForm({ ...form, descricao: e.target.value })

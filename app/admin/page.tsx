@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { apiFetch } from "@/lib/api-client";
 import { useToast } from "@/components/fx/ToastProvider";
 import { useRequireSession } from "@/hooks/useSession";
+import { black } from "next/dist/lib/picocolors";
 
 type Indicadores = {
   campanhas_ativas: number;
@@ -102,9 +103,6 @@ export default function AdminDashboardPage() {
                   {ind ? (c.fmt ? c.fmt(ind[c.campo]) : ind[c.campo]) : "…"}
                 </h3>
                 <span style={{ fontSize: "13.5px", opacity: 0.75 }}>{c.titulo}</span>
-                <span style={{ position: "absolute", inset: 0, fontSize: 0 }} aria-hidden="true">
-                  {i}
-                </span>
               </Link>
             ))}
           </div>

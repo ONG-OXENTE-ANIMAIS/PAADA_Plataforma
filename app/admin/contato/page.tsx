@@ -13,7 +13,7 @@ type Mensagem = {
   assunto: string;
   mensagem: string;
   tipo: "CONTATO" | "SUGESTAO";
-  status: "RECEBIDA" | "EM_ANALISE" | "RESPONDIDA" | "ARQUIVADA";
+  status: "RECEBIDA" | "EM_ANALISE" | "CONCLUIDA" | "ARQUIVADA";
   criado_em: string;
   respondido_em: string | null;
 };
@@ -23,7 +23,7 @@ type Pagina<T> = { data: T[]; pagination: { page: number; totalPages: number; to
 const STATUS_CORES: Record<string, { bg: string; fg: string }> = {
   RECEBIDA: { bg: "#fbbf2455", fg: "#8a5a00" },
   EM_ANALISE: { bg: "#00909026", fg: "#006969" },
-  RESPONDIDA: { bg: "#30D07033", fg: "#1c7c44" },
+  CONCLUIDA: { bg: "#30D07033", fg: "#1c7c44" },
   ARQUIVADA: { bg: "#00000014", fg: "#555" },
 };
 
@@ -107,8 +107,7 @@ export default function AdminContatoPage() {
             <option value="">Todos os status</option>
             <option value="RECEBIDA">Recebida</option>
             <option value="EM_ANALISE">Em análise</option>
-            <option value="RESPONDIDA">Respondida</option>
-            <option value="ARQUIVADA">Arquivada</option>
+            <option value="CONCLUIDA">Concluída</option>
           </select>
           <button className="btn btn-marrom" onClick={() => carregar(1)}>
             <i className="ph ph-funnel"></i> Filtrar
@@ -151,22 +150,19 @@ export default function AdminContatoPage() {
                     <div style={{ marginTop: "12px", paddingTop: "12px", borderTop: "1px solid rgba(48,22,7,.12)" }}>
                       <p style={{ whiteSpace: "pre-wrap", fontSize: "14.5px", lineHeight: 1.55 }}>{m.mensagem}</p>
                       <div className="adm-acoes" style={{ marginTop: "14px" }} onClick={(e) => e.stopPropagation()}>
-                        <a className="adm-acao-btn" href={`mailto:${m.email}?subject=${encodeURIComponent("Re: " + m.assunto)}`}>
-                          <i className="ph ph-envelope-simple"></i> Responder por e-mail
+                        <a href={`mailto:${m.email}?subject=${encodeURIComponent("Re: " + m.assunto)}`}>
+                            <button className="adm-acao-btn" onClick={() => mudarStatus(m, "EM_ANALISE")}>
+                              <i className="ph ph-envelope-simple"></i> Responder por e-mail
+                            </button>
                         </a>
                         {m.status !== "EM_ANALISE" && (
                           <button className="adm-acao-btn" onClick={() => mudarStatus(m, "EM_ANALISE")}>
                             Em análise
                           </button>
                         )}
-                        {m.status !== "RESPONDIDA" && (
-                          <button className="adm-acao-btn" onClick={() => mudarStatus(m, "RESPONDIDA")}>
-                            Marcar respondida
-                          </button>
-                        )}
-                        {m.status !== "ARQUIVADA" && (
-                          <button className="adm-acao-btn" onClick={() => mudarStatus(m, "ARQUIVADA")}>
-                            Arquivar
+                        {m.status !== "CONCLUIDA" && (
+                          <button className="adm-acao-btn" onClick={() => mudarStatus(m, "CONCLUIDA")}>
+                            Marcar concluída
                           </button>
                         )}
                         <button className="adm-acao-btn perigo" onClick={() => excluir(m)}>
