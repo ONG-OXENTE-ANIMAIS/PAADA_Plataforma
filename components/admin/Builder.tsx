@@ -83,6 +83,7 @@ export default function Builder() {
   const inTitleRef = useRef<HTMLInputElement>(null);
   const inGoalRef = useRef<HTMLInputElement>(null);
   const inGoalMRef = useRef<HTMLInputElement>(null);
+  const inDateRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   /* aviso ao entrar pelo atalho "vaquinha recorrente" */
@@ -100,6 +101,18 @@ export default function Builder() {
   const set = (patch: Partial<Draft>) => setDraft((d) => ({ ...d, ...patch }));
   const setTipo = (t: TipoCampanha) => set({ type: t });
   const metaAtual = () => (draft.type === "recorrente" ? draft.goalM : draft.goal);
+
+  /* parse de moeda brasileira: "1.500,00" → 1500, "1500" → 1500, "" → 0 */
+  const parseMoeda = (s: string): number => {
+    if (!s) return 0;
+    let limpo = s.replace(/[^0-9,.-]/g, "");
+    if (limpo.includes(",")) {
+      limpo = limpo.replace(/\./g, "");
+      limpo = limpo.replace(",", ".");
+    }
+    const v = parseFloat(limpo);
+    return isNaN(v) ? 0 : Math.max(0, v);
+  };
   const slugPrevisto = slugify(draft.title) || "sua-vaquinha";
 
   /* ---- metas intermediárias (submetas) ---- */
@@ -158,6 +171,12 @@ export default function Builder() {
       );
       return;
     }
+    if (!rec && draft.date && draft.date < new Date().toISOString().slice(0, 10)) {
+      toast("A data de término não pode ser no passado. Escolha uma data a partir de hoje.", "warning");
+      setStep(3);
+      requestAnimationFrame(() => inDateRef.current?.focus());
+      return;
+    }
 
     setPublicando(true);
     try {
@@ -204,6 +223,16 @@ export default function Builder() {
 
       /* ---- cria as metas intermediárias (submetas) ---- */
       if (goals.length) {
+        const metaCampanha = metaAtual();
+        const excede = goals.find((g) => g.valor > metaCampanha);
+        if (excede) {
+          toast(
+            `A meta "${excede.titulo}" (R$ ${excede.valor}) excede o valor da campanha (R$ ${metaCampanha}).`,
+            "warning",
+          );
+          setStep(4);
+          return;
+        }
         const metasValidas = goals
           .filter((g) => g.titulo.trim() && g.valor > 0)
           .map((g) => ({
@@ -537,12 +566,12 @@ export default function Builder() {
                     <input
                       type="number"
                       id="inGoal"
-                      value={draft.goal}
+                      value={draft.goal === 0 ? "" : String(draft.goal)}
                       min={100}
                       step={100}
                       ref={inGoalRef}
                       onChange={(e) =>
-                        set({ goal: Math.max(0, parseFloat(e.target.value) || 0) })
+                        set({ goal: parseMoeda(e.target.value) })
                       }
                     />
                   </div>
@@ -553,6 +582,8 @@ export default function Builder() {
                     type="date"
                     id="inDate"
                     value={draft.date}
+                    min={new Date().toISOString().slice(0, 10)}
+                    ref={inDateRef}
                     onChange={(e) => set({ date: e.target.value })}
                   />
                 </div>
@@ -572,12 +603,12 @@ export default function Builder() {
                   <input
                     type="number"
                     id="inGoalM"
-                    value={draft.goalM}
+                    value={draft.goalM === 0 ? "" : String(draft.goalM)}
                     min={50}
                     step={50}
                     ref={inGoalMRef}
                     onChange={(e) =>
-                      set({ goalM: Math.max(0, parseFloat(e.target.value) || 0) })
+                      set({ goalM: parseMoeda(e.target.value) })
                     }
                   />
                 </div>
@@ -677,14 +708,14 @@ export default function Builder() {
                             <span>R$</span>
                             <input
                               type="number"
-                              value={goal.valor}
+                              value={goal.valor === 0 ? "" : String(goal.valor)}
                               min={0}
                               step={10}
                               onChange={(e) =>
                                 updateGoal(i, {
-                                  valor: Math.max(0,
-                                    parseFloat(e.target.value) || 0),
-                                })}
+                                  valor: parseMoeda(e.target.value),
+                                })
+                              }
                             />
                           </div>
                         </div>

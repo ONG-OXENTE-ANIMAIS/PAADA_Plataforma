@@ -12,14 +12,20 @@ describe("campanhaCreateSchema", () => {
   const base = { titulo: "Vaquinha do abrigo", subtitulo: "Sub de teste", meta_arrecadacao: 1000 };
 
   it("aceita payload válido", () => {
-    const r = campanhaCreateSchema.parse({ ...base, data_inicio: "2025-01-01", data_fim: "2025-03-01" });
+    const r = campanhaCreateSchema.parse({ ...base, data_inicio: "2026-11-01", data_fim: "2026-12-01" });
     expect(r.status).toBe("RASCUNHO");
     expect(r.meta_isvisible).toBe(false);
   });
 
+  it("rejeita término no passado", () => {
+    expect(() =>
+      campanhaCreateSchema.parse({ ...base, data_inicio: "2026-11-01", data_fim: "2026-10-01" }),
+    ).toThrow();
+  });
+
   it("rejeita término anterior ao início", () => {
     expect(() =>
-      campanhaCreateSchema.parse({ ...base, data_inicio: "2025-03-01", data_fim: "2025-01-01" }),
+      campanhaCreateSchema.parse({ ...base, data_inicio: "2026-12-01", data_fim: "2026-11-01" }),
     ).toThrow();
   });
 
