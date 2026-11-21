@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const id = z.string().trim().min(1).max(100).regex(/^[a-zA-Z0-9_-]+$/);
+const id = z.coerce.string().trim().min(1).max(100).regex(/^[a-zA-Z0-9_-]+$/);
 const money = z.coerce.number().finite().min(1, "O valor mínimo é de R$ 1,00.").max(10_000_000);
 const optionalText = z.string().trim().max(2000).nullable().optional();
 const url = z.string().trim().url().max(2000);

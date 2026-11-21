@@ -268,7 +268,7 @@ export default function CheckoutView({
       const mensagemLimpa = mensagem.trim() || undefined;
 
       const corpoRequisicao: Record<string, unknown> = {
-        campanha_id: campaign.id,
+        campanha_id: String(campaign.id),
         valor,
         mensal: freq === "mes",
         anonimo,

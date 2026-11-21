@@ -82,7 +82,7 @@ export function diasRestantes(dataFim: string | null): number | undefined {
 export function campaignFromApi(c: CampanhaApi): Campaign {
   const paragrafos = (c.descricao ?? "").split(/\n{2,}/).filter(Boolean);
   return {
-    id: c.id,
+    id: String(c.id),
     slug: c.slug,
     title: c.titulo,
     sub: paragrafos[0] ?? "Campanha da Oxente.",
