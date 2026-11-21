@@ -1,6 +1,10 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { AtualizacaoRow, CampanhaRow, ImagemRow, SubmetaRow } from "@/types/database.types";
 
+export function parseSqlId(id: string | number): string | number {
+  return typeof id === "string" && /^\d+$/.test(id.trim()) ? Number(id.trim()) : id;
+}
+
 export class CampanhasRepository {
   private db() { return createAdminClient(); }
 
@@ -27,8 +31,8 @@ export class CampanhasRepository {
     return { data: (data ?? []) as CampanhaRow[], count: count ?? 0 };
   }
 
-  async findById(id: string) {
-    const { data, error } = await this.db().from("campanhas").select("*").eq("id", id).maybeSingle();
+  async findById(id: string | number) {
+    const { data, error } = await this.db().from("campanhas").select("*").eq("id", parseSqlId(id)).maybeSingle();
     if (error) throw error;
     return data as CampanhaRow | null;
   }
@@ -45,97 +49,101 @@ export class CampanhasRepository {
     return data as CampanhaRow;
   }
 
-  async update(id: string, values: Partial<CampanhaRow>) {
-    const { data, error } = await this.db().from("campanhas").update(values).eq("id", id).select("*").maybeSingle();
+  async update(id: string | number, values: Partial<CampanhaRow>) {
+    const { data, error } = await this.db().from("campanhas").update(values).eq("id", parseSqlId(id)).select("*").maybeSingle();
     if (error) throw error;
     return data as CampanhaRow | null;
   }
 
-  async remove(id: string) {
-    const { error } = await this.db().from("campanhas").delete().eq("id", id);
+  async remove(id: string | number) {
+    const { error } = await this.db().from("campanhas").delete().eq("id", parseSqlId(id));
     if (error) throw error;
   }
 
-  async hasDonations(id: string) {
-    const { count, error } = await this.db().from("doacoes").select("id", { count: "exact", head: true }).eq("campanha_id", id);
+  async hasDonations(id: string | number) {
+    const { count, error } = await this.db().from("doacoes").select("id", { count: "exact", head: true }).eq("campanha_id", parseSqlId(id));
     if (error) throw error;
     return (count ?? 0) > 0;
   }
 
-  async imagesForCampaigns(ids: string[]) {
+  async imagesForCampaigns(ids: (string | number)[]) {
     if (!ids.length) return [] as ImagemRow[];
-    const { data, error } = await this.db().from("imagens_campanhas").select("*").in("campanha_id", ids).order("ordem");
+    const parsedIds = ids.map(parseSqlId);
+    const { data, error } = await this.db().from("imagens_campanhas").select("*").in("campanha_id", parsedIds as any).order("ordem");
     if (error) throw error;
     return (data ?? []) as ImagemRow[];
   }
 
-  async paidDonationsForCampaigns(ids: string[]) {
-    if (!ids.length) return [] as { campanha_id: string }[];
-    const { data, error } = await this.db().from("doacoes").select("campanha_id").in("campanha_id", ids).eq("status", "PAGA");
+  async paidDonationsForCampaigns(ids: (string | number)[]) {
+    if (!ids.length) return [] as { campanha_id: string | number }[];
+    const parsedIds = ids.map(parseSqlId);
+    const { data, error } = await this.db().from("doacoes").select("campanha_id").in("campanha_id", parsedIds as any).eq("status", "PAGA");
     if (error) throw error;
-    return (data ?? []) as { campanha_id: string }[];
+    return (data ?? []) as { campanha_id: string | number }[];
   }
 
-  async images(campanhaId: string) {
-    const { data, error } = await this.db().from("imagens_campanhas").select("*").eq("campanha_id", campanhaId).order("ordem");
+  async images(campanhaId: string | number) {
+    const { data, error } = await this.db().from("imagens_campanhas").select("*").eq("campanha_id", parseSqlId(campanhaId)).order("ordem");
     if (error) throw error;
     return (data ?? []) as ImagemRow[];
   }
 
   async createImage(values: Partial<ImagemRow> & Pick<ImagemRow, "campanha_id" | "url">) {
-    const { data, error } = await this.db().from("imagens_campanhas").insert(values).select("*").single();
+    const payload = { ...values, campanha_id: parseSqlId(values.campanha_id) };
+    const { data, error } = await this.db().from("imagens_campanhas").insert(payload).select("*").single();
     if (error) throw error;
     return data as ImagemRow;
   }
 
-  async findImage(campanhaId: string, id: string) {
-    const { data, error } = await this.db().from("imagens_campanhas").select("*").eq("campanha_id", campanhaId).eq("id", id).maybeSingle();
+  async findImage(campanhaId: string | number, id: string | number) {
+    const { data, error } = await this.db().from("imagens_campanhas").select("*").eq("campanha_id", parseSqlId(campanhaId)).eq("id", parseSqlId(id)).maybeSingle();
     if (error) throw error;
     return data as ImagemRow | null;
   }
 
-  async updateImage(campanhaId: string, id: string, values: Partial<ImagemRow>) {
-    const { data, error } = await this.db().from("imagens_campanhas").update(values).eq("campanha_id", campanhaId).eq("id", id).select("*").maybeSingle();
+  async updateImage(campanhaId: string | number, id: string | number, values: Partial<ImagemRow>) {
+    const { data, error } = await this.db().from("imagens_campanhas").update(values).eq("campanha_id", parseSqlId(campanhaId)).eq("id", parseSqlId(id)).select("*").maybeSingle();
     if (error) throw error;
     return data as ImagemRow | null;
   }
 
-  async removeImage(campanhaId: string, id: string) {
-    const { error } = await this.db().from("imagens_campanhas").delete().eq("campanha_id", campanhaId).eq("id", id);
+  async removeImage(campanhaId: string | number, id: string | number) {
+    const { error } = await this.db().from("imagens_campanhas").delete().eq("campanha_id", parseSqlId(campanhaId)).eq("id", parseSqlId(id));
     if (error) throw error;
   }
 
-  async goals(campanhaId: string) {
-    const { data, error } = await this.db().from("submetas_campanhas").select("*").eq("campanha_id", campanhaId).order("ordem");
+  async goals(campanhaId: string | number) {
+    const { data, error } = await this.db().from("submetas_campanhas").select("*").eq("campanha_id", parseSqlId(campanhaId)).order("ordem");
     if (error) throw error;
     return (data ?? []) as SubmetaRow[];
   }
 
   async createGoal(values: Partial<SubmetaRow> & Pick<SubmetaRow, "campanha_id" | "titulo" | "valor">) {
-    const { data, error } = await this.db().from("submetas_campanhas").insert(values).select("*").single();
+    const payload = { ...values, campanha_id: parseSqlId(values.campanha_id) };
+    const { data, error } = await this.db().from("submetas_campanhas").insert(payload).select("*").single();
     if (error) throw error;
     return data as SubmetaRow;
   }
 
-  async findGoal(campanhaId: string, id: string) {
-    const { data, error } = await this.db().from("submetas_campanhas").select("*").eq("campanha_id", campanhaId).eq("id", id).maybeSingle();
+  async findGoal(campanhaId: string | number, id: string | number) {
+    const { data, error } = await this.db().from("submetas_campanhas").select("*").eq("campanha_id", parseSqlId(campanhaId)).eq("id", parseSqlId(id)).maybeSingle();
     if (error) throw error;
     return data as SubmetaRow | null;
   }
 
-  async updateGoal(campanhaId: string, id: string, values: Partial<SubmetaRow>) {
-    const { data, error } = await this.db().from("submetas_campanhas").update(values).eq("campanha_id", campanhaId).eq("id", id).select("*").maybeSingle();
+  async updateGoal(campanhaId: string | number, id: string | number, values: Partial<SubmetaRow>) {
+    const { data, error } = await this.db().from("submetas_campanhas").update(values).eq("campanha_id", parseSqlId(campanhaId)).eq("id", parseSqlId(id)).select("*").maybeSingle();
     if (error) throw error;
     return data as SubmetaRow | null;
   }
 
-  async removeGoal(campanhaId: string, id: string) {
-    const { error } = await this.db().from("submetas_campanhas").delete().eq("campanha_id", campanhaId).eq("id", id);
+  async removeGoal(campanhaId: string | number, id: string | number) {
+    const { error } = await this.db().from("submetas_campanhas").delete().eq("campanha_id", parseSqlId(campanhaId)).eq("id", parseSqlId(id));
     if (error) throw error;
   }
 
-  async updates(campanhaId: string, includePrivate = false) {
-    let query = this.db().from("atualizacoes_campanhas").select("*").eq("campanha_id", campanhaId);
+  async updates(campanhaId: string | number, includePrivate = false) {
+    let query = this.db().from("atualizacoes_campanhas").select("*").eq("campanha_id", parseSqlId(campanhaId));
     const { data, error } = await query.order("titulo", { ascending: true });
     if (error) throw error;
     return (data ?? []) as AtualizacaoRow[];

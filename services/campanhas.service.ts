@@ -9,7 +9,7 @@ const repo = new CampanhasRepository();
 
 function publicCampaign(c: CampanhaRow) {
   return {
-    id: c.id,
+    id: String(c.id),
     slug: c.slug,
     titulo: c.titulo,
     subtitulo: c.subtitulo,
@@ -32,7 +32,7 @@ function publicCampaign(c: CampanhaRow) {
 }
 
 /** Anexa a imagem de capa e o nº de apoiadores (doações PAGAS) a uma página de campanhas. */
-async function enriquecer<T extends { id: string }>(rows: T[]) {
+async function enriquecer<T extends { id: string | number }>(rows: T[]) {
   if (!rows.length) return { imagem: new Map<string, string | null>(), apoiadores: new Map<string, number>() };
   const [imagens, doacoes] = await Promise.all([
     repo.imagesForCampaigns(rows.map((r) => r.id)),
@@ -40,11 +40,15 @@ async function enriquecer<T extends { id: string }>(rows: T[]) {
   ]);
   const imagem = new Map<string, string | null>();
   for (const img of imagens) {
-    const atual = imagem.get(img.campanha_id);
-    if (img.papel === "CAPA" || atual === undefined) imagem.set(img.campanha_id, img.url);
+    const cid = String(img.campanha_id);
+    const atual = imagem.get(cid);
+    if (img.papel === "CAPA" || atual === undefined) imagem.set(cid, img.url);
   }
   const apoiadores = new Map<string, number>();
-  for (const d of doacoes) apoiadores.set(d.campanha_id, (apoiadores.get(d.campanha_id) ?? 0) + 1);
+  for (const d of doacoes) {
+    const cid = String(d.campanha_id);
+    apoiadores.set(cid, (apoiadores.get(cid) ?? 0) + 1);
+  }
   return { imagem, apoiadores };
 }
 
@@ -55,8 +59,8 @@ export const campanhasService = {
     return {
       data: result.data.map((c) => ({
         ...publicCampaign(c),
-        imagem: imagem.get(c.id) ?? null,
-        apoiadores: apoiadores.get(c.id) ?? 0,
+        imagem: imagem.get(String(c.id)) ?? null,
+        apoiadores: apoiadores.get(String(c.id)) ?? 0,
       })),
       count: result.count,
     };
@@ -67,8 +71,8 @@ export const campanhasService = {
     return {
       data: result.data.map((c) => ({
         ...publicCampaign(c),
-        imagem: imagem.get(c.id) ?? null,
-        apoiadores: apoiadores.get(c.id) ?? 0,
+        imagem: imagem.get(String(c.id)) ?? null,
+        apoiadores: apoiadores.get(String(c.id)) ?? 0,
       })),
       count: result.count,
     };

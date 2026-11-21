@@ -70,8 +70,8 @@ export async function POST(request: Request) {
         Number(donation.valor);
 
       // 4. Escrita atômica no Supabase via RPC confirmar_doacao
-      await doacoesService.confirm(donation.id, txid, valorConfirmado);
-      confirmadas.push(donation.id);
+      await doacoesService.confirm(String(donation.id), txid, valorConfirmado);
+      confirmadas.push(String(donation.id));
     }
 
     return apiSuccess(

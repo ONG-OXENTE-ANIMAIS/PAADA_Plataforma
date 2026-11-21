@@ -9,8 +9,8 @@ const repo = new DoacoesRepository();
 const campanhas = new CampanhasRepository();
 
 const publicDonation = (donation: DoacaoRow) => ({
-  id: donation.id,
-  campanha_id: donation.campanha_id,
+  id: String(donation.id),
+  campanha_id: String(donation.campanha_id),
   status: donation.status,
   valor: Number(donation.valor),
   atualizado_em: donation.atualizado_em,
@@ -58,7 +58,7 @@ export const doacoesService = {
         const valorTotalCartao = (parcelaCentavos * parcelasNum) / 100;
 
         const resultadoCartao = await criarCobrancaCartao({
-          donationId: donation.id,
+          donationId: String(donation.id),
           txid: donation.txid,
           amount: valorTotalCartao,
           campaignTitle: campaign.titulo,
@@ -89,8 +89,8 @@ export const doacoesService = {
       }
 
       const preference = await criarCobrancaPagamento({
-        donationId: donation.id,
-        donationToken: donation.id,
+        donationId: String(donation.id),
+        donationToken: String(donation.id),
         campaignSlug: campaign.slug,
         txid: donation.txid,
         amount: Number(donation.valor),

@@ -7,7 +7,7 @@ export type StatusContato = "RECEBIDA" | "EM_ANALISE" | "CONCLUIDA" | "RESPONDID
 export type TipoMensagem = "CONTATO" | "SUGESTAO";
 
 export type CampanhaRow = {
-  id: string;
+  id: string | number;
   slug: string;
   titulo: string;
   subtitulo: string;
@@ -28,24 +28,24 @@ export type CampanhaRow = {
 };
 
 export type SubmetaRow = {
-  id: string;
-  campanha_id: string;
+  id: string | number;
+  campanha_id: string | number;
   titulo: string;
   valor: number;
   ordem: number;
 };
 
 export type AtualizacaoRow = {
-  id: string;
-  campanha_id: string;
+  id: string | number;
+  campanha_id: string | number;
   titulo: string;
   texto: string;
   tag: string | null;
 };
 
 export type ImagemRow = {
-  id: string;
-  campanha_id: string;
+  id: string | number;
+  campanha_id: string | number;
   url: string;
   descricao: string | null;
   papel: string;
@@ -54,8 +54,8 @@ export type ImagemRow = {
 };
 
 export type DoacaoRow = {
-  id: string;
-  campanha_id: string;
+  id: string | number;
+  campanha_id: string | number;
   valor: number;
   status: StatusDoacao;
   txid: string;
@@ -136,8 +136,8 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
-      confirmar_doacao: { Args: { p_doacao_id: string; p_payment_id: string; p_valor: number }; Returns: Json };
-      definir_status_doacao: { Args: { p_doacao_id: string; p_status: StatusDoacao }; Returns: Json };
+      confirmar_doacao: { Args: { p_doacao_id: string | number; p_payment_id: string; p_valor: number }; Returns: Json };
+      definir_status_doacao: { Args: { p_doacao_id: string | number; p_status: StatusDoacao }; Returns: Json };
       consumir_rate_limit: { Args: { p_chave: string; p_limite: number; p_janela_segundos: number }; Returns: Json };
     };
     Enums: { tipo_usuarios: TipoUsuario };
