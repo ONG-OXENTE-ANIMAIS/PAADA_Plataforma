@@ -125,7 +125,16 @@ async function efiHttpRequest(urlStr: string, init: RequestInit = {}): Promise<R
       },
     );
 
-    req.on("error", (err) => reject(err));
+    req.on("error", (err) => {
+      console.error("[efiHttpRequest error]", err);
+      reject(
+        new ApiError(
+          502,
+          "PAYMENT_GATEWAY_NETWORK_ERROR",
+          `Falha de conexão com a Efí (mTLS/Rede): ${err.message}`,
+        ),
+      );
+    });
     if (bodyBuffer) req.write(bodyBuffer);
     req.end();
   });
@@ -169,7 +178,12 @@ async function obterToken(): Promise<string> {
     body: "grant_type=client_credentials",
   });
   if (!response.ok) {
-    throw new ApiError(502, "PAYMENT_PROVIDER_ERROR", "Não foi possível autenticar no Efi.");
+    const errorText = await response.text().catch(() => "");
+    throw new ApiError(
+      502,
+      "PAYMENT_PROVIDER_ERROR",
+      `Não foi possível autenticar no Efi (${response.status}): ${errorText || "credenciais ou ambiente incompatíveis"}`.slice(0, 250),
+    );
   }
   const data = (await response.json()) as {
     access_token: string;

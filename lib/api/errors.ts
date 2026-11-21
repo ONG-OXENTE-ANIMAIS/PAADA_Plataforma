@@ -27,6 +27,9 @@ export function toApiError(error: unknown): ApiError {
     if (error.code === "23504") return new ApiError(409, "CONFLICT", "Os dados enviados violam uma restrição do banco de dados.");
     if (error.code === "42703") return new ApiError(400, "INVALID_COLUMN", "Coluna inválida nos dados enviados.");
     if (error.code === "PGRST116") return new ApiError(404, "NOT_FOUND", "Registro não encontrado.");
+    const postgrestMsg = [error.message, error.details].filter(Boolean).join(" - ");
+    return new ApiError(500, "DATABASE_ERROR", `Erro no banco de dados (${error.code}): ${postgrestMsg}`);
   }
-  return new ApiError(500, "INTERNAL_ERROR", "Não foi possível concluir a operação.");
+  const rawMsg = error instanceof Error ? error.message : String(error);
+  return new ApiError(500, "INTERNAL_ERROR", rawMsg || "Não foi possível concluir a operação.");
 }
