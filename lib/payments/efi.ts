@@ -25,7 +25,7 @@ function carregarCertificadoPem(): Buffer | null {
     return null;
   }
 
-  const inlinePem = process.env.EFI_CERTIFICATE_PEM?.trim();
+  const inlinePem = (process.env.EFI_CERTIFICATE_PEM || process.env.EFI_CERT_BASE64)?.trim();
   if (inlinePem) {
     if (inlinePem.includes("-----BEGIN")) {
       return Buffer.from(inlinePem.replace(/\\n/g, "\n"), "utf-8");

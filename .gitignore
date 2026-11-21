@@ -8,3 +8,4 @@ scripts/*
 !scripts/setup-webhook.mjs
 scripts
 .pem
+*.tsbuildinfo

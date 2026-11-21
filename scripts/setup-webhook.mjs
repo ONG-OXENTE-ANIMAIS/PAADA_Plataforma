@@ -3,7 +3,7 @@ import https from "node:https";
 import path from "node:path";
 
 function carregarPem() {
-  const inline = process.env.EFI_CERTIFICATE_PEM?.trim();
+  const inline = (process.env.EFI_CERTIFICATE_PEM || process.env.EFI_CERT_BASE64)?.trim();
   if (inline) {
     return inline.includes("-----BEGIN")
       ? Buffer.from(inline.replace(/\\n/g, "\n"), "utf-8")
