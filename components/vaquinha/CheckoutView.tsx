@@ -670,70 +670,26 @@ export default function CheckoutView({
                 </label>
 
                 <div className="campo" style={{ marginBottom: "16px" }}>
-                  <label
-                    htmlFor="chk-nome"
-                    style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
-                  >
-                    <span style={{ fontWeight: 600 }}>Seu nome</span>
-                    <span
-                      className="contador"
-                      style={
-                        anonimo
-                          ? {
-                              color: "#b45309",
-                              background: "#fef3c7",
-                              padding: "2px 8px",
-                              borderRadius: "6px",
-                              fontWeight: 700,
-                              fontSize: "11px",
-                            }
-                          : undefined
-                      }
-                    >
-                      {anonimo ? "🔒 DESATIVADO (ANÔNIMO NO MURAL)" : "opcional"}
-                    </span>
+                  <label htmlFor="chk-nome">
+                    Seu nome <span className="contador">{anonimo ? "anônimo" : "opcional"}</span>
                   </label>
                   <input
                     id="chk-nome"
                     type="text"
-                    placeholder={
-                      anonimo
-                        ? "🔒 Campo desativado — Seu nome não será exibido no mural público"
-                        : "Como quer aparecer no mural da vaquinha?"
-                    }
+                    placeholder={anonimo ? "Doação Anônima" : "Como quer aparecer?"}
                     disabled={anonimo}
                     value={anonimo ? "" : nome}
                     onChange={(e) => setNome(e.target.value)}
                     style={
                       anonimo
                         ? {
-                            background: "#f5f0ea",
-                            color: "#8a7a6e",
-                            borderColor: "#cbbcb0",
-                            borderStyle: "dashed",
-                            borderWidth: "1.5px",
+                            background: "#ede5dc",
+                            color: "#8a7e74",
                             cursor: "not-allowed",
-                            opacity: 0.85,
-                            fontStyle: "italic",
                           }
                         : undefined
                     }
                   />
-                  {anonimo && (
-                    <span
-                      style={{
-                        fontSize: "12px",
-                        color: "#786555",
-                        marginTop: "5px",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "5px",
-                      }}
-                    >
-                      <i className="ph-fill ph-lock-key" style={{ color: "var(--laranja)" }}></i>
-                      Sua ajuda aparecerá como <b>Apoiador Anônimo</b> no mural. E-mail e telefone abaixo são opcionais para recebimento do comprovante.
-                    </span>
-                  )}
                 </div>
 
                 <div className="duo">

@@ -314,70 +314,26 @@ export default function DonateModal({
           </div>
 
           <div className="campo" style={{ margin: "12px 0" }}>
-            <label
-              htmlFor="dm-nome"
-              style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
-            >
-              <span style={{ fontWeight: 600 }}>Seu nome</span>
-              <span
-                className="contador"
-                style={
-                  anonimo
-                    ? {
-                        color: "#b45309",
-                        background: "#fef3c7",
-                        padding: "2px 8px",
-                        borderRadius: "6px",
-                        fontWeight: 700,
-                        fontSize: "11px",
-                      }
-                    : undefined
-                }
-              >
-                {anonimo ? "🔒 DESATIVADO (ANÔNIMO)" : "opcional"}
-              </span>
+            <label htmlFor="dm-nome">
+              Seu nome <span className="contador">{anonimo ? "anônimo" : "opcional"}</span>
             </label>
             <input
               id="dm-nome"
               type="text"
-              placeholder={
-                anonimo
-                  ? "🔒 Campo desativado — Nome não será exibido no mural"
-                  : "Como quer aparecer no mural da vaquinha?"
-              }
+              placeholder={anonimo ? "Doação Anônima" : "Como quer aparecer?"}
               disabled={anonimo}
               value={anonimo ? "" : nome}
               onChange={(e) => setNome(e.target.value)}
               style={
                 anonimo
                   ? {
-                      background: "#f5f0ea",
-                      color: "#8a7a6e",
-                      borderColor: "#cbbcb0",
-                      borderStyle: "dashed",
-                      borderWidth: "1.5px",
+                      background: "#ede5dc",
+                      color: "#8a7e74",
                       cursor: "not-allowed",
-                      opacity: 0.85,
-                      fontStyle: "italic",
                     }
                   : undefined
               }
             />
-            {anonimo && (
-              <span
-                style={{
-                  fontSize: "11.5px",
-                  color: "#786555",
-                  marginTop: "4px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "4px",
-                }}
-              >
-                <i className="ph-fill ph-lock-key" style={{ color: "var(--laranja)" }}></i>
-                Apoiador Anônimo no mural. E-mail e telefone abaixo continuam opcionais para o recibo.
-              </span>
-            )}
           </div>
 
           <div className="campo" style={{ marginBottom: "12px" }}>
