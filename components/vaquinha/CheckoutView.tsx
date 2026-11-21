@@ -514,29 +514,161 @@ export default function CheckoutView({
           )}
 
           {etapa === "sucesso" && (
-            <div className="form-ok">
-              <i className="ph-fill ph-check-circle"></i>
-              <h3>Doação confirmada! Muito obrigado!</h3>
-              <p>
-                Sua contribuição de <b>{BRL(valor)}</b> via{" "}
-                <b>
-                  {metodo === "pix"
-                    ? "Pix à vista"
-                    : funcaoCartao === "debito"
-                      ? "Cartão de Débito (à vista)"
-                      : `Cartão de Crédito (${parcelas}x)`}
-                </b>{" "}
-                foi registrada com sucesso para <b>{campaign.title}</b>.
+            <div style={{ textAlign: "center", padding: "16px 8px" }}>
+              {/* Badge de sucesso com ícone verde */}
+              <div
+                style={{
+                  width: "72px",
+                  height: "72px",
+                  borderRadius: "50%",
+                  background: "#e8f5e9",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "0 auto 16px",
+                  boxShadow: "0 10px 25px -5px rgba(46, 125, 50, 0.2)",
+                }}
+              >
+                <i className="ph-fill ph-check-circle" style={{ fontSize: "40px", color: "#2e7d32" }}></i>
+              </div>
+
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  background: "#e8f5e9",
+                  color: "#1b5e20",
+                  padding: "4px 14px",
+                  borderRadius: "999px",
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  marginBottom: "12px",
+                }}
+              >
+                <i className="ph-fill ph-shield-check"></i> Pagamento Aprovado
+              </div>
+
+              <h2
+                style={{
+                  fontFamily: '"Bricolage Grotesque"',
+                  fontSize: "1.75rem",
+                  fontWeight: 800,
+                  color: "var(--marrom)",
+                  marginBottom: "8px",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                Doação confirmada! Muito obrigado!
+              </h2>
+              <p
+                style={{
+                  color: "var(--m70)",
+                  fontSize: "14.5px",
+                  maxWidth: "42ch",
+                  margin: "0 auto 24px",
+                  lineHeight: "1.5",
+                }}
+              >
+                Sua generosidade faz a diferença direta no cuidado e acolhimento dos animais da ONG Oxente.
               </p>
-              {doacaoConfirmadaId && (
-                <p style={{ fontSize: "12.5px", opacity: 0.75, marginBottom: "20px" }}>
-                  Protocolo da doação: <code>{doacaoConfirmadaId}</code>
-                </p>
-              )}
-              <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-                <Link href={`/vaquinha/${campaign.slug}`} className="btn btn-laranja">
+
+              {/* CARD DE COMPROVANTE ELEGANTE */}
+              <div
+                style={{
+                  background: "var(--papel)",
+                  border: "1px solid var(--m15)",
+                  borderRadius: "18px",
+                  padding: "20px 24px",
+                  maxWidth: "460px",
+                  margin: "0 auto 28px",
+                  textAlign: "left",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "baseline",
+                    paddingBottom: "14px",
+                    borderBottom: "1px dashed var(--m15)",
+                    marginBottom: "14px",
+                  }}
+                >
+                  <span style={{ fontSize: "13px", color: "var(--m70)", fontWeight: 600 }}>Valor da contribuição</span>
+                  <span
+                    style={{
+                      fontFamily: '"Bricolage Grotesque"',
+                      fontSize: "1.85rem",
+                      fontWeight: 800,
+                      color: "var(--marrom)",
+                    }}
+                  >
+                    {BRL(valor)}
+                  </span>
+                </div>
+
+                <div style={{ display: "grid", gap: "10px", fontSize: "13.5px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ color: "var(--m50)" }}>Campanha</span>
+                    <span style={{ fontWeight: 600, color: "var(--marrom)", textAlign: "right" }}>
+                      {campaign.title}
+                    </span>
+                  </div>
+
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ color: "var(--m50)" }}>Método</span>
+                    <span style={{ fontWeight: 600, color: "var(--marrom)", display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                      {metodo === "pix" ? (
+                        <>
+                          <i className="ph-fill ph-pix-logo" style={{ color: "var(--laranja)" }}></i> Pix Instantâneo
+                        </>
+                      ) : funcaoCartao === "debito" ? (
+                        "Cartão de Débito (à vista)"
+                      ) : (
+                        `Cartão de Crédito (${parcelas}x)`
+                      )}
+                    </span>
+                  </div>
+
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ color: "var(--m50)" }}>Status</span>
+                    <span style={{ fontWeight: 700, color: "#2e7d32", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                      <i className="ph-fill ph-check-circle"></i> Confirmado
+                    </span>
+                  </div>
+
+                  {doacaoConfirmadaId && (
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ color: "var(--m50)" }}>Protocolo</span>
+                      <code style={{ background: "var(--carta)", padding: "2px 8px", borderRadius: "6px", fontSize: "12px", border: "1px solid var(--m15)" }}>
+                        #{doacaoConfirmadaId}
+                      </code>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* BOTÕES DE AÇÃO */}
+              <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap", alignItems: "center" }}>
+                <Link
+                  href={`/vaquinha/${campaign.slug}`}
+                  className="btn btn-laranja"
+                  style={{
+                    padding: "13px 28px",
+                    fontSize: "14.5px",
+                    fontWeight: 700,
+                    borderRadius: "999px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
                   <i className="ph ph-arrow-left"></i> Voltar para a campanha
                 </Link>
+
                 <button
                   type="button"
                   className="btn btn-fantasma"
@@ -544,10 +676,21 @@ export default function CheckoutView({
                     setEtapa("form");
                     setPagandoPix(null);
                   }}
+                  style={{
+                    padding: "13px 22px",
+                    fontSize: "14px",
+                    fontWeight: 600,
+                    borderRadius: "999px",
+                  }}
                 >
                   Fazer nova doação
                 </button>
               </div>
+
+              <p style={{ fontSize: "12px", color: "var(--m50)", marginTop: "24px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+                <i className="ph-fill ph-shield-check" style={{ color: "var(--laranja)" }}></i>
+                Transação 100% segura processada via Efí Bank.
+              </p>
             </div>
           )}
 
