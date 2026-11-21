@@ -8,10 +8,21 @@ export const runtime = "nodejs";
 const repo = new DoacoesRepository();
 
 export async function POST(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const host = request.headers.get("host") || "";
+    const isLocal =
+      host.startsWith("localhost") ||
+      host.startsWith("127.0.0.1") ||
+      process.env.NODE_ENV !== "production";
+    if (!isLocal) {
+      return apiFailure(
+        new ApiError(403, "FORBIDDEN", "Simulação disponível apenas em ambiente local de desenvolvimento."),
+        "doacoes/simular",
+      );
+    }
     const { id } = await params;
     const donation = await repo.findById(id);
     if (!donation) {

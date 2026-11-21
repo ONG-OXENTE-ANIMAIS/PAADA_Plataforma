@@ -109,6 +109,7 @@ export default function CheckoutView({
   // Dados do doador
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [mensagem, setMensagem] = useState("");
   const [anonimo, setAnonimo] = useState(false);
 
@@ -132,12 +133,20 @@ export default function CheckoutView({
   const [doacaoConfirmadaId, setDoacaoConfirmadaId] = useState<string | null>(null);
   const [doacaoIdAtual, setDoacaoIdAtual] = useState<string | null>(null);
   const [simulando, setSimulando] = useState(false);
+  const [isLocalHost, setIsLocalHost] = useState(false);
   const enviando = useRef(false);
   const poll = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const calculoParcelamento = calcularParcelamento(valor, parcelas, funcaoCartao);
 
   useEffect(() => () => pararPoll(), []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const h = window.location.hostname;
+      setIsLocalHost(h === "localhost" || h === "127.0.0.1" || h.endsWith(".local"));
+    }
+  }, []);
 
   // Pré-carrega o script de segurança da Efí quando o usuário clica na aba de cartão
   useEffect(() => {
@@ -198,8 +207,14 @@ export default function CheckoutView({
       return;
     }
 
-    if (!anonimo && email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      setErro("Informe um e-mail válido ou marque a opção de doação anônima.");
+    if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setErro("Informe um e-mail válido para o envio do recibo.");
+      return;
+    }
+
+    const digitosTel = telefone.replace(/\D/g, "");
+    if (digitosTel.length > 0 && (digitosTel.length < 10 || digitosTel.length > 11)) {
+      setErro("Informe um telefone válido com DDD (ex: 87 99999-9999) ou deixe em branco.");
       return;
     }
 
@@ -266,7 +281,11 @@ export default function CheckoutView({
       }
 
       const nomeLimpo = (!anonimo && (nome.trim() || (CARTAO_HABILITADO && metodoEfetivo === "cartao" ? nomeTitular.trim() : ""))) || undefined;
-      const emailLimpo = (!anonimo && email.trim()) || undefined;
+      const emailLimpo = email.trim() || undefined;
+      const telefoneLimpo =
+        telefone.replace(/\D/g, "") ||
+        (CARTAO_HABILITADO && metodoEfetivo === "cartao" ? telefoneTitular.replace(/\D/g, "") : undefined) ||
+        undefined;
       const mensagemLimpa = mensagem.trim() || undefined;
 
       const corpoRequisicao: Record<string, unknown> = {
@@ -276,12 +295,9 @@ export default function CheckoutView({
         anonimo,
         mensagem: mensagemLimpa,
         metodo_pagamento: metodoEfetivo,
-        ...(anonimo
-          ? {}
-          : {
-              ...(nomeLimpo ? { nome: nomeLimpo } : {}),
-              ...(emailLimpo ? { email: emailLimpo } : {}),
-            }),
+        ...(nomeLimpo ? { nome: nomeLimpo } : {}),
+        ...(emailLimpo ? { email: emailLimpo } : {}),
+        ...(telefoneLimpo ? { telefone: telefoneLimpo } : {}),
       };
 
       if (CARTAO_HABILITADO && metodoEfetivo === "cartao") {
@@ -441,7 +457,7 @@ export default function CheckoutView({
                 Aguardando confirmação automática do banco…
               </div>
 
-              {doacaoIdAtual && (
+              {isLocalHost && doacaoIdAtual && (
                 <div style={{ marginTop: "18px" }}>
                   <button
                     type="button"
@@ -647,38 +663,103 @@ export default function CheckoutView({
                       setAnonimo(e.target.checked);
                       if (e.target.checked) {
                         setNome("");
-                        setEmail("");
                       }
                     }}
                   />
                   Quero doar anonimamente no mural
                 </label>
 
+                <div className="campo" style={{ marginBottom: "16px" }}>
+                  <label
+                    htmlFor="chk-nome"
+                    style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+                  >
+                    <span style={{ fontWeight: 600 }}>Seu nome</span>
+                    <span
+                      className="contador"
+                      style={
+                        anonimo
+                          ? {
+                              color: "#b45309",
+                              background: "#fef3c7",
+                              padding: "2px 8px",
+                              borderRadius: "6px",
+                              fontWeight: 700,
+                              fontSize: "11px",
+                            }
+                          : undefined
+                      }
+                    >
+                      {anonimo ? "🔒 DESATIVADO (ANÔNIMO NO MURAL)" : "opcional"}
+                    </span>
+                  </label>
+                  <input
+                    id="chk-nome"
+                    type="text"
+                    placeholder={
+                      anonimo
+                        ? "🔒 Campo desativado — Seu nome não será exibido no mural público"
+                        : "Como quer aparecer no mural da vaquinha?"
+                    }
+                    disabled={anonimo}
+                    value={anonimo ? "" : nome}
+                    onChange={(e) => setNome(e.target.value)}
+                    style={
+                      anonimo
+                        ? {
+                            background: "#f5f0ea",
+                            color: "#8a7a6e",
+                            borderColor: "#cbbcb0",
+                            borderStyle: "dashed",
+                            borderWidth: "1.5px",
+                            cursor: "not-allowed",
+                            opacity: 0.85,
+                            fontStyle: "italic",
+                          }
+                        : undefined
+                    }
+                  />
+                  {anonimo && (
+                    <span
+                      style={{
+                        fontSize: "12px",
+                        color: "#786555",
+                        marginTop: "5px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "5px",
+                      }}
+                    >
+                      <i className="ph-fill ph-lock-key" style={{ color: "var(--laranja)" }}></i>
+                      Sua ajuda aparecerá como <b>Apoiador Anônimo</b> no mural. E-mail e telefone abaixo são opcionais para recebimento do comprovante.
+                    </span>
+                  )}
+                </div>
+
                 <div className="duo">
-                  <div className="campo">
-                    <label htmlFor="chk-nome">
-                      Seu nome <span className="contador">{anonimo ? "anônimo" : "opcional"}</span>
-                    </label>
-                    <input
-                      id="chk-nome"
-                      type="text"
-                      placeholder={anonimo ? "Doação Anônima" : "Como quer aparecer?"}
-                      disabled={anonimo}
-                      value={nome}
-                      onChange={(e) => setNome(e.target.value)}
-                    />
-                  </div>
-                  <div className="campo">
+                  <div className="campo" style={{ marginBottom: 0 }}>
                     <label htmlFor="chk-email">
-                      E-mail <span className="contador">para recibo</span>
+                      E-mail <span className="contador">opcional • para recibo</span>
                     </label>
                     <input
                       id="chk-email"
                       type="email"
                       placeholder="voce@exemplo.com.br"
-                      disabled={anonimo}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="campo" style={{ marginBottom: 0 }}>
+                    <label htmlFor="chk-telefone">
+                      Telefone / WhatsApp <span className="contador">opcional</span>
+                    </label>
+                    <input
+                      id="chk-telefone"
+                      type="tel"
+                      inputMode="numeric"
+                      placeholder="(00) 00000-0000"
+                      value={telefone}
+                      onChange={(e) => setTelefone(formatarTelefone(e.target.value))}
                     />
                   </div>
                 </div>

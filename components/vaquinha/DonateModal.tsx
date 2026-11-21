@@ -8,6 +8,7 @@ import {
   detectarBandeira,
   formatarCpf,
   formatarNumeroCartao,
+  formatarTelefone,
   formatarValidade,
   validarCpf,
 } from "@/components/vaquinha/CheckoutView";
@@ -46,7 +47,16 @@ export default function DonateModal({
   const [metodo, setMetodo] = useState<"pix" | "cartao">("pix");
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [anonimo, setAnonimo] = useState(false);
+  const [isLocalHost, setIsLocalHost] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const h = window.location.hostname;
+      setIsLocalHost(h === "localhost" || h === "127.0.0.1" || h.endsWith(".local"));
+    }
+  }, []);
 
   // Campos de Cartão no Modal
   const [numCartao, setNumCartao] = useState("");
@@ -88,8 +98,19 @@ export default function DonateModal({
   async function confirmar() {
     if (enviando.current) return;
 
-    if (!anonimo && email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      setErro("Informe um e-mail válido ou marque a doação anônima.");
+    if (!anonimo && nome.trim() && nome.trim().length < 2) {
+      setErro("O seu nome deve ter pelo menos 2 caracteres ou marque a doação anônima.");
+      return;
+    }
+
+    if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setErro("Informe um e-mail válido para o envio do recibo.");
+      return;
+    }
+
+    const digitosTel = telefone.replace(/\D/g, "");
+    if (digitosTel.length > 0 && (digitosTel.length < 10 || digitosTel.length > 11)) {
+      setErro("Informe um telefone válido com DDD (ex: 87 99999-9999) ou deixe em branco.");
       return;
     }
 
@@ -122,18 +143,19 @@ export default function DonateModal({
     setErro(null);
     try {
       const digitosCartao = numCartao.replace(/\D/g, "");
+      const nomeLimpo = (!anonimo && (nome.trim() || (metodo === "cartao" ? nomeTitular.trim() : ""))) || undefined;
+      const emailLimpo = email.trim() || undefined;
+      const telefoneLimpo = telefone.replace(/\D/g, "") || undefined;
+
       const corpo: Record<string, unknown> = {
         campanha_id: campaign.id,
         valor,
         mensal: freq === "mes",
         anonimo,
         metodo_pagamento: metodo,
-        ...(anonimo
-          ? {}
-          : {
-              nome: (nome.trim() || (metodo === "cartao" ? nomeTitular.trim() : "")) || null,
-              email: email.trim() || null,
-            }),
+        ...(nomeLimpo ? { nome: nomeLimpo } : {}),
+        ...(emailLimpo ? { email: emailLimpo } : {}),
+        ...(telefoneLimpo ? { telefone: telefoneLimpo } : {}),
       };
 
       if (metodo === "cartao") {
@@ -292,31 +314,99 @@ export default function DonateModal({
           </div>
 
           <div className="campo" style={{ margin: "12px 0" }}>
-            <label htmlFor="dm-nome">
-              Seu nome <span className="contador">opcional</span>
+            <label
+              htmlFor="dm-nome"
+              style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+            >
+              <span style={{ fontWeight: 600 }}>Seu nome</span>
+              <span
+                className="contador"
+                style={
+                  anonimo
+                    ? {
+                        color: "#b45309",
+                        background: "#fef3c7",
+                        padding: "2px 8px",
+                        borderRadius: "6px",
+                        fontWeight: 700,
+                        fontSize: "11px",
+                      }
+                    : undefined
+                }
+              >
+                {anonimo ? "🔒 DESATIVADO (ANÔNIMO)" : "opcional"}
+              </span>
             </label>
             <input
               id="dm-nome"
               type="text"
-              placeholder="Como quer aparecer?"
+              placeholder={
+                anonimo
+                  ? "🔒 Campo desativado — Nome não será exibido no mural"
+                  : "Como quer aparecer no mural da vaquinha?"
+              }
               disabled={anonimo}
-              value={nome}
+              value={anonimo ? "" : nome}
               onChange={(e) => setNome(e.target.value)}
+              style={
+                anonimo
+                  ? {
+                      background: "#f5f0ea",
+                      color: "#8a7a6e",
+                      borderColor: "#cbbcb0",
+                      borderStyle: "dashed",
+                      borderWidth: "1.5px",
+                      cursor: "not-allowed",
+                      opacity: 0.85,
+                      fontStyle: "italic",
+                    }
+                  : undefined
+              }
             />
+            {anonimo && (
+              <span
+                style={{
+                  fontSize: "11.5px",
+                  color: "#786555",
+                  marginTop: "4px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+              >
+                <i className="ph-fill ph-lock-key" style={{ color: "var(--laranja)" }}></i>
+                Apoiador Anônimo no mural. E-mail e telefone abaixo continuam opcionais para o recibo.
+              </span>
+            )}
           </div>
+
           <div className="campo" style={{ marginBottom: "12px" }}>
             <label htmlFor="dm-email">
-              E-mail <span className="contador">para o comprovante</span>
+              E-mail <span className="contador">opcional • para recibo</span>
             </label>
             <input
               id="dm-email"
               type="email"
               placeholder="voce@exemplo.com.br"
-              disabled={anonimo}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+
+          <div className="campo" style={{ marginBottom: "12px" }}>
+            <label htmlFor="dm-telefone">
+              Telefone / WhatsApp <span className="contador">opcional</span>
+            </label>
+            <input
+              id="dm-telefone"
+              type="tel"
+              inputMode="numeric"
+              placeholder="(00) 00000-0000"
+              value={telefone}
+              onChange={(e) => setTelefone(formatarTelefone(e.target.value))}
+            />
+          </div>
+
           <label
             htmlFor="dm-anonimo"
             style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px", marginBottom: "14px", cursor: "pointer" }}
@@ -329,11 +419,10 @@ export default function DonateModal({
                 setAnonimo(e.target.checked);
                 if (e.target.checked) {
                   setNome("");
-                  setEmail("");
                 }
               }}
             />
-            Quero doar como anônimo
+            Quero doar como anônimo no mural
           </label>
 
           {metodo === "cartao" && (
@@ -515,7 +604,7 @@ export default function DonateModal({
                 })}.{" "}
                 <span>Confirmando pagamento…</span>
               </p>
-              {doacaoIdAtual && (
+              {isLocalHost && doacaoIdAtual && (
                 <div style={{ marginTop: "12px", textAlign: "center" }}>
                   <button
                     type="button"
