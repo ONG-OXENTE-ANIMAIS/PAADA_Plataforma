@@ -130,6 +130,8 @@ export default function CheckoutView({
   const [pagandoPix, setPagandoPix] = useState<PagandoPix | null>(null);
   const [copiado, setCopiado] = useState(false);
   const [doacaoConfirmadaId, setDoacaoConfirmadaId] = useState<string | null>(null);
+  const [doacaoIdAtual, setDoacaoIdAtual] = useState<string | null>(null);
+  const [simulando, setSimulando] = useState(false);
   const enviando = useRef(false);
   const poll = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -311,6 +313,7 @@ export default function CheckoutView({
 
       if (resposta.pagando) {
         setPagandoPix(resposta.pagando);
+        setDoacaoIdAtual(resposta.donation.id);
         setEtapa("pix");
         iniciarPoll(resposta.donation.id);
       } else {
@@ -437,6 +440,47 @@ export default function CheckoutView({
                 <i className="ph ph-hourglass-medium" style={{ color: "var(--laranja)", fontSize: "18px" }}></i>
                 Aguardando confirmação automática do banco…
               </div>
+
+              {doacaoIdAtual && (
+                <div style={{ marginTop: "18px" }}>
+                  <button
+                    type="button"
+                    disabled={simulando}
+                    onClick={async () => {
+                      setSimulando(true);
+                      try {
+                        const res = await fetch(`/api/doacoes/${doacaoIdAtual}/simular`, { method: "POST" });
+                        if (res.ok) {
+                          pararPoll();
+                          setDoacaoConfirmadaId(doacaoIdAtual);
+                          setEtapa("sucesso");
+                        } else {
+                          alert("Não foi possível simular a confirmação.");
+                        }
+                      } catch {
+                        alert("Erro de conexão ao simular confirmação.");
+                      } finally {
+                        setSimulando(false);
+                      }
+                    }}
+                    style={{
+                      background: "#e8f5e9",
+                      border: "1.5px dashed #2e7d32",
+                      color: "#1b5e20",
+                      padding: "8px 16px",
+                      borderRadius: "8px",
+                      fontSize: "13px",
+                      fontWeight: 700,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {simulando ? "Confirmando..." : "🧪 [Teste] Simular Pagamento Pix Confirmado"}
+                  </button>
+                  <p style={{ fontSize: "11px", color: "var(--m70)", marginTop: "4px" }}>
+                    Em homologação ou localhost, apps de bancos reais não conseguem pagar QR Codes de teste. Use este botão para testar a confirmação.
+                  </p>
+                </div>
+              )}
 
               <div style={{ marginTop: "26px" }}>
                 <button

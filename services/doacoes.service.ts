@@ -31,7 +31,6 @@ export const doacoesService = {
     if (!campaign || campaign.status !== "ATIVA" || !campaign.meta_isvisible) throw new ApiError(422, "CAMPAIGN_NOT_ACCEPTING_DONATIONS", "Esta campanha não está aceitando doações.");
     if (campaign.data_fim && new Date(campaign.data_fim) < new Date()) throw new ApiError(422, "CAMPAIGN_ENDED", "Esta campanha já foi encerrada.");
     if (data.mensal && !campaign.mensal) throw new ApiError(422, "RECURRING_NOT_ALLOWED", "Esta campanha não aceita doações recorrentes.");
-    if (data.anonimo && (data.email || data.nome)) throw new ApiError(400, "ANONYMOUS_EMAIL", "Doações anônimas não devem incluir e-mail.");
     if (data.metodo_pagamento === "cartao" && !data.cartao) {
       throw new ApiError(400, "CARD_DATA_REQUIRED", "Informe os dados do cartão de crédito para concluir a doação.");
     }
@@ -45,6 +44,11 @@ export const doacoesService = {
       txid,
       assinatura_id: null,
       payment_id: null,
+      nome_doador: data.anonimo ? null : (data.nome ?? null),
+      email_doador: data.email ?? null,
+      telefone_doador: data.telefone ?? null,
+      anonima: Boolean(data.anonimo),
+      mensagem: data.mensagem ?? null,
     });
 
     try {
@@ -134,7 +138,7 @@ export const doacoesService = {
   async getPublic(id: string, token: string | null) {
     const donation = await repo.findById(id);
     if (!donation) throw new ApiError(404, "NOT_FOUND", "Doação não encontrada.");
-    if (token !== donation.id) throw new ApiError(404, "NOT_FOUND", "Doação não encontrada.");
+    if (String(token) !== String(donation.id)) throw new ApiError(404, "NOT_FOUND", "Doação não encontrada.");
     return publicDonation(donation);
   },
   async updateStatus(id: string, input: unknown) {

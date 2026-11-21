@@ -59,9 +59,16 @@ export type DoacaoRow = {
   valor: number;
   status: StatusDoacao;
   txid: string;
+  nome_doador?: string | null;
+  email_doador?: string | null;
+  telefone_doador?: string | null;
+  anonima?: boolean;
+  mensagem?: string | null;
+  dados_pagamento?: Json | null;
   assinatura_id: string | null;
   payment_id: string | null;
   pago_em: string | null;
+  criada_em?: string;
   atualizado_em: string;
 };
 

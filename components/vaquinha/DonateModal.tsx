@@ -58,6 +58,7 @@ export default function DonateModal({
 
   const [erro, setErro] = useState<string | null>(null);
   const [pagando, setPagando] = useState<PagandoPix | null>(null);
+  const [doacaoIdAtual, setDoacaoIdAtual] = useState<string | null>(null);
   const [copiado, setCopiado] = useState(false);
   const enviando = useRef(false);
   const poll = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -160,6 +161,7 @@ export default function DonateModal({
       setPagando(resposta.pagando ?? null);
       if (resposta.pagando) {
         /* Efi Pix: exibe QR code e confirma por polling em vez de redirecionar */
+        setDoacaoIdAtual(resposta.donation.id);
         setPasso("mPix");
         iniciarPoll(resposta.donation.id);
       } else {
@@ -513,6 +515,37 @@ export default function DonateModal({
                 })}.{" "}
                 <span>Confirmando pagamento…</span>
               </p>
+              {doacaoIdAtual && (
+                <div style={{ marginTop: "12px", textAlign: "center" }}>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      try {
+                        const res = await fetch(`/api/doacoes/${doacaoIdAtual}/simular`, { method: "POST" });
+                        if (res.ok) {
+                          pararPoll();
+                          setPasso("mOk");
+                          setTimeout(() => onClose(), 2800);
+                        }
+                      } catch {
+                        /* ignore */
+                      }
+                    }}
+                    style={{
+                      background: "#e8f5e9",
+                      border: "1px dashed #2e7d32",
+                      color: "#1b5e20",
+                      padding: "6px 12px",
+                      borderRadius: "6px",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                    }}
+                  >
+                    🧪 [Teste] Simular Pagamento Confirmado
+                  </button>
+                </div>
+              )}
             </>
           )}
         </div>

@@ -59,6 +59,19 @@ export class DoacoesRepository {
       .select("*")
       .maybeSingle();
     if (error) throw error;
+
+    if (data?.campanha_id) {
+      try {
+        const camp = await this.db().from("campanhas").select("valor_arrecadado").eq("id", data.campanha_id).maybeSingle();
+        if (camp?.data) {
+          const novoTotal = Number(camp.data.valor_arrecadado || 0) + Number(amount);
+          await this.db().from("campanhas").update({ valor_arrecadado: novoTotal }).eq("id", data.campanha_id);
+        }
+      } catch (campErr) {
+        console.warn("[falha ao atualizar valor_arrecadado da campanha]:", campErr);
+      }
+    }
+
     return data;
   }
   async setStatus(id: string | number, status: DoacaoRow["status"]) {
