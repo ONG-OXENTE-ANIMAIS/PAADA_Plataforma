@@ -8,6 +8,16 @@ import { ApiError } from "@/lib/api/errors";
  * — registramos um aviso para não derrubar endpoints essenciais.
  */
 export async function enforceRateLimit(key: string, limit: number, windowSeconds: number) {
+  // Em ambiente de desenvolvimento local, não bloqueia os testes do desenvolvedor
+  if (
+    process.env.NODE_ENV !== "production" ||
+    key.endsWith(":local") ||
+    key.endsWith(":127.0.0.1") ||
+    key.endsWith(":::1")
+  ) {
+    return;
+  }
+
   const db = createAdminClient();
   const { data, error } = await db.rpc("consumir_rate_limit", {
     p_chave: key,
