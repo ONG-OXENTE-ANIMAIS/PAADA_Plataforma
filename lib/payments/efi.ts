@@ -284,10 +284,11 @@ export async function criarCobrancaPagamento(input: {
 
   const qr = await efiFetch(`/v2/loc/${encodeURIComponent(String(locId))}/qrcode`);
   if (!qr.ok) {
+    const errorBody = await qr.text().catch(() => "");
     throw new ApiError(
       502,
       "PAYMENT_PROVIDER_ERROR",
-      "Não foi possível gerar o QR Code da cobrança na Efí (verifique os escopos de Payload da aplicação).",
+      `Não foi possível gerar o QR Code da cobrança na Efí (${qr.status}): ${errorBody || "verifique as permissões de Payload/Loc da aplicação"}`.slice(0, 250),
     );
   }
 
