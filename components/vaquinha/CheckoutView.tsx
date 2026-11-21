@@ -191,6 +191,11 @@ export default function CheckoutView({
       return;
     }
 
+    if (!anonimo && nome.trim() && nome.trim().length < 2) {
+      setErro("O seu nome deve ter pelo menos 2 caracteres ou marque a opção de doação anônima.");
+      return;
+    }
+
     if (!anonimo && email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
       setErro("Informe um e-mail válido ou marque a opção de doação anônima.");
       return;
@@ -258,18 +263,22 @@ export default function CheckoutView({
         }
       }
 
+      const nomeLimpo = (!anonimo && (nome.trim() || (CARTAO_HABILITADO && metodoEfetivo === "cartao" ? nomeTitular.trim() : ""))) || undefined;
+      const emailLimpo = (!anonimo && email.trim()) || undefined;
+      const mensagemLimpa = mensagem.trim() || undefined;
+
       const corpoRequisicao: Record<string, unknown> = {
         campanha_id: campaign.id,
         valor,
         mensal: freq === "mes",
         anonimo,
-        mensagem: mensagem.trim() || null,
+        mensagem: mensagemLimpa,
         metodo_pagamento: metodoEfetivo,
         ...(anonimo
           ? {}
           : {
-              nome: (nome.trim() || (metodoEfetivo === "cartao" ? nomeTitular.trim() : "")) || null,
-              email: email.trim() || null,
+              ...(nomeLimpo ? { nome: nomeLimpo } : {}),
+              ...(emailLimpo ? { email: emailLimpo } : {}),
             }),
       };
 

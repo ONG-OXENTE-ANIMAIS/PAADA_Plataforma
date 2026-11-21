@@ -42,6 +42,22 @@ function carregarCertificadoPem(): Buffer | null {
     return fs.readFileSync(resolved);
   }
 
+  // Fallback: busca automaticamente qualquer arquivo .pem presente na raiz do projeto (ex: homologacao-*.pem ou producao-*.pem)
+  try {
+    const arquivos = fs.readdirSync(process.cwd());
+    const pemFile = arquivos.find(
+      (f) => f.toLowerCase().endsWith(".pem") && !f.startsWith(".")
+    );
+    if (pemFile) {
+      const fallbackPath = path.resolve(process.cwd(), pemFile);
+      if (fs.existsSync(fallbackPath)) {
+        return fs.readFileSync(fallbackPath);
+      }
+    }
+  } catch {
+    // ignora erros na leitura de diretório
+  }
+
   return null;
 }
 
