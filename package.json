@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "setup:webhook": "node --env-file=.env scripts/setup-webhook.mjs"
   },
   "dependencies": {
     "@phosphor-icons/web": "^2.1.1",

@@ -3,7 +3,7 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type TipoUsuario = "admin" | "operador";
 export type StatusCampanha = "RASCUNHO" | "ATIVA" | "PAUSADA" | "CONCLUIDA" | "CANCELADA";
 export type StatusDoacao = "PENDENTE" | "PAGA" | "CANCELADA" | "REEMBOLSADA";
-export type StatusContato = "RECEBIDA" | "EM_ANALISE" | "RESPONDIDA" | "ARQUIVADA";
+export type StatusContato = "RECEBIDA" | "EM_ANALISE" | "CONCLUIDA" | "RESPONDIDA" | "ARQUIVADA";
 export type TipoMensagem = "CONTATO" | "SUGESTAO";
 
 export type CampanhaRow = {

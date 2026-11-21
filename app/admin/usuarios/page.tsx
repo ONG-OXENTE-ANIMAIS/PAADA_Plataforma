@@ -122,12 +122,11 @@ export default function AdminUsuariosPage() {
       <div className="adm-head wrap">
         <h1>Usuários do painel</h1>
         <p>
-          Equipe administrativa da Oxente. Senhas são armazenadas com hash
-          bcrypt (12 rounds) e nunca voltam pela API.
+          Equipe administrativa da Oxente.
         </p>
         <div className="adm-bts">
           <button className="btn btn-laranja" onClick={() => setMostrarForm((v) => !v)}>
-            <i className="ph ph-plus"></i> {mostrarForm ? "Fechar formulário" : "Novo usuário"}
+            {mostrarForm ? <><i className="ph ph-minus"></i>Fechar Formulário</> : <><i className="ph ph-plus"></i>Novo Usuário</>}
           </button>
         </div>
       </div>
@@ -141,17 +140,17 @@ export default function AdminUsuariosPage() {
             <div className="duo">
               <div className="campo">
                 <label htmlFor="us-nome">Nome <span className="contador">obrigatório</span></label>
-                <input id="us-nome" value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} />
+                <input id="us-nome" type="text" placeholder="Nome do usuário" value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} />
               </div>
               <div className="campo">
                 <label htmlFor="us-email">E-mail <span className="contador">obrigatório</span></label>
-                <input id="us-email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                <input id="us-email" type="email" placeholder="Email do usuário" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
               </div>
             </div>
             <div className="duo">
               <div className="campo">
                 <label htmlFor="us-login">Login <span className="contador">letras, números, ponto, _ ou -</span></label>
-                <input id="us-login" value={form.login} onChange={(e) => setForm({ ...form, login: e.target.value })} />
+                <input id="us-login" type="text" placeholder="Login do usuário" value={form.login} onChange={(e) => setForm({ ...form, login: e.target.value })} />
               </div>
               <div className="campo">
                 <label htmlFor="us-tipo">Perfil</label>
@@ -163,7 +162,7 @@ export default function AdminUsuariosPage() {
             </div>
             <div className="campo">
               <label htmlFor="us-senha">Senha <span className="contador">mínimo de 10 caracteres</span></label>
-              <input id="us-senha" type="password" autoComplete="new-password" value={form.senha} onChange={(e) => setForm({ ...form, senha: e.target.value })} />
+              <input id="us-senha" type="password" placeholder="Senha" autoComplete="new-password" value={form.senha} onChange={(e) => setForm({ ...form, senha: e.target.value })} />
             </div>
             <button type="submit" className="btn btn-laranja" disabled={salvando}>
               {salvando ? <><i className="ph ph-circle-notch spin"></i> Criando…</> : <><i className="ph ph-user-plus"></i> Criar usuário</>}

@@ -2,7 +2,7 @@ import { ApiError } from "@/lib/api/errors";
 import { doacaoCreateSchema, doacaoStatusUpdateSchema } from "@/lib/validations/schemas";
 import { DoacoesRepository } from "@/repositories/doacoes.repository";
 import { CampanhasRepository } from "@/repositories/campanhas.repository";
-import { criarCobrancaPagamento } from "@/lib/payments/efi";
+import { criarCobrancaCartao, criarCobrancaPagamento } from "@/lib/payments/efi";
 import type { DoacaoRow } from "@/types/database.types";
 
 const repo = new DoacoesRepository();
@@ -32,17 +32,62 @@ export const doacoesService = {
     if (campaign.data_fim && new Date(campaign.data_fim) < new Date()) throw new ApiError(422, "CAMPAIGN_ENDED", "Esta campanha já foi encerrada.");
     if (data.mensal && !campaign.mensal) throw new ApiError(422, "RECURRING_NOT_ALLOWED", "Esta campanha não aceita doações recorrentes.");
     if (data.anonimo && (data.email || data.nome)) throw new ApiError(400, "ANONYMOUS_EMAIL", "Doações anônimas não devem incluir e-mail.");
+    if (data.metodo_pagamento === "cartao" && !data.cartao) {
+      throw new ApiError(400, "CARD_DATA_REQUIRED", "Informe os dados do cartão de crédito para concluir a doação.");
+    }
+
+    const txid = `PAADA${crypto.randomUUID().replace(/-/g, "").slice(0, 27)}`;
 
     const donation = await repo.create({
       campanha_id: data.campanha_id,
       valor: data.valor,
       status: "PENDENTE",
-      txid: `PAADA-${crypto.randomUUID()}`,
+      txid,
       assinatura_id: null,
       payment_id: null,
     });
 
     try {
+      if (data.metodo_pagamento === "cartao" && data.cartao) {
+        const parcelasNum =
+          data.cartao.funcao === "debito"
+            ? 1
+            : Math.min(Math.max(data.cartao.parcelas || 1, 1), 6);
+        const valorCentavos = Math.round(Number(donation.valor) * 100);
+        const parcelaCentavos = Math.ceil(valorCentavos / parcelasNum);
+        const valorTotalCartao = (parcelaCentavos * parcelasNum) / 100;
+
+        const resultadoCartao = await criarCobrancaCartao({
+          donationId: donation.id,
+          txid: donation.txid,
+          amount: valorTotalCartao,
+          campaignTitle: campaign.titulo,
+          payerEmail: data.email ?? undefined,
+          ...data.cartao,
+          parcelas: parcelasNum,
+        });
+
+        if (resultadoCartao.status === "rejected") {
+          await repo.setStatus(donation.id, "CANCELADA");
+          throw new ApiError(422, "CARD_REJECTED", "O pagamento com cartão não foi autorizado pela operadora.");
+        }
+
+        await repo.update(donation.id, { payment_id: resultadoCartao.id });
+
+        let doacaoFinal = donation;
+        if (resultadoCartao.status === "approved") {
+          await repo.confirm(donation.id, resultadoCartao.id, Number(donation.valor));
+          doacaoFinal = (await repo.findById(donation.id)) ?? { ...donation, status: "PAGA" };
+        }
+
+        return {
+          donation: publicDonation(doacaoFinal),
+          checkout_url: `/vaquinha/${campaign.slug}?doacao=${donation.id}&token=${donation.id}`,
+          metodo: "cartao" as const,
+          cartao: resultadoCartao,
+        };
+      }
+
       const preference = await criarCobrancaPagamento({
         donationId: donation.id,
         donationToken: donation.id,
@@ -54,7 +99,20 @@ export const doacoesService = {
         payerName: data.nome ?? undefined,
       });
       await repo.update(donation.id, { payment_id: preference.id });
-      return { donation: publicDonation(donation), checkout_url: preference.checkoutUrl, pagamento: preference };
+      const pagando = {
+        tipo: "pix" as const,
+        qrCode: preference.qrCode,
+        qrcodeBase64: preference.qrcodeBase64,
+        copiaCola: preference.qrCode,
+        expiraEm: preference.expiresAt ?? new Date(Date.now() + 3600 * 1000).toISOString(),
+      };
+      return {
+        donation: publicDonation(donation),
+        checkout_url: preference.checkoutUrl,
+        metodo: "pix" as const,
+        pagamento: preference,
+        pagando,
+      };
     } catch (error) {
       await repo.setStatus(donation.id, "CANCELADA");
       throw error;

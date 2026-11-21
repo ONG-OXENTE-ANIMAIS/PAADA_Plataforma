@@ -688,6 +688,7 @@ export default function Builder() {
                           <label>Título da meta</label>
                           <input
                             value={goal.titulo}
+                            type="text"
                             onChange={(e) =>
                               updateGoal(i, { titulo: e.target.value })}
                             placeholder="Ex: Primeira fase – 100 castrações"
@@ -697,6 +698,7 @@ export default function Builder() {
                           <label>Descrição</label>
                           <input
                             value={goal.descricao}
+                            type="text"
                             onChange={(e) =>
                               updateGoal(i, { descricao: e.target.value })}
                             placeholder="O que essa etapa vai entregar"

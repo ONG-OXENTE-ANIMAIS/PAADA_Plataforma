@@ -95,7 +95,7 @@ export default function AdminCampanhasPage() {
             <i className="ph ph-magnifying-glass"></i>
             <input
               type="text"
-              placeholder="Buscar por título ou slug…"
+              placeholder="Buscar por título ou chamada…"
               value={busca}
               onChange={(e) => setBusca(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && carregar(1)}

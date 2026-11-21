@@ -22,7 +22,7 @@ const CANAIS = [
     icon: "whatsapp-logo",
     tit: "WhatsApp",
     valor: "(81) 9 8888-0000",
-    href: "http://wa.me/+558****0000",
+    href: "http://wa.me/+5581988880000",
     externo: true,
     desc: "Atendimento rápido em horário comercial.",
   },
@@ -146,15 +146,14 @@ export default function ContatoPage() {
                   status abaixo — a resposta chega no e-mail{" "}
                   <b>{email}</b>.
                 </p>
-                <span className="ct-status">
-                  <i className="ph-fill ph-envelope-open"></i> status: Recebida
-                </span>
-                <div className="grupo-bts" style={{ justifyContent: "center" }}>
+                <div className="grupo-bt" style={{ justifyContent: "center" }}>
                   <button className="btn btn-marrom" onClick={limpar}>
-                    <i className="ph ph-plus"></i> Enviar outra mensagem
+                    Enviar outra mensagem
                   </button>
-                  <Link href="/vaquinhas" className="btn btn-areia">
-                    <i className="ph ph-hand-heart"></i> Ver vaquinhas
+                  <Link href="/vaquinhas">
+                    <button className="btn btn-areia">
+                      Ver vaquinhas
+                    </button>
                   </Link>
                 </div>
               </div>

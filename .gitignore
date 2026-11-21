@@ -1,5 +1,10 @@
 .next
 node_modules
 .env
+.env.local
+*.pem
+*.p12
+scripts/*
+!scripts/setup-webhook.mjs
 scripts
 .pem
