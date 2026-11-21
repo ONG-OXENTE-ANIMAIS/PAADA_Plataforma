@@ -159,8 +159,8 @@ async function obterToken(): Promise<string> {
   if (tokenCache && agora < tokenCache.expiresAt - 60_000) {
     return tokenCache.access_token;
   }
-  const clientId = process.env.EFI_CLIENT_ID;
-  const clientSecret = process.env.EFI_CLIENT_SECRET;
+  const clientId = process.env.EFI_CLIENT_ID?.trim().replace(/^["']|["']$/g, "");
+  const clientSecret = process.env.EFI_CLIENT_SECRET?.trim().replace(/^["']|["']$/g, "");
   if (!clientId || !clientSecret) {
     throw new ApiError(
       503,
@@ -233,7 +233,7 @@ export async function criarCobrancaPagamento(input: {
   payerEmail?: string;
   payerName?: string;
 }): Promise<PagamentoPreferencia> {
-  const chave = process.env.EFI_PIX_KEY;
+  const chave = process.env.EFI_PIX_KEY?.trim().replace(/^["']|["']$/g, "");
   if (!chave) {
     throw new ApiError(
       503,
@@ -445,8 +445,8 @@ export async function criarCobrancaCartao(input: CartaoInput): Promise<{
   ultimos_digitos?: string;
   bandeira?: string;
 }> {
-  const clientId = process.env.EFI_CLIENT_ID;
-  const clientSecret = process.env.EFI_CLIENT_SECRET;
+  const clientId = process.env.EFI_CLIENT_ID?.trim().replace(/^["']|["']$/g, "");
+  const clientSecret = process.env.EFI_CLIENT_SECRET?.trim().replace(/^["']|["']$/g, "");
   if (!clientId || !clientSecret) {
     throw new ApiError(
       503,
