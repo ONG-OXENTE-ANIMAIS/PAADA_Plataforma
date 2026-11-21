@@ -2,7 +2,7 @@ import { ApiError } from "@/lib/api/errors";
 import { doacaoCreateSchema, doacaoStatusUpdateSchema } from "@/lib/validations/schemas";
 import { DoacoesRepository } from "@/repositories/doacoes.repository";
 import { CampanhasRepository } from "@/repositories/campanhas.repository";
-import { criarCobrancaCartao, criarCobrancaPagamento } from "@/lib/payments/efi";
+import { consultarPagamento, criarCobrancaCartao, criarCobrancaPagamento } from "@/lib/payments/efi";
 import type { DoacaoRow } from "@/types/database.types";
 
 const repo = new DoacoesRepository();
@@ -133,13 +133,75 @@ export const doacoesService = {
   async getAdmin(id: string) {
     const donation = await repo.findById(id);
     if (!donation) throw new ApiError(404, "NOT_FOUND", "Doação não encontrada.");
+    if (donation.status === "PENDENTE" && donation.txid) {
+      try {
+        const pagamento = await consultarPagamento(donation.txid);
+        if (pagamento.status === "approved") {
+          await this.confirm(
+            String(donation.id),
+            donation.txid,
+            pagamento.transaction_amount || Number(donation.valor),
+          );
+          return (await repo.findById(id)) ?? donation;
+        }
+      } catch (err) {
+        console.warn("[getAdmin sync warning]:", err);
+      }
+    }
     return donation;
   },
   async getPublic(id: string, token: string | null) {
     const donation = await repo.findById(id);
     if (!donation) throw new ApiError(404, "NOT_FOUND", "Doação não encontrada.");
     if (String(token) !== String(donation.id)) throw new ApiError(404, "NOT_FOUND", "Doação não encontrada.");
+
+    if (donation.status === "PENDENTE" && donation.txid) {
+      try {
+        const pagamento = await consultarPagamento(donation.txid);
+        if (pagamento.status === "approved") {
+          await this.confirm(
+            String(donation.id),
+            donation.txid,
+            pagamento.transaction_amount || Number(donation.valor),
+          );
+          const atualizado = await repo.findById(id);
+          if (atualizado) return publicDonation(atualizado);
+        }
+      } catch (err) {
+        console.warn("[getPublic sync warning]:", err);
+      }
+    }
+
     return publicDonation(donation);
+  },
+  async syncPending() {
+    const pendentes = await repo.list({
+      status: "PENDENTE",
+      page: 1,
+      limit: 100,
+    });
+    const confirmadas: string[] = [];
+    for (const d of pendentes.data) {
+      if (!d.txid) continue;
+      try {
+        const pagamento = await consultarPagamento(d.txid);
+        if (pagamento.status === "approved") {
+          await this.confirm(
+            String(d.id),
+            d.txid,
+            pagamento.transaction_amount || Number(d.valor),
+          );
+          confirmadas.push(String(d.id));
+        }
+      } catch (err) {
+        console.warn(`[syncPending] Erro na doação ${d.id}:`, err);
+      }
+    }
+    return {
+      totalVerificadas: pendentes.data.length,
+      confirmadasCount: confirmadas.length,
+      confirmadasIds: confirmadas,
+    };
   },
   async updateStatus(id: string, input: unknown) {
     const data = doacaoStatusUpdateSchema.parse(input);
