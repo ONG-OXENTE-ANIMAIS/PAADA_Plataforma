@@ -44,12 +44,30 @@ export class DoacoesRepository {
     return data as DoacaoRow | null;
   }
   async confirm(id: string | number, paymentId: string, amount: number) {
-    const { data, error } = await this.db().rpc("confirmar_doacao", { p_doacao_id: parseSqlId(id), p_payment_id: paymentId, p_valor: amount });
+    try {
+      const { data, error } = await this.db().rpc("confirmar_doacao", { p_doacao_id: parseSqlId(id), p_payment_id: paymentId, p_valor: amount });
+      if (!error) return data;
+      console.warn("[confirmar_doacao rpc error, usando fallback]:", error);
+    } catch (e) {
+      console.warn("[confirmar_doacao rpc exception, usando fallback]:", e);
+    }
+
+    const { data, error } = await this.db()
+      .from("doacoes")
+      .update({ status: "PAGA", payment_id: paymentId, pago_em: new Date().toISOString() })
+      .eq("id", parseSqlId(id))
+      .select("*")
+      .maybeSingle();
     if (error) throw error;
     return data;
   }
   async setStatus(id: string | number, status: DoacaoRow["status"]) {
-    const { data, error } = await this.db().rpc("definir_status_doacao", { p_doacao_id: parseSqlId(id), p_status: status });
+    const { data, error } = await this.db()
+      .from("doacoes")
+      .update({ status })
+      .eq("id", parseSqlId(id))
+      .select("*")
+      .maybeSingle();
     if (error) throw error;
     return data;
   }

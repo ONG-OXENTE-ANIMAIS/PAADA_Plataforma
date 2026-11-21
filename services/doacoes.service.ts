@@ -113,9 +113,13 @@ export const doacoesService = {
         pagamento: preference,
         pagando,
       };
-    } catch (error) {
-      await repo.setStatus(donation.id, "CANCELADA");
-      throw error;
+    } catch (paymentError) {
+      try {
+        await repo.setStatus(donation.id, "CANCELADA");
+      } catch (cancelError) {
+        console.warn("[falha ao definir status CANCELADA na doacao]:", cancelError);
+      }
+      throw paymentError;
     }
   },
   async list(filters: Parameters<DoacoesRepository["list"]>[0]) {
